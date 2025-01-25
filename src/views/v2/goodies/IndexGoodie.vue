@@ -3,31 +3,37 @@
     <div class="mr-5">
       <h4 class="text-app font-weight-bold">Fiche des goodies</h4>
     </div>
-    <div class="mr-4">
-      <div class="btn-group page-nav " role="group" aria-label="nav">
-        <router-link class="btn" :to="{ name: 'mobilization' }"
+    <div class="btn-group page-nav " role="group">
+      <div>
+        <router-link class="btn " :to="{ name: 'mobilization' }"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
         </router-link>
       </div>
-      <div class="btn-group page-nav " role="group" aria-label="nav">
+      <div>
         <router-link class="btn" :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Climat">
           <i class="pi pi-sitemap" style="color: #3242C5"></i> Climats
         </router-link>
       </div>
-      <div class="btn-group page-nav " role="group" aria-label="nav">
-        <router-link class="btn " :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
+      <div>
+        <router-link class="btn" :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
-      <div class="btn-group page-nav " role="group" aria-label="nav">
-        <router-link class="btn  btn-primary" :to="{ name: 'goodies' }"
+      <div>
+        <router-link class="btn btn-primary" :to="{ name: 'goodies' }"
           :class="{ 'active': this.$route.name === 'goodies' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="goodies">
           <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
+        </router-link>
+      </div>
+      <div>
+        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">
+          <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
     </div>
@@ -49,6 +55,8 @@
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
             <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-goodies">
+              <span v-if=" loading==true" class="spinner-border spinner-border-sm" role="status"
+                aria-hidden="true"></span>
               <span v-if="loading == true" class="spinner-border spinner-border-sm" role="status"
                 aria-hidden="true"></span>
               <i v-else class="fa fa-refresh"></i>

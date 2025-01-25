@@ -8,10 +8,10 @@
           <label>Date<span class="text-danger">*</span></label>
           <input type="date" v-model="form.date" class="form-control" required>
         </div>
-        <div class="form-group col-6">
+        <!-- <div class="form-group col-6">
           <label>Zone Code<span class="text-danger">*</span></label>
           <input type="text" v-model="form.zone_code" class="form-control" required>
-        </div>
+        </div> -->
 
         <div class="form-group col-6">
           <label>Population<span class="text-danger">*</span></label>
@@ -91,7 +91,7 @@
 // @ts-nocheck
 import $ from "jquery";
 import { defineComponent } from 'vue';
-
+import { useAppStore } from "@/store/app";
 export default defineComponent({
   name: 'CreateEmploye',
   inject: ['dialogRef'],
@@ -102,7 +102,7 @@ export default defineComponent({
       types_permis: [],
       form: {
         date: '',
-        zone_code: '',
+        // zone_code: '',
         population: '',
         party_members: '',
         associations: '',
@@ -118,13 +118,9 @@ export default defineComponent({
   methods: {
     createLine() {
       this.isLoading = true
-      // for (let index = 0; index < this.types_permis_conducteurs.length; index++) {
-      //   const element = this.types_permis_conducteurs[index];
-      //   this.form.types_permis_conducteurs[index] = element.id
-      // }
-      // const config = {
-      //   headers: { 'Content-Type': 'multipart/form-data' }
-      // }
+      const appStore = useAppStore();
+      // console.log('code = ', appStore.currentUser.zone)
+      this.form.zone_code = appStore.currentUser.zone
       this.$axios.post('/goodies/add', this.form,).then(response => {
         this.isLoading = false
         if (response.data !== null) {

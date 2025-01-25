@@ -87,9 +87,10 @@ export default {
 
     getCentreVote() {
       this.$axios
-        .get("/voting_centre/by_zone")
+        .get("/voting_centre/all")
         .then((response) => {
           this.centre_vote = response.data;
+          console.log('map = ', this.centre_vote)
           if (this.showVotingCenters) {
             this.updateMapLocations();
           }
@@ -111,12 +112,12 @@ export default {
           lng: centre.lon,
           parent_id: "GA1",
           type: "marker",
-          color: "#3242C5",
-          size: "40",
+          color: "black",
+          size: "100",
           description: `
-            <p><strong>Nombre de bureaux de votes :</strong> ${centre.bureaux}</p>
-            <p><strong>Nombre de participants :</strong> ${centre.participants}</p>
-            <p><strong>Nombre de votants :</strong> ${centre.votants}</p>
+            <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices}</p>
+            <p><strong>Nombre de participants :</strong> ${centre.total_registered}</p>
+            <p><strong>Total des votants :</strong> ${centre.total_registered_bureau}</p>
           `,
         };
       });

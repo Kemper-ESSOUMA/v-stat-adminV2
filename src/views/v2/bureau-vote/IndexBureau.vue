@@ -1,7 +1,7 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Fiche des alertes et incidents</h4>
+      <h4 class="text-app font-weight-bold">Fiche des bureaux de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
@@ -18,9 +18,8 @@
         </router-link>
       </div>
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'incident' }"
-          :class="{ 'active': this.$route.name === 'incident' }" data-bs-toggle="tooltip" data-bs-placement="right"
-          title="incident">
+        <router-link class="btn " :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
@@ -31,17 +30,14 @@
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">
+        <router-link class="btn btn-primary" :to="{ name: 'bureaux' }"
+          :class="{ 'active': this.$route.name === 'bureaux' }" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
     </div>
-    <div class="px-1 d-flex mr-4">
-      <button type="button" class="btn-app btn-active" @click="openCreateModal()">
-        Ajouter une fiche <i class="fa-solid fa-plus"></i>
-      </button>
-    </div>
+
 
   </div>
   <hr>
@@ -54,7 +50,7 @@
 
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
-            <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-incident">
+            <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-climat">
               <span v-if="loading == true" class="spinner-border spinner-border-sm" role="status"
                 aria-hidden="true"></span>
               <i v-else class="fa fa-refresh"></i>
@@ -73,10 +69,10 @@
       </template>
 
       <DataTableColumn field="date" header="Date"></DataTableColumn>
-      <DataTableColumn field="zone_code" header="Zone"></DataTableColumn>
-      <DataTableColumn field="supervisor" header="Nom du superviseur"></DataTableColumn>
-      <DataTableColumn field="description" header="Recommendation"></DataTableColumn>
+      <DataTableColumn field="office_climate" header="Climat"></DataTableColumn>
       <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+      <DataTableColumn field="supervisor" header="Superviseur"></DataTableColumn>
+      <DataTableColumn field="observation" header="Observation"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
           <div class="d-flex">
@@ -95,8 +91,8 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-import CreateIncident from './CreateIncident.vue'
-import ViewFicheIncident from './ViewFicheIncident.vue';
+// import CreateFicheClimatVue from './CreateFicheClimat.vue';
+import ViewFicheBureauVote from './ViewFicheBureauVote.vue';
 export default {
   data() {
     return {
@@ -108,13 +104,13 @@ export default {
     };
   },
   mounted() {
-    this.getIncident();
+    this.getBureaux();
   },
   methods: {
     openModal(objetData) {
-      this.$dialog.open(ViewFicheIncident, {
+      this.$dialog.open(ViewFicheBureauVote, {
         props: {
-          header: "Fiche alerte et incident " + objetData.id,
+          header: "Fiche de bureau de vote " + objetData.id,
           style: {
             width: '50vw'
           },
@@ -123,20 +119,20 @@ export default {
         data: objetData,
       });
     },
-    openCreateModal() {
-      this.$dialog.open(CreateIncident, {
-        props: {
-          header: "Fiche alerte et incident ",
-          style: {
-            width: '50vw'
-          },
-          modal: true
-        },
-      });
-    },
-    getIncident() {
+    // openCreateModal() {
+    //   this.$dialog.open(CreateFicheClimatVue, {
+    //     props: {
+    //       header: "Fiche de climat ",
+    //       style: {
+    //         width: '50vw'
+    //       },
+    //       modal: true
+    //     },
+    //   });
+    // },
+    getBureaux() {
       this.$axios
-        .get('/incident/all')
+        .get('/polling_station_sheet/all')
         .then((response) => {
           this.loading = false
           this.datas = response.data;
@@ -147,7 +143,7 @@ export default {
     },
     refreshDatas() {
       this.loading = true
-      this.getIncident()
+      this.getBureaux()
     }
   },
 };

@@ -9,11 +9,25 @@
         </router-link>
 
         <router-link class="navys-link" :to="{ name: 'mobilization' }"
-          :class="{ 'active': (this.$route.name === 'mobilization') || (this.$route.name === 'climat') || (this.$route.name === 'incident') || (this.$route.name === 'goodies') }" data-bs-toggle="tooltip" data-bs-placement="right"
-          title="Fiches">
+          :class="{ 'active': (this.$route.name === 'mobilization') || (this.$route.name === 'climat') || (this.$route.name === 'incident') || (this.$route.name === 'goodies') || (this.$route.name === 'bureaux') }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Fiches">
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAIAAAACACAYAAADDPmHLAAAACXBIWXMAAAsTAAALEwEAmpwYAAAEPElEQVR4nO2dy25WVRiGn6QBKQkXgDIE4lRIREQgJqSYaERwghKGBMeAMu3QBPAKOMw4DACR4CUoEG4C1IaBxAJiJSnW7GTPdO22P/273nfv90m+Ic27nv3xr9N/gBBCCCGEEEIIIYQQxsR64CBwCXgAzADzwMLAar4de+PgIvBZ66a3NIM7DcwKyFet58C3wAZ6xvvArwKCXeoX4D16wlHgbwGpbjUHHMGc/QOd3xdWqF4Bn2DK28BTAYnuNQtswZAfOwb1D3CzXfluBCYYHhPt2Jsd0a1FmuA2ZnzYMZjfgX21AwoyBTzp8LYHI64VBvEn8E7tcMJsA14U3F3BhLUdc//J2uEM+LpjLdC4lWd3YQBNU6yrHc6ASeBZweEuDPiyEP567WBG3Cw4PIwBpwrhz9QOZsRZ5yl0uhB+eoR/0+eaXmGHMqQBSAPkFYC8AmQKIFNA1gBkDZBFIFkEZhdAdgHZBpJt4HK3jn2u6RXeSsuQcwDSADkHIK8AOQcgU0DOAcgaIOcAZBGYcwCyC7DYwogwuG1g6JFD6/AiWDu0Di+CtUPr8CJYO7QOL4K1Q+vwIlg7tA4vgrVD6/AiWDu0Di+CtUPr8CJYO7QOL4K1Q+vwIlg7tA4vgrXD1wnffP79HvCy8Dcc6yVwt/2uxNVwWJ1Rw2/q+GKEPtRT4K0xO5Rg1PBfCTykhTHX8TE7lGDU8McFHtDCmOvYmB3aTwF9/mLJ2UwBi9MslH7u4SLwJ2DnKvwnksA6vAjWDq3Di2Dt0Dq8CNYOrcOLYO3QOrwI1g6tw4tg7dA6vAjWDq3Di2Dt0Dq8CNYOcx3Mf04Ccx2c62ByHbzIK0eugwc+BeQ6eOANkOvggTdAQ66DB94AoQcOrcOLYO3QOrwI1g6tw4tg7dA6vAjWDq3Di2Dt0Dq8CNYOrcOLYO3QOrwI1g7droNngO/Eftl8kA1Q+9PB59BhkA1Q+zr4MToMsgFqXwf/hg6DbIDa18Fn0GGQDVDrOngGOAu8gQ6DbYDQA4fW4UWwdmgdXgRrh9bhRbB2aB1eBGuH1uFFsHZoHV4Ea4fW4UWwdmgdXgRrh9bhRbB2aB1eBGuH1uFFsHZoHV4Ea4fW4UWwdmgdXgRrhycL4Zs797A0zhUcnsCALwrhb9QOZsT3BYeHMeCDQvjm7V6TtcMZMNnx7ujl/PBUNdZ2vLfvVO1wBnxTcPcHsAYTrhYG8QLYVjucMNuBvwruLmPE3sIgmnoCTNUOKMhHrZuSt92YcadjME3dAg4BbwITDI+JduyfAz8swZUdW9tfyuoaWIpFHTRz/2ZM2Q/M50EzaqO/Aj7GnCPAXJqA5T78ufZMpRfsAB6lCVjqw38IvEsPDzhOt3Na5n7+18Hz9ry/1wdm64EDwAXgfvup3CGuE+bbsTcOzgOf9v3BhxBCCCGEEEIIIYQQQgghBFaXfwFL9O6aEUbpoAAAAABJRU5ErkJggg=="
             alt="file">
+        </router-link>
+
+        <router-link class="navys-link" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Votes">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADp0lEQVR4nO2avWsUQRjGf/GbhSh+YiGCGhNBMJYxCtoI2l44FUUwEosUFmoqSZHGQiGIIIiaQkVQBDXBr8bYiOd/oAgahJionRobMTEyMAvjuLuzdze7O7fZB16Su9mZveeZ92NmdiEf6AamgNkQm5LX5BLHgZkI8r79AXpxFEuAo0Cr/Dwf2A+UDdavkBd/h4F7mg1r1/TLvjtwBB4wKn/gd2APMBJjRlUTxHoi7tET4CVCHKfIq65qk3yYCJkLoJP/qRGbBI4EuP2jGsj7aFfGyTQEBPnnCpGPwEbgsibI7oiE53RSq5b8BtnWFCFCbsiPKgTHgPXaNUKEK8o1P4ALWiavxu0binyYCFEx3wVclyEUhlU0EHlVhBcG8ieUqjEObON/7AK+AAM4Qv5DDPJ62TKR9+0XcFMuqk4CT7RrDpJD8jPA6xjrhSFgAQ1AvttAvlcj3yPDRfR7H5AzXgJ7SRlejeQFvin9xBibgOXATuCuRlBUBxVNMg90ySX1WjKApyWvasgL3KpiGSxKZCcOwTOQPwwsNowxDzgbsb9/J9fxzongGcgPyO8fxxBBYAVwDLgE3ADOA/vkVjlosdTpMvmVwCelPa4IUahFhEQ2Q17MmN+csQiJbIc9A/lDwCIHREjkQMSLGfMjGYmQ6JGYp5EXS9AWbfMxqbSnJcKriJJpbRfpaeTDSLYBE7JNLFWbtXFsi3AmjWNxTyM/ZphpIcJ9YGnIeLZEUMn/Bg6QALyQmG8ziKCj2XI4pEZ+NOQYC3me77u7sKchJJbJcNDbW+R+3u//TD4rMOGU0mdarjQTwcUYdT6OJzy0mBhTmXkf55SbfQa2EAyTCGpirEcEnbwoa4lioTZ7JhEmLIpwJ2vyqggPlJt/BbYSjFaNhB7zOsmwnCAelXUo359OK+Zd8IQWjXxmM1+PJ5hm2tTuzMyn6Qm3tf59rsx8Gp7gXMyn7QkdWcz8kFR3do6Z4Cweqc1J8qoI+B/GA96vyaup+w6ceWUkRajH6hQCUHgAtkJge4x3++o1cbbvZAi0x3xjs16bsSBCIgKUUyxf5SQEGK+ztFSUsQYTcP1BZfyK4beoK0pjGZxOYIZK2EepRg8xLoSuWRbhDbA6AQHWAG8tCiA4Xw2LYWe2nBZh5Fee6wJ0hCSRvCDvE2xEIQBFCFAkQYoqQJEEKaoAgWVwnbLxEP/nDcVKkKIKELsKVBw4urZtFZMApRRPdLK2Ur377dkGtn/OK/4Ccyd5ETrWUU8AAAAASUVORK5CYII="
+            alt="external-vote-voting-justicon-lineal-justicon-1">
+        </router-link>
+
+        <router-link class="navys-link" :to="{ name: 'users' }" :class="{ 'active': this.$route.name === 'users' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Utilisateurs">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAADJklEQVR4nO2Xy0tVURSHPyu1zB4kWMMGaUI1yqBJ0KgHUU2KMs0kMtLeDwr/Af+C6EFlUEFmzQuxSWZh9pgHKT0HRQaVVuAjlvxO7C7nnnPuvUe51Plgw2HvtfdaZ6+919oLEhISEhISEv5iDtAC9AHf1frUV0qeswp4B4ynaW+BavKUSuCLDH0IrNeOl+q7R2ODQAV5SJcMbAdm+IxbX4dkOskzqmTYZ2BegNx8eWBcHptUCoA9cr13Ge1o1GvMZb+MuhZh3euS3ZeDvkhcDbiMbSmyLepvjbBuq2RtTrb6QqnTxG/aqYXAIqBRfTZW68g3ZuCBGz4eqMtQXyhexGjyGWtyIk3qHRjM8g70ZKgvlCFNKvcZK9eYnVGXTvV3BESh25K5F4O+QLJZsMLZXdvRDcrK1jYCj5xItSQGfYEEubRZY90+Y9XKtuku4xtgZYz60lKbcqnmqrmXaleauZZ5zwBPJGutFzgNzJ4EfWlpC9jJK8RPW9z6ChTeup2dfKDdyiqx5Jm+f5MK4JTCZL/zJHgF3AVO+kSgSWGm3HkLGACGFerMqJu6UEWO/HLgDjAacI69Nqp8sMyZX6yj0i59Q2oDsqFWMpEw4Q8RDHkP7ACOAz/VN6TLuA1YDJSo2fd2vXeGJftDc3dmoK8myPBC4JIz4SlwAFgqI2bpyWCx+oXPrp4DFkTYoDLggo+3nmvtKukqke4mjXlyF/0yfYETxuzMNoTc/AKngPkKbCJzNjsxviuCvr1Oxr6cKtDgJBKra8OwEnFMR2cN2bMW+KW11kWQX60NHledMIG56lMGT9Zip3A/SO4ccQr+KBd1t+Q/6qhNuMY6HkdU6HnLngrTyJ3pwDOtaRVZFHolb7ZzP9UlIXjKLALFRY3WtLWjUC95s/3PmYoSQSqdwsXNA7lSlGGxX+YEEF47Oxp2JLzS0ZJZ3LSnKfZTmeZ4zBIrR0MSiPsOPzQFr9Fmp687xDazB+8n+tMI2YvQY4VCnoXbLUp+uVIIbNWaYylPjHQ/YLYezlbh+QhpP9t2linAwt4J4CUwEoPRI1rrWExhOSEhISHhP+I3exCM/Id5dDAAAAAASUVORK5CYII="
+            alt="group">
         </router-link>
 
         <!-- <router-link class="navys-link" :to="{ name: 'climat' }"
