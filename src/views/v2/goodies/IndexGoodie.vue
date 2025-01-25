@@ -49,8 +49,8 @@
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
             <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-goodies">
-              <span v-if=" loading==true" class="spinner-border spinner-border-sm" role="status"
-              aria-hidden="true"></span>
+              <span v-if="loading == true" class="spinner-border spinner-border-sm" role="status"
+                aria-hidden="true"></span>
               <i v-else class="fa fa-refresh"></i>
               <span> Actualiser</span>
             </button>
@@ -102,6 +102,7 @@ export default {
   },
   mounted() {
     this.getGoodies();
+    this.connectWebSocket();
   },
   methods: {
     openModal(objetData) {
@@ -138,6 +139,49 @@ export default {
           console.error('Erreur de recuperation de donnees:', error);
         });
     },
+
+    connectWebSocket() {
+      // Définir l'URL du WebSocket (à adapter selon votre serveur)
+      this.ws = new WebSocket(this.$wsUrl);
+
+      // Gestion des événements WebSocket
+      this.ws.onopen = () => {
+        console.log("WebSocket connecté !");
+        console.log("Données initiales :", this.datas); // Affichage des données initiales
+      };
+
+      this.ws.onmessage = (event) => {
+        console.log("Événement WebSocket : Message reçu");
+
+        try {
+          const message = event.data;  // Si c'est un JSON, il faut le parser
+          console.log("Message reçu via WebSocket :", message);
+          this.getGoodies();
+
+          if (message && message.updatedData) {
+            // Mettre à jour les données (si ce message contient une clé `updatedData`)
+            this.datas = [...this.datas, ...message.updatedData];
+          }
+        } catch (error) {
+          console.error("Erreur lors de la réception des données WebSocket :", error);
+        }
+      };
+      this.ws.onerror = (error) => {
+        console.error("Erreur WebSocket :", error);
+      };
+
+      // this.ws.onclose = (event) => {
+      //   console.log("WebSocket fermé !", event);
+      // };
+      this.ws.onclose = () => {
+        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, 3000); // Reconnexion après 3 secondes
+      };
+
+    },
+
     refreshDatas() {
       this.loading = true
       this.getGoodies()

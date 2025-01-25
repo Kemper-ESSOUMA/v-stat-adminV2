@@ -90,9 +90,13 @@
 import { FilterMatchMode } from 'primevue/api';
 import CreateFicheClimatVue from './CreateFicheClimat.vue';
 import ViewFicheClimatVue from './ViewFicheClimat.vue';
+import { event } from 'jquery';
+
 export default {
   data() {
     return {
+      ws: null,
+      messages: "",
       datas: [],
       loading: true,
       filters: {
@@ -102,8 +106,82 @@ export default {
   },
   mounted() {
     this.getClimat();
+    this.connectWebSocket();
   },
+  // Déconnecter le WebSocket lorsque le composant est détruit
+  beforeUnmount() {
+    if (this.ws) {
+      this.ws.close();
+    }
+  },
+
   methods: {
+
+    getClimat() {
+      // Récupération initiale avec Axios
+      this.$axios
+        .get('/electoral_climate_sheet/all')
+        .then((response) => {
+          this.loading = false;
+          this.datas = response.data;
+
+          // Une fois les données récupérées, établir la connexion WebSocket
+          this.connectWebSocket();  // Appel de connectWebSocket une seule fois ici
+        })
+        .catch((error) => {
+          console.error('Erreur de récupération de données:', error);
+        });
+    },
+
+    connectWebSocket() {
+      // Définir l'URL du WebSocket (à adapter selon votre serveur)
+      this.ws = new WebSocket(this.$wsUrl);
+
+      // Gestion des événements WebSocket
+      this.ws.onopen = () => {
+        console.log("WebSocket connecté !");
+        console.log("Données initiales :", this.datas); // Affichage des données initiales
+      };
+
+      this.ws.onmessage = (event) => {
+        console.log("Événement WebSocket : Message reçu");
+
+        try {
+          const message = event.data;  // Si c'est un JSON, il faut le parser
+          console.log("Message reçu via WebSocket :", message);
+          this.getClimat();
+
+          if (message && message.updatedData) {
+            // Mettre à jour les données (si ce message contient une clé `updatedData`)
+            this.datas = [...this.datas, ...message.updatedData];
+          }
+        } catch (error) {
+          console.error("Erreur lors de la réception des données WebSocket :", error);
+        }
+      };
+      this.ws.onerror = (error) => {
+        console.error("Erreur WebSocket :", error);
+      };
+
+      // this.ws.onclose = (event) => {
+      //   console.log("WebSocket fermé !", event);
+      // };
+      this.ws.onclose = () => {
+        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, 3000); // Reconnexion après 3 secondes
+      };
+
+    },
+
+
+    sendMessage() {
+      if (this.ws && this.message) {
+        this.ws.send(this.message);
+        this.message = "";
+      }
+    },
     openModal(objetData) {
       this.$dialog.open(ViewFicheClimatVue, {
         props: {
@@ -127,17 +205,18 @@ export default {
         },
       });
     },
-    getClimat() {
-      this.$axios
-        .get('/electoral_climate_sheet/all')
-        .then((response) => {
-          this.loading = false
-          this.datas = response.data;
-        })
-        .catch((error) => {
-          console.error('Erreur de recuperation de donnees:', error);
-        });
-    },
+
+    // getClimat() {
+    //   this.$axios
+    //     .get('/electoral_climate_sheet/all')
+    //     .then((response) => {
+    //       this.loading = false
+    //       this.datas = response.data;
+    //     })
+    //     .catch((error) => {
+    //       console.error('Erreur de recuperation de donnees:', error);
+    //     });
+    // },
     refreshDatas() {
       this.loading = true
       this.getClimat()
