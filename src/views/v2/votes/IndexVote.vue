@@ -16,7 +16,7 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -81,6 +81,7 @@ export default {
   },
   mounted() {
     this.getvote();
+    this.connectWebSocket();
   },
   methods: {
     openModal(objetData) {
@@ -116,6 +117,47 @@ export default {
         .catch((error) => {
           console.error('Erreur de recuperation de donnees:', error);
         });
+    },
+    connectWebSocket() {
+      // Définir l'URL du WebSocket (à adapter selon votre serveur)
+      this.ws = new WebSocket(this.$wsUrl);
+
+      // Gestion des événements WebSocket
+      this.ws.onopen = () => {
+        console.log("WebSocket connecté !");
+        console.log("Données initiales :", this.datas); // Affichage des données initiales
+      };
+
+      this.ws.onmessage = (event) => {
+        console.log("Événement WebSocket : Message reçu");
+
+        try {
+          const message = event.data;  // Si c'est un JSON, il faut le parser
+          console.log("Message reçu via WebSocket :", message);
+          this.getvote();
+
+          if (message && message.updatedData) {
+            // Mettre à jour les données (si ce message contient une clé `updatedData`)
+            this.datas = [...this.datas, ...message.updatedData];
+          }
+        } catch (error) {
+          console.error("Erreur lors de la réception des données WebSocket :", error);
+        }
+      };
+      this.ws.onerror = (error) => {
+        console.error("Erreur WebSocket :", error);
+      };
+
+      // this.ws.onclose = (event) => {
+      //   console.log("WebSocket fermé !", event);
+      // };
+      this.ws.onclose = () => {
+        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, 3000); // Reconnexion après 3 secondes
+      };
+
     },
     refreshDatas() {
       this.loading = true
