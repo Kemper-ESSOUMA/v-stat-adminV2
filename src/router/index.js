@@ -237,6 +237,24 @@ const routes = [
         component: () =>
             import ("@/views/v2/goodies/IndexGoodie.vue"),
     },
+    {
+        path: "/bureaux",
+        name: "bureaux",
+        component: () =>
+            import ("@/views/v2/bureau-vote/IndexBureau.vue"),
+    },
+    {
+        path: "/votes",
+        name: "votes",
+        component: () =>
+            import ("@/views/v2/votes/IndexVote.vue"),
+    },
+    {
+        path: "/users",
+        name: "users",
+        component: () =>
+            import ("@/views/v2/users/IndexUsers.vue"),
+    },
 ];
 
 const router = createRouter({

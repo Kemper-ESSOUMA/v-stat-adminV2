@@ -7,11 +7,11 @@
   <div class="container-fluid" id="fiche">
     <div class="row d-flex justify-content-center align-items-center mb-4">
       <div class="col-3 border-right border-dark">
-        <img src="@/assets/v-state-lg.png" class="w-100" style="padding-right: 10%;">
+        <img src="@/assets/mni.png" class="w-100" style="padding-right: 10%;">
       </div>
       <div class=" col-6">
         <div class="text-left">
-          <h3 class="text-primary font-weight-bold">Presidentielle 2025 <br> Campagne Brice Clotaire OLIGUI NGUEMA <br>
+          <h3 class="text-primary font-weight-bold">Election Presidentielle 2025 <br>
           </h3>
 
         </div>
@@ -19,7 +19,12 @@
     </div>
 
     <h2 class="text-center font-bold">Fiche d'Incident</h2><br>
-
+    <div>
+      <h4>
+        N° 00000{{ this.dialogRef.data.id }}
+      </h4>
+    </div>
+    <br>
     <div class="container mt-4">
       <table class="table table-bordered">
         <tbody>
@@ -40,7 +45,7 @@
           <tr>
             <th>Centre de vote :</th>
             <td>
-              {{ this.dialogRef.data.voting_center }}
+              {{ this.code }}
             </td>
           </tr>
         </tbody>
@@ -82,15 +87,24 @@ export default {
   inject: ['dialogRef'],
   data() {
     return {
-      signatureImage: null
+      signatureImage: null,
+      code: ''
     }
   },
   mounted() {
     console.log('data = ', this.dialogRef.data)
     this.signatureImage = "data:image/png;base64," + this.dialogRef.data.signature
+    this.getCentrebycentre()
   },
 
   methods: {
+
+    getCentrebycentre() {
+      this.$axios.get(`voting_centre/by_code/${this.dialogRef.data.voting_center}`).then(response => {
+        console.log('by centre = ', response)
+        this.code = response.data.libelle
+      })
+    },
     download() {
       this.isLoading = true
       html2pdf().set({

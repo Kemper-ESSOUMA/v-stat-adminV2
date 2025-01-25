@@ -28,9 +28,9 @@
             <option value="Incident">Incident</option>
           </select>
         </div>
-        <div class="form-group col-6">
+        <div class="form-group col-6" v-if="this.form.type === 'Alerte'">
           <label>Type arlete<span class="text-danger">*</span></label>
-          <select class="form-control" v-model="form.event" >
+          <select class="form-control" v-model="form.event">
             <option value="Ouverture tardive du bureau de vote">Ouverture tardive du bureau de vote</option>
             <option value="Absence de bulletin de vote d’un candidat">Absence de bulletin de vote d’un candidat</option>
             <option value="Urnes de vote ouverte">Urnes de vote ouverte</option>
@@ -39,11 +39,17 @@
             <option value="Absence de représentant de parti">Absence de représentant de parti</option>
             <option value="Pression sur les électeurs">Pression sur les électeurs</option>
             <option value="Exclusion d’électeurs">Exclusion d’électeurs</option>
-            <!-- <option value="">Autres (préciser)</option> -->
+            <!-- <option value="Autres">Autres</option> -->
+
           </select>
         </div>
 
-        <div class="form-group col-6">
+        <!-- <div class="form-group col-6" v-if="this.form.event === 'Autres'">
+          <label>Type arlete<span class="text-danger">*</span></label>
+          <input type="text" v-model="form.event" class="form-control">
+        </div> -->
+
+        <div class="form-group col-6" v-if="this.form.type === 'Incident'">
           <label>Type incident<span class="text-danger">*</span></label>
           <select class="form-control" v-model="form.event" required>
             <option value="Vandalisme sur le matériel électoral">Vandalisme sur le matériel électoral</option>

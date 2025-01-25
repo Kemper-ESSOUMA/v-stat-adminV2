@@ -19,7 +19,12 @@
     </div>
 
     <h2 class="text-center font-bold">Fiche de Mobilisation</h2><br>
-
+    <div>
+      <h4>
+        N° 00000{{ this.dialogRef.data.id }}
+      </h4>
+    </div>
+    <br>
     <div class="container mt-4">
       <table class="table table-bordered">
         <tbody>
@@ -64,7 +69,7 @@
       <div class="text-right mt-5">
         <h6>Signature</h6>
         <!-- <img src="@/assets/signature.png" class="my-3"> -->
-         <img :src="this.signatureImage" alt="Signature graphique" class="my-3">
+        <img :src="this.signatureImage" alt="Signature graphique" class="my-3">
       </div>
     </div>
   </div>
