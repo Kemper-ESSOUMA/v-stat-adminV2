@@ -115,7 +115,7 @@ export default {
     // },
     getvote() {
       this.$axios
-        .get('/voting_centre/all')
+        .get('/voting_centre/by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;

@@ -1,7 +1,7 @@
 <template>
   <nav id="navbarys" class="navbar navbar-expand-lg #navbar-light bg-light #fixed-top">
     <a class="navbar-brand" href="#">
-      <img src="@/assets/v-stat-bg.png" alt="logo" class="" style="width: 100px;">
+      <img src="@/assets/LOGO V-STATS.png" alt="logo" class="" style="width: 100px;">
 
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"

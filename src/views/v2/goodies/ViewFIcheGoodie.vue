@@ -7,7 +7,7 @@
   <div class="container-fluid" id="fiche">
     <div class="row d-flex justify-content-center align-items-center mb-4">
       <div class="col-3 border-right border-dark">
-        <img src="@/assets/v-state-lg.png" class="w-100" style="padding-right: 10%;">
+        <img src="@/assets/LOGO V-STATS.png" class="w-100" style="padding-right: 10%;">
       </div>
       <div class=" col-6">
         <div class="text-left">
