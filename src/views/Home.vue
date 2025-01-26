@@ -159,14 +159,15 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import RowsCounter from '@/components/RowsCounter.vue';
+import { data } from 'jquery';
 
 
 export default defineComponent({
   name: 'HomeView',
   components: { RowsCounter },
-  data(){
-    return{
-
+  data() {
+    return {
+      datas: [],
       isLoading: false,
       nb_mobilization: 0,
       nb_climat: 0,
@@ -178,7 +179,8 @@ export default defineComponent({
     }
   },
 
-  mounted(){
+  mounted() {
+    this.connectWebSocket()
     this.getmoilization()
     this.getclimat()
     this.getgoodies()
@@ -187,6 +189,60 @@ export default defineComponent({
     this.getResultatMobilization()
   },
   methods: {
+
+    connectWebSocket() {
+      // Définir l'URL du WebSocket (à adapter selon votre serveur)
+      this.ws = new WebSocket(this.$wsUrl);
+
+      // Gestion des événements WebSocket
+      this.ws.onopen = () => {
+        console.log("WebSocket connecté !");
+      };
+
+      this.ws.onmessage = (event) => {
+        console.log("Événement WebSocket : Message reçu");
+
+        try {
+          const message = event.data; // Parsing en JSON si nécessaire
+
+          console.log("Message reçu via WebSocket :", message);
+
+          // Appels des fonctions pour mettre à jour les données
+          this.updateDataFromWebSocket();
+
+          if (message && message.updatedData) {
+            // Traiter le message si nécessaire, mais pas de modification de `this.datas`
+            // Ex : si tu as d'autres variables à mettre à jour, fais-le ici
+          }
+        } catch (error) {
+          console.error("Erreur lors de la réception des données WebSocket :", error);
+        }
+      };
+
+      this.ws.onerror = (error) => {
+        console.error("Erreur WebSocket :", error);
+      };
+
+      this.ws.onclose = (event) => {
+        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, 3000); // Reconnexion après 3 secondes
+      };
+    },
+
+    updateDataFromWebSocket() {
+      // Mettre à jour les différentes données en appelant les fonctions
+      this.isLoading = true;
+
+      this.getmoilization();
+      this.getclimat();
+      this.getincident();
+      this.getgoodies();
+      this.getbureaux();
+      this.getResultatMobilization();
+    },
+
     getmoilization() {
       this.isLoading = true
       this.$axios
@@ -253,8 +309,8 @@ export default defineComponent({
 
     //fonctions resultats stats
 
-    getResultatMobilization(){
-      this.$axios.get('/stats_home/get_stats_by_user_zone').then(response =>{
+    getResultatMobilization() {
+      this.$axios.get('/stats_home/get_stats_by_user_zone').then(response => {
         this.nb_alerte = response.data.incidents.nb_alerte
         this.nb_incident = response.data.incidents.nb_incident
       })
