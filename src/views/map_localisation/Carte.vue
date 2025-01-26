@@ -30,6 +30,12 @@ export default {
         document.body.appendChild(script);
       });
     },
+
+    getCentre(){
+      this.$axios.get('/voting_centre/all').then(response => {
+
+      })
+    }
   },
 };
 </script>

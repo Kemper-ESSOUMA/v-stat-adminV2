@@ -255,6 +255,18 @@ const routes = [
         component: () =>
             import ("@/views/v2/users/IndexUsers.vue"),
     },
+    {
+        path: "/map",
+        name: "map",
+        component: () =>
+            import ("@/views/v2/map/carte.vue"),
+    },
+    {
+        path: "/graphe",
+        name: "graphe",
+        component: () =>
+            import ("@/views/v2/graphe/IndexvGraphe.vue"),
+    },
 ];
 
 const router = createRouter({

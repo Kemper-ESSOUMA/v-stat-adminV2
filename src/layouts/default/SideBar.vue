@@ -30,6 +30,18 @@
             alt="group">
         </router-link>
 
+        <router-link class="navys-link" :to="{ name: 'map' }" :class="{ 'active': this.$route.name === 'map' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Carte geolocalisation">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFAAAABQCAYAAACOEfKtAAAACXBIWXMAAAsTAAALEwEAmpwYAAAECklEQVR4nO2cP2gUQRjFn1GLoAkRGzXxxL8plAgptdWIiIUxAUWwjSAIorETVGKjhfinUbHSQhNNYySpFDzXQos0sTUiBiQxYCIxOWM8+eAtDMfu3uzOXm5vd34wcOzMfN/cu523s7uZABaLxWKxWCwWiyUzbAFwCcAIgAkACywTPNYLIFftQSaRFgBPACwCKJYp0uYxgOZqDzopdAOYpTgFAE8BnADQCmANi3w+yboC20qfrgj5ckmbcp0A+gAMA5hkGeaxY2UGfA7APwrSD2CrRs5tAJ6zj/Q9G9A2xzGo45N+VRXrOv1oSmO6ucVL1C4K8BfA+QjjucC+EuN4gFheJTFiTXkI434RXaGjiKeKGOaHq4iAYcQaYbtO9ivFAZDXyFFQpq0pLxT/VMfnZR2xC2gilhci3lsEs55ftqDpeeXYrsST2EHELqAbMIpYUTnDnHJFDVrWDPBKO8uzbGdA+37G7KmWgMvJMHPKssRPvGmPWTEdsPY7xTaval1Ax8cDVb4x5y6f+gHWv6RgUoZ47JlPn1bWf611AfMaHrjAnA0+9e6iWj3bNvPYT58+Dayfr3UBdfjFnI0+9TOsl6msK2Aj6yV26gX8xJz7yixLhihiC72tyOntxX7Wj2XBAx8w51WfevHGHz4XkR0+fa6xzf0seOAh5vwCoM6nTTMvGDMsAwHi1TGWxOyodQF1kC88zrwHYE4HY40H/CCpElC4zLzid6a4nikxkQUPFDZyybEEoA3RaWOMecZEFjzQ5RZzDyI6g4whsZAGAcOwAcAcn+e1Izzt7DvHWJkTULjJ/K8RnjfseyNEn9R4oMs65ZGavBvRpVt5YNqUJgHzITzQpUdZF9ZrtK9X1n3lHl/VnIBRWAlglOOQR+/l6GPbUfZF1gV072VlOfKnzLJmL9sssQ/SJqAT0gNV7nAsH3zOrFUAPrKNtEUaBcxH8ECXtcot3kWP+l7WfWbbVApoykFlbScvi1zkQcJv1pncP6deQOGRMpVXc+q+57GHMCPVHujSxL/GknFdYSnyXUqYNV/mPFDlCKfrIot8PgxzEi9gnNxTxnc3ppiZErCe7zjGNO9QUiGgE4MHquxhQVYEzMfkgZUi8QImncwJ6MRsCYkX0In5C8dtCYkXMG89MN0Uk34Gxo31QEOsByaMzE3huMmcgI5dB5phPTBhZG4Kx03mBHSsB5phPTBhZG4Kp17AnMcm5zA71ivtgaXbbKsqYC7EjvDSElXUMB4YZt9zxQXcBOAoX2rLpr/vPoORrVfvANwGcBrAbsO+KzTHvRw5Qgmoc2ZNGkzNnEGO0r5xbxI3olitXw76Z1G1xqeF6ZkVN+UuSst2ZtXkP6GxWCwWi8VisVgsFosF0fkPLlqPPjMk9RwAAAAASUVORK5CYII="
+            alt="map-marker">
+        </router-link>
+
+        <router-link class="navys-link" :to="{ name: 'graphe' }" :class="{ 'active': this.$route.name === 'graphe' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Carte geolocalisation">
+          <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAh0lEQVR4nO3YQQrAIAxE0dz/0nYzq4Agatpp+A+6q9A4DkgjAPzF2HzstBuk6v3XMIgbEnFDIm5IxA2JuN11riXSbpBVDDJBImU7solESEQ4WhN05PaOnN4MbBJpN8gqBhESyThaQkeEjmR0ROiI0JGMjggdETqS0RGhI9V/479eHy4fcrT+AeY3ChPCFMSCAAAAAElFTkSuQmCC" alt="bar-chart--v1">
+        </router-link>
+
         <!-- <router-link class="navys-link" :to="{ name: 'climat' }"
           :class="{ 'active': this.$route.name === 'climat' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Climats">
