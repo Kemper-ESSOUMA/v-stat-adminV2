@@ -145,7 +145,7 @@ export default {
         });
     },
 
-        connectWebSocket() {
+    connectWebSocket() {
       // Définir l'URL du WebSocket (à adapter selon votre serveur)
       this.ws = new WebSocket(this.$wsUrl);
 
