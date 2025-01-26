@@ -137,7 +137,7 @@ export default {
     },
     getIncident() {
       this.$axios
-        .get('/incident/all')
+        .get('/incident/by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;

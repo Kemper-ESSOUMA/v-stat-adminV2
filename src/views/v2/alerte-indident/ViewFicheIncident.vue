@@ -53,11 +53,11 @@
       <table class="table table-bordered">
         <tbody>
           <tr>
-            <th>Type d'incident :</th>
+            <th>Evenement :</th>
             <td>{{ this.dialogRef.data.event }}</td>
           </tr>
           <tr>
-            <th>Evenement :</th>
+            <th>Type d'incident :</th>
             <td>{{ this.dialogRef.data.type }}</td>
           </tr>
           <tr>

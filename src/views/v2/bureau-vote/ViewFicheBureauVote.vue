@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <h2 class="text-center font-bold">Fiche d'Incident</h2><br>
+    <h2 class="text-center font-bold">Fiche de bureau de vote</h2><br>
     <div>
       <h4>
         N° 00000{{ this.dialogRef.data.id }}
@@ -40,6 +40,12 @@
             <th>Organisateur :</th>
             <td>
               {{ this.dialogRef.data.supervisor }}
+            </td>
+          </tr>
+          <tr>
+            <th>Observation :</th>
+            <td>
+              {{ this.dialogRef.data.observation }}
             </td>
           </tr>
         </tbody>

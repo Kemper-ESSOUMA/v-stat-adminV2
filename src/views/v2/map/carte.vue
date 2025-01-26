@@ -54,6 +54,14 @@ export default {
     this.get_all_donnees();
     this.getCandidates();
     this.getCentreVote();
+    this.connectWebSocket()
+  },
+
+  // Déconnecter le WebSocket lorsque le composant est détruit
+  beforeUnmount() {
+    if (this.ws) {
+      this.ws.close();
+    }
   },
   methods: {
     get_all_donnees() {
@@ -103,7 +111,7 @@ export default {
 
   // Ajouter les centres de vote comme marqueurs si les coordonnées sont valides
   this.centre_vote.forEach((centre, index) => {
-  console.log(`Centre ${index + 1}: lat=${centre.lat}, lon=${centre.lon}`);  // Vérifie les coordonnées
+  // console.log(`Centre ${index + 1}: lat=${centre.lat}, lon=${centre.lon}`);  // Vérifie les coordonnées
   if (centre.lat && centre.lon && centre.lat !== 0 && centre.lon !== 0) {
     simplemaps_countrymap_mapdata.locations[index + 1] = {
       name: centre.libelle,
@@ -160,6 +168,48 @@ export default {
         showVotingCenters: this.showVotingCenters,
       });
     },
+
+    connectWebSocket() {
+      // Définir l'URL du WebSocket (à adapter selon votre serveur)
+      this.ws = new WebSocket(this.$wsUrl);
+
+      // Gestion des événements WebSocket
+      this.ws.onopen = () => {
+        console.log("WebSocket connecté !");
+        console.log("Données initiales :", this.datas); // Affichage des données initiales
+      };
+
+      this.ws.onmessage = (event) => {
+        console.log("Événement WebSocket : Message reçu");
+
+        try {
+          const message = event.data;  // Si c'est un JSON, il faut le parser
+          console.log("Message reçu via WebSocket :", message);
+          this.getCentreVote();
+
+          if (message && message.updatedData) {
+            // Mettre à jour les données (si ce message contient une clé `updatedData`)
+            this.datas = [...this.datas, ...message.updatedData];
+          }
+        } catch (error) {
+          console.error("Erreur lors de la réception des données WebSocket :", error);
+        }
+      };
+      this.ws.onerror = (error) => {
+        console.error("Erreur WebSocket :", error);
+      };
+
+      // this.ws.onclose = (event) => {
+      //   console.log("WebSocket fermé !", event);
+      // };
+      this.ws.onclose = () => {
+        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        setTimeout(() => {
+          this.connectWebSocket();
+        }, 3000); // Reconnexion après 3 secondes
+      };
+
+    },
   },
 };
 </script>
@@ -175,7 +225,7 @@ html, body {
   width: 800px; /* Augmenter la taille de la carte */
   height: 600px;
   position: absolute;
-  top: 35%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #ffffff;

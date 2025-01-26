@@ -109,7 +109,8 @@
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_incidents }} Fiches d'alertes et incidents</h4>
-                    <p>Liste des goodies</p>
+                    <p>Nombre des alertes : <b>{{ this.nb_alerte }}</b></p>
+                    <p>Nombre des incidents : <b>{{ this.nb_incident }}</b></p>
                   </div>
                 </div>
               </div>
@@ -171,7 +172,9 @@ export default defineComponent({
       nb_climat: 0,
       nb_goodie: 0,
       nb_incidents: 0,
-      nb_bureaux: 0
+      nb_bureaux: 0,
+      nb_alerte: 0,
+      nb_incident: 0,
     }
   },
 
@@ -181,12 +184,13 @@ export default defineComponent({
     this.getgoodies()
     this.getincident()
     this.getbureaux()
+    this.getResultatMobilization()
   },
   methods: {
     getmoilization() {
       this.isLoading = true
       this.$axios
-        .get('/mobilization_sheet/all')
+        .get('/mobilization_sheet/by_zone')
         .then((response) => {
           if (response.data !== null) {
             this.isLoading = false
@@ -201,7 +205,7 @@ export default defineComponent({
 
     getclimat() {
       this.$axios
-        .get('/electoral_climate_sheet/all')
+        .get('/electoral_climate_sheet/by_zone')
         .then((response) => {
           this.isLoading = false
           this.nb_climat = response.data.length
@@ -213,7 +217,7 @@ export default defineComponent({
 
     getincident() {
       this.$axios
-        .get('/incident/all')
+        .get('/incident/by_zone')
         .then((response) => {
           this.isLoading = false
           this.nb_incidents = response.data.length
@@ -225,7 +229,7 @@ export default defineComponent({
 
     getgoodies() {
       this.$axios
-        .get('/goodies/all')
+        .get('/goodies/by_zone')
         .then((response) => {
           this.isLoading = false
           this.nb_goodie = response.data.length
@@ -237,7 +241,7 @@ export default defineComponent({
 
     getbureaux() {
       this.$axios
-        .get('/polling_station_sheet/all')
+        .get('/polling_station_sheet/by_zone')
         .then((response) => {
           this.isLoading = false
           this.nb_bureaux = response.data.length
@@ -246,6 +250,15 @@ export default defineComponent({
           console.error('Erreur de recuperation de donnees:', error);
         });
     },
+
+    //fonctions resultats stats
+
+    getResultatMobilization(){
+      this.$axios.get('/stats_home/get_stats_by_user_zone').then(response =>{
+        this.nb_alerte = response.data.incidents.nb_alerte
+        this.nb_incident = response.data.incidents.nb_incident
+      })
+    }
   }
 })
 </script>
