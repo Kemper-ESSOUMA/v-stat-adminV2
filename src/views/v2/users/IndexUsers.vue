@@ -21,7 +21,7 @@
 
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
-            <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-climat">
+            <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-user">
               <span v-if="loading == true" class="spinner-border spinner-border-sm" role="status"
                 aria-hidden="true"></span>
               <i v-else class="fa fa-refresh"></i>
@@ -64,7 +64,7 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-// import CreateFicheClimatVue from './CreateFicheClimat.vue';
+import CreateUsers from './CreateUsers.vue';
 // import ViewFicheClimatVue from './ViewFicheClimat.vue';
 export default {
   data() {
@@ -92,17 +92,17 @@ export default {
     //     data: objetData,
     //   });
     // },
-    // openCreateModal() {
-    //   this.$dialog.open(CreateFicheClimatVue, {
-    //     props: {
-    //       header: "Fiche de climat ",
-    //       style: {
-    //         width: '50vw'
-    //       },
-    //       modal: true
-    //     },
-    //   });
-    // },
+    openCreateModal() {
+      this.$dialog.open(CreateUsers, {
+        props: {
+          header: "Créer un utilisateur ",
+          style: {
+            width: '50vw'
+          },
+          modal: true
+        },
+      });
+    },
     getUsers() {
       this.$axios
         .get('/user/all')

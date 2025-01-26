@@ -4,10 +4,6 @@
     <form @submit.prevent="createLine()">
       <ProgressBar v-if="isLoading === true" mode="indeterminate" style="height: 6px"></ProgressBar>
       <div class="form-row">
-        <div class="form-group col-6">
-          <label>Code<span class="text-danger">*</span></label>
-          <input type="text" v-model="form.code_user" class="form-control" required>
-        </div>
 
         <div class="form-group col-6">
           <label>Prénom<span class="text-danger">*</span></label>
@@ -23,22 +19,39 @@
         </div>
         <div class="form-group col-6">
           <label>Email<span class="text-danger">*</span></label>
-          <input type="email" v-model="form.email" class="form-control" required>
+          <input type="email" v-model="form.email" class="form-control">
         </div>
         <div class="form-group col-6">
           <label>Role<span class="text-danger">*</span></label>
           <select class="form-control" v-model="form.role" required>
-            <option value="Favorable">Favorable</option>
-            <option value="Plutot favorable">Plutot favorable</option>
-            <option value="Defavorable">Defavorable</option>
-            <option value="Plutot defavorable">Plutot defavorable</option>
-            <option value="Indecis">Indecis</option>
+            <option value="Administrateur">Administrateur</option>
+            <option value="Coordonateur">Coordonateur</option>
+            <option value="Superviseur">Superviseur</option>
+            <option value="Finaux">Finaux</option>
           </select>
         </div>
         <div class="form-group col-6">
           <label>Zone<span class="text-danger">*</span></label>
-          <input type="text" v-model="form.code_user" class="form-control" required>
+          <SearchDropdown v-model="form.zone" filter :options="provinces" optionLabel="libelle" optionValue="code"
+            class="w-100" placeholder="Selectionner une province"
+            v-if="this.form.role === 'Administrateur' || this.form.role === 'Coordonateur'" />
+
+          <SearchDropdown v-model="province" filter :options="provinces" optionLabel="libelle"
+            optionValue="deps_coms_cans" class="w-100" placeholder="Selectionner une province"
+            v-if="this.form.role === 'Superviseur'" @change="departements(province)" />
         </div>
+
+        <div class="form-group col-6" v-if="this.form.role === 'Superviseur'">
+          <label>Departement<span class="text-danger">*</span></label>
+          <SearchDropdown v-model="form.zone" filter :options="departement" optionLabel="libelle" optionValue="code"
+            class="w-100" placeholder="Selectionner un departement" @change="centreVotes(form.zone)"/>
+        </div>
+
+        <!-- <div class="form-group col-6" v-if="this.form.role === 'Superviseur' && this.form.zone !== null">
+          <label>Centre de vote<span class="text-danger">*</span></label>
+          <SearchDropdown v-model="form.centre" filter :options="centre" optionLabel="libelle" optionValue="zone"
+            class="w-100" placeholder="Selectionner un centre" />
+        </div> -->
         <div class="form-group col-6">
           <label>Mot de passe<span class="text-danger">*</span></label>
           <input type="password" v-model="form.password" class="form-control" required>
@@ -59,16 +72,16 @@
 <script>
 import $ from "jquery";
 import { defineComponent } from 'vue';
-import { useAppStore } from "@/store/app";
+// import { useAppStore } from "@/store/app";
 export default defineComponent({
   inject: ['dialogRef'],
   data() {
     return {
       isLoading: false,
-      centre_vote: [],
-      types_permis: [],
+      province: {},
+      departement:{},
       form: {
-        code_user: '',
+        // code_user: '',
         firstname: '',
         lastname: '',
         phone: '',
@@ -78,32 +91,45 @@ export default defineComponent({
         password: ''
 
       },
+      provinces: {},
+      centre:{}
     }
   },
 
   mounted() {
-    this.getCentreVotes()
+    this.getProvinces()
+    this.departements()
+    // this.centreVotes()
   },
 
   methods: {
-    getCentreVotes() {
-      this.isLoading = true
-      this.$axios.get('/voting_centre/by_zone').then(response => {
-        this.centre_vote = response.data
-        this.isLoading = false
-      })
+    departements(data) {
+      console.log('departement = ', data)
+      this.departement = data
     },
-    createLine() {
-      this.isLoading = true
-      const appStore = useAppStore();
-      this.form.zone_code = appStore.currentUser.zone
-      this.$axios.post('/incident/add', this.form).then(response => {
+    // centreVotes(data) {
+
+    //   console.log('centre = ', data)
+    //   this.$axios.get(`/voting_centre/by_zone_dep/${data}`).then(response => {
+    //     this.centre = response.data
+    //     console.log('centre fin = ', this.centre)
+    //   })
+
+    // },
+    getProvinces() {
+      this.$axios.get('/province/all').then(response => {
+        this.provinces = response.data
+        })
+      },
+      createLine() {
+
+      this.$axios.post('/user/add', this.form).then(response => {
         this.isLoading = false
         if (response.data !== null) {
-          $('#refresh-incident').click()
+          $('#refresh-user').click()
           this.$toast.add({
             severity: 'success',
-            detail: response.data.message,
+            detail: 'enregistrement avec success !!',
             life: 3000
           });
           this.dialogRef.close()
@@ -130,12 +156,14 @@ export default defineComponent({
     },
     resetForm() {
       this.form = {
-        date: "",
-        intention: '',
-        recommendation: '',
-        signature: '',
-        zone_code: '',
-        supervisor: ''
+        // code_user: '',
+        firstname: '',
+        lastname: '',
+        phone: '',
+        email: '',
+        role: '',
+        zone: '',
+        password: ''
       }
     }
   }

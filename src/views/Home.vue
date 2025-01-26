@@ -1,245 +1,53 @@
 <template>
-  <div>
-    <!-- Carte -->
-    <div id="map"></div>
-
-    <!-- Filtres -->
-    <div id="filters">
-      <h3>Filtres</h3>
-      <label>
-        <input type="checkbox" v-model="showVotingCenters" @change="toggleVotingCenters" />
-        Centres de vote
-      </label>
+  <div class="header-contentys pt-3 d-flex align-items-center">
+    <div class="mr-5">
+      <h2 class="text-primary"> Accueil </h2>
     </div>
+  </div>
+  <hr>
+  <div class="body-contentys">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <rows-counter premier_titre="Fiche Mobilisation" second_titre="Fiche Mobilisations"
+          icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWklEQVR4nO2Zuy5FURCGv5ya5KhdEgkP4NKoeATehspj0FPQ0JNwQkkpShoFoRKJcmQnv0ROwSxnrL0j8yUru/kzsybr25dkg58zwDqyLhkB69j6NSMXCMJyEJEnEoylWiLVCsZSLZFqBWOplki1grFUS6RawViqJVKtYCzVEqlWMJZqiVQrGEu1RKoVjKVaItUKxlKt/6ZWV7DSQWaAfeClY/8IrWSQeeCpxf+DFxGD9IBrhc+BSf6Wpt9VQT/zDrKh4AMwFrPX0H7mHeRQwU3qUNrPvIPcK7hEHUr6jSv76in8rvAEdSjpt6DsbXThCEr6bSu74yl8p/AydfD26wPPyq55Ch8ovBWzz5B+PeBYuVNv4fXKj9+f+vWBI2WaE5n1Fv76QhwAU7H7/vaFOFC/ZqBF3ROfOjXXldLic8Bji58oNrROSk5imGlgr6WPxjfgBtgFVj27/QCr1ZaE9VjCnwAAAABJRU5ErkJggg=="
+          description="Toutes les fiches des mobilisations" url="/mobilization_sheet/all">
+        </rows-counter>
+      </div>
 
-    <!-- Espace candidats -->
-    <div id="candidates">
-      <h3>Candidats</h3>
-      <ul>
-        <!-- <li v-for="candidate in candidates" :key="candidate.id">
-          <strong>{{ candidate.name }}</strong>: {{ candidate.party }}
-        </li> -->
-      </ul>
-    </div>
+      <div class="col-4">
+        <rows-counter premier_titre="Fiche Climat" second_titre="Fiche Climats"
+          icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWklEQVR4nO2Zuy5FURCGv5ya5KhdEgkP4NKoeATehspj0FPQ0JNwQkkpShoFoRKJcmQnv0ROwSxnrL0j8yUru/kzsybr25dkg58zwDqyLhkB69j6NSMXCMJyEJEnEoylWiLVCsZSLZFqBWOplki1grFUS6RawViqJVKtYCzVEqlWMJZqiVQrGEu1RKoVjKVaItUKxlKt/6ZWV7DSQWaAfeClY/8IrWSQeeCpxf+DFxGD9IBrhc+BSf6Wpt9VQT/zDrKh4AMwFrPX0H7mHeRQwU3qUNrPvIPcK7hEHUr6jSv76in8rvAEdSjpt6DsbXThCEr6bSu74yl8p/AydfD26wPPyq55Ch8ovBWzz5B+PeBYuVNv4fXKj9+f+vWBI2WaE5n1Fv76QhwAU7H7/vaFOFC/ZqBF3ROfOjXXldLic8Bji58oNrROSk5imGlgr6WPxjfgBtgFVj27/QCr1ZaE9VjCnwAAAABJRU5ErkJggg=="
+          description="Toutes les fiches des climats" url="/electoral_climate_sheet/all">
+        </rows-counter>
+      </div>
 
-    <!-- Légende -->
-    <div id="legend">
-      <h3>Légende</h3>
-      <ul>
-        <li>
-          <span class="icon center"></span> Centre de vote
-        </li>
-        <li>
-          <span class="icon station"></span> Bureau de vote
-        </li>
-      </ul>
+      <div class="col-4">
+        <rows-counter premier_titre="Fiche Goodies" second_titre="Fiches Goodies"
+          icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWklEQVR4nO2Zuy5FURCGv5ya5KhdEgkP4NKoeATehspj0FPQ0JNwQkkpShoFoRKJcmQnv0ROwSxnrL0j8yUru/kzsybr25dkg58zwDqyLhkB69j6NSMXCMJyEJEnEoylWiLVCsZSLZFqBWOplki1grFUS6RawViqJVKtYCzVEqlWMJZqiVQrGEu1RKoVjKVaItUKxlKt/6ZWV7DSQWaAfeClY/8IrWSQeeCpxf+DFxGD9IBrhc+BSf6Wpt9VQT/zDrKh4AMwFrPX0H7mHeRQwU3qUNrPvIPcK7hEHUr6jSv76in8rvAEdSjpt6DsbXThCEr6bSu74yl8p/AydfD26wPPyq55Ch8ovBWzz5B+PeBYuVNv4fXKj9+f+vWBI2WaE5n1Fv76QhwAU7H7/vaFOFC/ZqBF3ROfOjXXldLic8Bji58oNrROSk5imGlgr6WPxjfgBtgFVj27/QCr1ZaE9VjCnwAAAABJRU5ErkJggg=="
+          description="Toutes les fiches des goodies" url="/goodies/all">
+        </rows-counter>
+      </div>
+
+      <div class="col-4">
+        <rows-counter premier_titre="Fiche Alertes et Incidents" second_titre="Fiches alertes et incidents"
+          icon="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADIAAAAyCAYAAAAeP4ixAAAACXBIWXMAAAsTAAALEwEAmpwYAAABWklEQVR4nO2Zuy5FURCGv5ya5KhdEgkP4NKoeATehspj0FPQ0JNwQkkpShoFoRKJcmQnv0ROwSxnrL0j8yUru/kzsybr25dkg58zwDqyLhkB69j6NSMXCMJyEJEnEoylWiLVCsZSLZFqBWOplki1grFUS6RawViqJVKtYCzVEqlWMJZqiVQrGEu1RKoVjKVaItUKxlKt/6ZWV7DSQWaAfeClY/8IrWSQeeCpxf+DFxGD9IBrhc+BSf6Wpt9VQT/zDrKh4AMwFrPX0H7mHeRQwU3qUNrPvIPcK7hEHUr6jSv76in8rvAEdSjpt6DsbXThCEr6bSu74yl8p/AydfD26wPPyq55Ch8ovBWzz5B+PeBYuVNv4fXKj9+f+vWBI2WaE5n1Fv76QhwAU7H7/vaFOFC/ZqBF3ROfOjXXldLic8Bji58oNrROSk5imGlgr6WPxjfgBtgFVj27/QCr1ZaE9VjCnwAAAABJRU5ErkJggg=="
+          description="Toutes les fiches des alertes et incidents" url="/incident/all">
+        </rows-counter>
+      </div>
     </div>
   </div>
 </template>
 
-<script>
-import { useAppStore } from "../store/app";
-const appStore = useAppStore();
+<script lang="ts">
+import { defineComponent } from 'vue';
+import RowsCounter from '@/components/RowsCounter.vue';
 
-export default {
-  name: "App",
-  data() {
-    return {
-      showVotingCenters: true,
-      votingData: [],
-      candidates: [],
-      centre_vote: [],
-    };
-  },
-  mounted() {
-    this.loadExternalScripts();
-    this.get_all_donnees();
-    this.getCandidates();
-    this.getCentreVote();
-  },
+
+export default defineComponent({
+  name: 'HomeView',
+  components: { RowsCounter },
   methods: {
-    get_all_donnees() {
-      const accessToken = appStore.token;
-      if (accessToken) {
-        const headers = { Authorization: `Bearer ${accessToken}` };
-        this.$axios
-          .get("/voting_centre/get_result_by_province", { headers })
-          .then((response) => {
-            this.votingData = response.data;
-            this.updateMap();
-          })
-          .catch((error) => {
-            console.error("Erreur lors de la récupération des données :", error);
-          });
-      }
-    },
 
-    getCandidates() {
-      this.$axios
-        .get("/resultat/get_vote_by_province")
-        .then((response) => {
-          this.candidates = response.data;
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la récupération des candidats :", error);
-        });
-    },
-
-    getCentreVote() {
-      this.$axios
-        .get("/voting_centre/all")
-        .then((response) => {
-          this.centre_vote = response.data;
-          console.log('map = ', this.centre_vote)
-          if (this.showVotingCenters) {
-            this.updateMapLocations();
-          }
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la récupération des centres de vote :", error);
-        });
-    },
-
-    updateMapLocations() {
-      // Nettoyer les locations existantes avant mise à jour
-      simplemaps_countrymap_mapdata.locations = {};
-
-      // Ajouter les centres de vote comme marqueurs
-      this.centre_vote.forEach((centre, index) => {
-        simplemaps_countrymap_mapdata.locations[index + 1] = {
-          name: centre.libelle,
-          lat: centre.lat,
-          lng: centre.lon,
-          parent_id: "GA1",
-          type: "marker",
-          color: "black",
-          size: "100",
-          description: `
-            <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices}</p>
-            <p><strong>Nombre de participants :</strong> ${centre.total_registered}</p>
-            <p><strong>Total des votants :</strong> ${centre.total_registered_bureau}</p>
-          `,
-        };
-      });
-
-      // Recharger la carte avec les nouvelles locations
-      simplemaps_countrymap.load();
-      console.log("Locations mises à jour avec succès !");
-    },
-
-    toggleVotingCenters() {
-      if (this.showVotingCenters) {
-        this.updateMapLocations();
-      } else {
-        // Supprimer tous les marqueurs si la case est décochée
-        simplemaps_countrymap_mapdata.locations = {};
-        simplemaps_countrymap.load();
-      }
-    },
-
-    loadExternalScripts() {
-      const scripts = ["/mapdata.js", "/countrymap.js"];
-      scripts.forEach((src) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = false;
-        script.onload = () => {
-          if (src === "/countrymap.js") {
-            if (this.showVotingCenters) {
-              this.updateMapLocations();
-            }
-          }
-        };
-        script.onerror = () => {
-          console.error(`Erreur lors du chargement de ${src}.`);
-        };
-        document.body.appendChild(script);
-      });
-    },
-
-    updateMap() {
-      console.log("Mise à jour de la carte avec les filtres :", {
-        showVotingCenters: this.showVotingCenters,
-      });
-    },
-  },
-};
+  }
+})
 </script>
-
-<style>
-/* Votre CSS reste inchangé */
-html,
-body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-#map {
-  width: 600px;
-  height: 400px;
-  position: absolute;
-  top: 35%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: #ffffff;
-
-}
-
-#filters,
-#candidates,
-#legend {
-  position: absolute;
-  top: 10%;
-  left: 5%;
-  background: white;
-  border: 1px solid #ddd;
-  padding: 10px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  width: 250px;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-#candidates {
-  top: 45%;
-}
-
-#legend {
-  top: 70%;
-}
-
-h3 {
-  margin: 0 0 10px;
-}
-
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-li {
-  margin-bottom: 5px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-.icon {
-  display: inline-block;
-  width: 15px;
-  height: 15px;
-  margin-right: 10px;
-  border-radius: 50%;
-}
-
-.icon.center {
-  background-color: blue;
-}
-
-.icon.station {
-  background-color: green;
-}
-</style>
