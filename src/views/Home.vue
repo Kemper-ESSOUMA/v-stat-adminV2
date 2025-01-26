@@ -38,35 +38,6 @@
 
       <div class="col-4">
         <div class="m-1">
-          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
-              <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
-              </div>
-              <div class="card-body">
-                <p>Climat</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
-                  </div>
-                  <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
-                    <p>Liste des climats</p>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer d-flex justify-content-end ">
-                <small>
-                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
-                </small>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-
-      <div class="col-4">
-        <div class="m-1">
           <router-link :to="{ name: 'goodies' }" class="small-box-footer text-decoration-none">
             <div id="rows_counter" class="card mb-1">
               <div v-if="isLoading === true" class="card-header">
@@ -139,7 +110,45 @@
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_bureaux }} Fiches des bureaux de votes</h4>
-                    <p>Liste des bureaux de votes</p>
+                    <p>Situations :</p>
+                    <li>Bon: <b>{{ this.nb_bon }}</b></li>
+                    <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
+                    <li>Risque: <b>{{ this.nb_risque }}</b></li>
+
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Climat</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
+                    <div class="col-lg-8 col-12">
+                      <p>Tendances :</p>
+                      <li>Bon: <b>{{ this.nb_bon_voting_trrends }}</b></li>
+                      <li>Insatisfait: <b>{{ this.nb_insatisfait }}</b></li>
+                      <li>Satisfait: <b>{{ this.nb_satisfait }}</b></li>
+                  </div>
                   </div>
                 </div>
               </div>
@@ -176,6 +185,12 @@ export default defineComponent({
       nb_bureaux: 0,
       nb_alerte: 0,
       nb_incident: 0,
+      nb_bon: 0,
+      nb_indecis: 0,
+      nb_risque: 0,
+      nb_bon_voting_trrends:0,
+      nb_insatisfait: 0,
+      nb_satisfait: 0
     }
   },
 
@@ -311,8 +326,15 @@ export default defineComponent({
 
     getResultatMobilization() {
       this.$axios.get('/stats_home/get_stats_by_user_zone').then(response => {
+        console.log('stats = ', response.data)
         this.nb_alerte = response.data.incidents.nb_alerte
         this.nb_incident = response.data.incidents.nb_incident
+         this.nb_bon = response.data.polling_station.nb_bon
+         this.nb_indecis = response.data.polling_station.nb_indecis
+         this.nb_risque = response.data.polling_station.nb_risque
+         this.nb_bon_voting_trrend = response.data.voting_trends.nb_bon
+         this.nb_insatisfait = response.data.voting_trends.nb_insatisfait
+         this.nb_satisfait = response.data.voting_trends.nb_satisfait
       })
     }
   }

@@ -16,8 +16,16 @@
     <div id="candidates">
       <h3>Candidats</h3>
       <ul>
-        <!-- Liste des candidats ici si besoin -->
+        <li v-for="(candidate, index) in candidates" :key="index">
+          <p>Province : {{ candidate.province }}</p>
+          <p>Candidate 1 : {{ candidate.candidate_1 }}</p>
+          <p>Candidate 2 : {{ candidate.candidate_2 }}</p>
+          <p>Candidate 3 : {{ candidate.candidate_3 }}</p>
+          <p>Total votes : {{ candidate.nb_scrutin }}</p>
+        </li>
+        <p v-if="candidates.length === 0">Aucune donnée disponible.</p>
       </ul>
+
     </div>
 
     <!-- Légende -->
@@ -85,6 +93,7 @@ export default {
         .get("/resultat/get_vote_by_province")
         .then((response) => {
           this.candidates = response.data;
+          console.log('candidats = ', this.candidates)
         })
         .catch((error) => {
           console.error("Erreur lors de la récupération des candidats :", error);
@@ -186,6 +195,7 @@ export default {
           const message = event.data;  // Si c'est un JSON, il faut le parser
           console.log("Message reçu via WebSocket :", message);
           this.getCentreVote();
+          this.getCandidates()
 
           if (message && message.updatedData) {
             // Mettre à jour les données (si ce message contient une clé `updatedData`)
@@ -232,7 +242,7 @@ html, body {
 }
 
 #filters,
-#candidates,
+
 #legend {
   position: absolute;
   top: 10%;
@@ -247,8 +257,69 @@ html, body {
 }
 
 #candidates {
-  top: 45%;
+  top: 25%;
+  position: absolute;
+  left: 5%;
+  background: #f9f9f9; /* Couleur de fond plus douce */
+  border: 1px solid #e0e0e0; /* Couleur de bordure plus claire */
+  border-radius: 12px; /* Bords arrondis */
+  padding: 15px; /* Plus d'espace pour un rendu plus aéré */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre subtile */
+  width: 300px; /* Augmentation de la largeur pour une meilleure lecture */
+  max-height: 400px; /* Plus d'espace pour les données */
+  overflow-y: auto;
+  font-family: 'Arial', sans-serif; /* Police simple et lisible */
 }
+
+#candidates h3 {
+  font-size: 18px; /* Taille de police légèrement augmentée */
+  color: #333; /* Couleur plus foncée pour un meilleur contraste */
+  margin-bottom: 10px;
+}
+
+#candidates ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+#candidates li {
+  background: #ffffff; /* Couleur de fond des éléments */
+  border: 1px solid #ddd; /* Légère bordure pour séparer les éléments */
+  border-radius: 8px; /* Bords arrondis */
+  margin-bottom: 10px; /* Espacement entre les éléments */
+  padding: 10px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Animation fluide pour le survol */
+}
+
+#candidates li:hover {
+  transform: translateY(-2px); /* Légère élévation au survol */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Ombre accentuée */
+}
+
+#candidates li p {
+  margin: 5px 0; /* Espacement vertical entre les paragraphes */
+  font-size: 14px;
+  color: #555; /* Texte secondaire en gris */
+}
+
+#candidates li p strong {
+  color: #222; /* Texte principal en noir */
+}
+
+#candidates::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre de défilement */
+}
+
+#candidates::-webkit-scrollbar-thumb {
+  background: #ccc; /* Couleur de la barre de défilement */
+  border-radius: 8px; /* Arrondir la barre de défilement */
+}
+
+#candidates::-webkit-scrollbar-thumb:hover {
+  background: #aaa; /* Couleur au survol */
+}
+
 
 #legend {
   top: 70%;

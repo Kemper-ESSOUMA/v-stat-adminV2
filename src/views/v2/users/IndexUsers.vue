@@ -65,7 +65,7 @@
 <script>
 import { FilterMatchMode } from 'primevue/api';
 import CreateUsers from './CreateUsers.vue';
-// import ViewFicheClimatVue from './ViewFicheClimat.vue';
+import ViewUser from './ViewUser.vue'
 export default {
   data() {
     return {
@@ -80,18 +80,18 @@ export default {
     this.getUsers();
   },
   methods: {
-    // openModal(objetData) {
-    //   this.$dialog.open(ViewFicheClimatVue, {
-    //     props: {
-    //       header: "Fiche de climat " + objetData.id,
-    //       style: {
-    //         width: '50vw'
-    //       },
-    //       modal: true
-    //     },
-    //     data: objetData,
-    //   });
-    // },
+    openModal(objetData) {
+      this.$dialog.open(ViewUser, {
+        props: {
+          header: "Fiche utilisateur " + objetData.id,
+          style: {
+            width: '50vw'
+          },
+          modal: true
+        },
+        data: objetData,
+      });
+    },
     openCreateModal() {
       this.$dialog.open(CreateUsers, {
         props: {

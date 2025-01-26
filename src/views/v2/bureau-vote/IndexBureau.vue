@@ -133,7 +133,7 @@ export default {
     // },
     getBureaux() {
       this.$axios
-        .get('/polling_station_sheet/all')
+        .get('/polling_station_sheet/by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;

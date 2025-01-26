@@ -138,7 +138,7 @@ export default {
     },
     getGoodies() {
       this.$axios
-        .get('/goodies/all')
+        .get('/goodies/by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;

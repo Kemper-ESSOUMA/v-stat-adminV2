@@ -135,7 +135,7 @@ export default {
     },
     getmoilization() {
       this.$axios
-        .get('/mobilization_sheet/all')
+        .get('/mobilization_sheet/by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;
@@ -186,7 +186,7 @@ export default {
       };
 
     },
-    
+
     refreshDatas() {
       this.loading = true
       this.getmoilization()

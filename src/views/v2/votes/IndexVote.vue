@@ -8,6 +8,10 @@
       <button type="button" class="btn-app btn-active" @click="openCreateModal()">
         Enregistrer <i class="fa-solid fa-plus"></i>
       </button>
+
+      <button type="button" class="btn-app btn-success ml-3" @click="exportToExcel">
+        Exporter Excel <i class="fa-solid fa-file-excel"></i>
+      </button>
     </div>
 
   </div>
@@ -69,6 +73,8 @@
 import { FilterMatchMode } from 'primevue/api';
 // import CreateFicheClimatVue from './CreateFicheClimat.vue';
 import EditCentreVote from './EditCentreVote.vue';
+import { utils, writeFile } from "xlsx";
+
 export default {
   data() {
     return {
@@ -162,7 +168,18 @@ export default {
     refreshDatas() {
       this.loading = true
       this.getvote()
-    }
+    },
+    exportToExcel() {
+      // Transforme les données en une feuille Excel
+      const ws = utils.json_to_sheet(this.datas);
+
+      // Crée un nouveau classeur et ajoute-y la feuille
+      const wb = utils.book_new();
+      utils.book_append_sheet(wb, ws, "Centres de votes");
+
+      // Génère et télécharge le fichier Excel
+      writeFile(wb, "centres_votes.xlsx");
+    },
   },
 };
 </script>

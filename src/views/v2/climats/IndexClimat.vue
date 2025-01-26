@@ -126,7 +126,7 @@ export default {
     getClimat() {
       // Récupération initiale avec Axios
       this.$axios
-        .get('/electoral_climate_sheet/all')
+        .get('/electoral_climate_sheet/by_zone')
         .then((response) => {
           this.loading = false;
           this.datas = response.data;
