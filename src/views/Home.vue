@@ -167,13 +167,13 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import RowsCounter from '@/components/RowsCounter.vue';
-import { data } from 'jquery';
+// import RowsCounter from '@/components/RowsCounter.vue';
+// import { data } from 'jquery';
 
 
 export default defineComponent({
   name: 'HomeView',
-  components: { RowsCounter },
+  // components: { RowsCounter },
   data() {
     return {
       datas: [],
