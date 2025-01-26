@@ -92,6 +92,7 @@ export default {
       appStore.logout();
       // Redirection vers la page de connexion
       this.$router.push("/connexion");
+      window.location.reload();
     },
 
     openProfile() {
