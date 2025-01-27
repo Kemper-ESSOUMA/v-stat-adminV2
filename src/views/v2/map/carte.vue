@@ -3,6 +3,7 @@
     <!-- Carte -->
     <div id="map"></div>
 
+
     <!-- Filtres -->
     <div id="filters">
       <h3>Filtres</h3>
@@ -16,9 +17,9 @@
     <div id="legend">
       <h3>Légende des couleurs</h3>
       <ul>
-        <li><span class="icon candidate1"></span> Candidat 1</li>
-        <li><span class="icon candidate2"></span> Candidat 2</li>
-        <li><span class="icon candidate3"></span> Candidat 3</li>
+        <li><span class="icon candidate1"></span> Candidat 1: <b>{{ this.total_candidate_1 }}</b> votes</li>
+        <li><span class="icon candidate2"></span> Candidat 2: <b>{{ this.total_candidate_2 }}</b> votes</li>
+        <li><span class="icon candidate3"></span> Candidat 3: <b>{{ this.total_candidate_3 }}</b> votes</li>
         <li><span class="icon center"></span> Centre de vote</li>
         <li><span class="icon station"></span> Résultats à zéro</li>
       </ul>
@@ -53,6 +54,9 @@ export default {
       votingData: [],
       candidates: [],
       centre_vote: [],
+      total_candidate_1: 0,
+      total_candidate_2: 0,
+      total_candidate_3: 0
     };
   },
   mounted() {
@@ -91,6 +95,9 @@ export default {
         .get("/resultat/get_vote_by_province")
         .then((response) => {
           this.candidates = response.data;
+          this.total_candidate_1 = response.data[9].total_candidate_1
+          this.total_candidate_2 = response.data[9].total_candidate_2
+          this.total_candidate_3 = response.data[9].total_candidate_3
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {

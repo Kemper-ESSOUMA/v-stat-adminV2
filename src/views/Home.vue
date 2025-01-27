@@ -22,7 +22,11 @@
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_mobilization }} Fiches de mobilisation</h4>
-                    <p>Liste des mobilisations</p>
+                    <p>Effectif :</p>
+                    <li>Handicapés: <b>{{ this.nb_people_disabilities }}</b></li>
+                    <li>Femmes: <b>{{ this.nb_women }}</b></li>
+                    <li>Jeunes: <b>{{ this.nb_young }}</b></li>
+                    <li>Participants: <b>{{ this.participants_nb }}</b></li>
                   </div>
                 </div>
               </div>
@@ -51,7 +55,47 @@
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_goodie }} Fiches de goodies</h4>
-                    <p>Liste des goodies</p>
+                    <p>Quantités :</p>
+                    <li>Banderoles: <b>{{ this.nb_banderol }}</b></li>
+                    <li>Casquettes: <b>{{ this.nb_casquette }}</b></li>
+                    <li>Tee-shirts: <b>{{ this.nb_t_shirt }}</b></li>
+                    <li>Divers: <b>{{ this.nb_divers }}</b></li>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43A047;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Climat</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
+                    <div class="col-lg-8 col-12">
+                      <p>Tendances :</p>
+                      <li>Defavorable: <b>{{ this.nb_defavorable }}</b></li>
+                      <li>Favorable: <b>{{ this.nb_favorable }}</b></li>
+                      <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
+                      <li>Plutot defavorable: <b>{{ this.nb_plutot_defavorable }}</b></li>
+                      <li>Plutot favorable: <b>{{ this.nb_plutot_favorable }}</b></li>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -128,41 +172,7 @@
         </div>
       </div>
 
-      <div class="col-4">
-        <div class="m-1">
-          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #43A047;">
-              <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
-              </div>
-              <div class="card-body">
-                <p>Climat</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
-                  </div>
-                  <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
-                    <div class="col-lg-8 col-12">
-                      <p>Tendances :</p>
-                      <li>Defavorable: <b>{{ this.nb_defavorable }}</b></li>
-                      <li>Favorable: <b>{{ this.nb_favorable }}</b></li>
-                      <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
-                      <li>Plutot defavorable: <b>{{ this.nb_plutot_defavorable }}</b></li>
-                      <li>Plutot favorable: <b>{{ this.nb_plutot_favorable }}</b></li>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer d-flex justify-content-end ">
-                <small>
-                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
-                </small>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
+
     </div>
   </div>
 </template>
@@ -194,7 +204,15 @@ export default defineComponent({
       nb_favorable: 0,
       nb_indecis_trends: 0,
       nb_plutot_defavorable: 0,
-      nb_plutot_favorable: 0
+      nb_plutot_favorable: 0,
+      nb_banderol: 0,
+      nb_casquette: 0,
+      nb_divers: 0,
+      nb_t_shirt: 0,
+      nb_people_disabilities: 0,
+      nb_women: 0,
+      nb_young: 0,
+      participants_nb: 0
     }
   },
 
@@ -341,6 +359,14 @@ export default defineComponent({
         this.nb_indecis_trends = response.data.voting_trends.nb_indecis_trends
         this.nb_plutot_defavorable = response.data.voting_trends.nb_plutot_defavorable
         this.nb_plutot_favorable = response.data.voting_trends.nb_plutot_favorable
+        this.nb_banderol = response.data.goodies.nb_banderol
+        this.nb_casquette = response.data.goodies.nb_casquette
+        this.nb_divers = response.data.goodies.nb_divers
+        this.nb_t_shirt = response.data.goodies.nb_t_shirt
+        this.nb_people_disabilities = response.data.mobilization.nb_people_disabilities
+        this.nb_women = response.data.mobilization.nb_women
+        this.nb_young = response.data.mobilization.nb_young
+        this.participants_nb = response.data.mobilization.participants_nb
       })
     }
   }

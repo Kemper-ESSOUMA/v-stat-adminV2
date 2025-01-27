@@ -55,8 +55,6 @@
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
             <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-goodies">
-              <span v-if=" loading==true" class="spinner-border spinner-border-sm" role="status"
-                aria-hidden="true"></span>
               <span v-if="loading == true" class="spinner-border spinner-border-sm" role="status"
                 aria-hidden="true"></span>
               <i v-else class="fa fa-refresh"></i>
