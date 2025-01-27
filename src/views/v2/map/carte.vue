@@ -20,7 +20,7 @@
         <li><span class="icon candidate2"></span> Candidat 2</li>
         <li><span class="icon candidate3"></span> Candidat 3</li>
         <li><span class="icon center"></span> Centre de vote</li>
-        <li><span class="icon station"></span> Resultats a zero</li>
+        <li><span class="icon station"></span> Résultats à zéro</li>
       </ul>
     </div>
 
@@ -63,7 +63,6 @@ export default {
     this.connectWebSocket();
   },
 
-  // Déconnecter le WebSocket lorsque le composant est détruit
   beforeUnmount() {
     if (this.ws) {
       this.ws.close();
@@ -92,8 +91,6 @@ export default {
         .get("/resultat/get_vote_by_province")
         .then((response) => {
           this.candidates = response.data;
-          console.log('candidats = ', this.candidates);
-          // Mise à jour de la carte avec les résultats
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
@@ -115,53 +112,41 @@ export default {
         });
     },
 
-    // Mettre à jour la carte avec les résultats des provinces
     updateMapWithResults(apiData) {
       apiData.forEach((data) => {
         const provinceKey = data.province;
         const description = `
-      <p><strong>Candidat 1 :</strong> ${data.candidate_1} votes</p>
-      <p><strong>Candidat 2 :</strong> ${data.candidate_2} votes</p>
-      <p><strong>Candidat 3 :</strong> ${data.candidate_3} votes</p>
-      <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
-    `;
+          <p><strong>Candidat 1 :</strong> ${data.candidate_1} votes</p>
+          <p><strong>Candidat 2 :</strong> ${data.candidate_2} votes</p>
+          <p><strong>Candidat 3 :</strong> ${data.candidate_3} votes</p>
+          <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+        `;
 
-        // Mettre à jour les descriptions des provinces
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
           simplemaps_countrymap_mapdata.state_specific[provinceKey].description = description;
         }
 
-        // Vérifier si tous les candidats ont 0 vote
         const maxVotes = Math.max(data.candidate_1, data.candidate_2, data.candidate_3);
-        let color = "#FFFFFF"; // Couleur par défaut
+        let color = "#FFFFFF";
         if (data.candidate_1 === 0 && data.candidate_2 === 0 && data.candidate_3 === 0) {
-          color = "#D3D3D3"; // Gris si tous les candidats ont 0 vote
+          color = "#D3D3D3"; // Gris si résultats à zéro
         } else {
-          // Sinon, attribuer une couleur en fonction du candidat ayant le plus de votes
-          if (maxVotes === data.candidate_1) {
-            color = "#FF6347"; // Candidat 1
-          } else if (maxVotes === data.candidate_2) {
-            color = "#32CD32"; // Candidat 2
-          } else if (maxVotes === data.candidate_3) {
-            color = "#1E90FF"; // Candidat 3
-          }
+          if (maxVotes === data.candidate_1) color = "#FF6347";
+          else if (maxVotes === data.candidate_2) color = "#32CD32";
+          else if (maxVotes === data.candidate_3) color = "#1E90FF";
         }
 
-        // Mettre à jour la couleur des provinces
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
           simplemaps_countrymap_mapdata.state_specific[provinceKey].color = color;
+          simplemaps_countrymap_mapdata.state_specific[provinceKey].hover_color = color;
         }
       });
 
-      // Recharger la carte après mise à jour des couleurs et descriptions
       simplemaps_countrymap.load();
     },
 
     updateMapLocations() {
-      // Nettoyer les locations existantes avant mise à jour
       simplemaps_countrymap_mapdata.locations = {};
-
-      // Ajouter les centres de vote comme marqueurs si les coordonnées sont valides
       this.centre_vote.forEach((centre, index) => {
         if (centre.lat && centre.lon && centre.lat !== 0 && centre.lon !== 0) {
           simplemaps_countrymap_mapdata.locations[index + 1] = {
@@ -181,7 +166,6 @@ export default {
         }
       });
 
-      // Recharger la carte avec les nouvelles locations
       simplemaps_countrymap.load();
     },
 
@@ -189,7 +173,6 @@ export default {
       if (this.showVotingCenters) {
         this.updateMapLocations();
       } else {
-        // Supprimer tous les marqueurs si la case est décochée
         simplemaps_countrymap_mapdata.locations = {};
         simplemaps_countrymap.load();
       }
@@ -206,9 +189,6 @@ export default {
             this.updateMapLocations();
           }
         };
-        script.onerror = () => {
-          console.error(`Erreur lors du chargement de ${src}.`);
-        };
         document.body.appendChild(script);
       });
     },
@@ -222,17 +202,13 @@ export default {
     connectWebSocket() {
       this.ws = new WebSocket(this.$wsUrl);
 
-      // Gestion des événements WebSocket
       this.ws.onopen = () => {
         console.log("WebSocket connecté !");
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Événement WebSocket : Message reçu");
-
         try {
           const message = event.data;
-          console.log("Message reçu via WebSocket :", message);
           this.getCentreVote();
           this.getCandidates();
 
@@ -240,7 +216,7 @@ export default {
             this.datas = [...this.datas, ...message.updatedData];
           }
         } catch (error) {
-          console.error("Erreur lors de la réception des données WebSocket :", error);
+          console.error("Erreur WebSocket :", error);
         }
       };
 
@@ -249,10 +225,9 @@ export default {
       };
 
       this.ws.onclose = () => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...");
         setTimeout(() => {
           this.connectWebSocket();
-        }, 3000); // Reconnexion après 3 secondes
+        }, 3000);
       };
     },
   },
