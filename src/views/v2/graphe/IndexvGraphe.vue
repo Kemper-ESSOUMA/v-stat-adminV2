@@ -6,50 +6,41 @@
   </div>
   <hr>
 
-  <!-- Conteneur pour les graphiques avec disposition en colonne -->
   <div class="card d-flex flex-column align-items-center justify-content-between">
-
-    <!-- Premier graphique en haut -->
+    <!-- Premier graphique avec son titre -->
     <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
+      <h5 class="chart-title text-center">Votes par Province</h5> 
       <ProgressBar mode="indeterminate" style="height: 6px" v-if="loading === true"></ProgressBar>
       <canvas id="prov" width="400" height="200"></canvas>
     </div>
 
-    <!-- Deuxième graphique en bas -->
-    <div class="chart-container" style="width: 90%;">
-      <canvas id="secondChart" width="500" height="300"></canvas>
+    <!-- Deuxième graphique avec son titre -->
+    <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
+      <h5 class="chart-title text-center">Votes par Zone</h5>
+      <canvas id="zone" width="400" height="200"></canvas>
     </div>
   </div>
 </template>
 
-<style scoped>
-.chart-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
 
-.card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-</style>
 
 
 <style scoped>
 .chart-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-.card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.chart-title {
+  margin-bottom: 10px;
+  font-weight: bold;
+  color: #333;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>
 
@@ -80,7 +71,7 @@ export default {
   mounted() {
     this.connectWebSocket();
     this.get_all_provinces();
-    // this.get_vote_centre_vote();
+    this.get_stat_by_zone();
     this.zoneCode = this.currentUser().zone_code;
   },
 
@@ -94,7 +85,6 @@ export default {
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
         console.log("WebSocket connecté !");
-        console.log("Données initiales :", this.datas); // Affichage des données initiales
       };
 
       this.ws.onmessage = (event) => {
@@ -103,6 +93,7 @@ export default {
         try {
           // Appeler la fonction pour récupérer et actualiser les données
           this.get_all_provinces();
+          this.get_stat_by_zone();
         } catch (error) {
           console.error("Erreur lors du traitement du message WebSocket :", error);
         }
@@ -133,16 +124,15 @@ export default {
       });
     },
 
-    // get_vote_centre_vote() {
-    //   this.$axios.get(`/voting_centre/by_zone`).then((response) => {
-    //     this.datas = response.data;
-    //     console.log('datas centre by zone=', this.datas);
-    //     this.renderSecondChart();
-    //   });
-    // },
+    get_stat_by_zone() {
+      this.$axios.get(`/dep_com_can/stat_by_zone`).then((response) => {
+        this.datas = response.data;
+        console.log('datas stat_by_zone=', this.datas);
+        this.renderget_stat_by_zone();
+      });
+    },
 
     renderChartProvince() {
-      console.log("Données actuelles pour le graphique :", this.province);
 
       // Vérifiez si un graphique existe déjà et détruisez-le
       if (this.chartInstance) {
@@ -156,7 +146,7 @@ export default {
       const datasets = labels.map((label, index) => ({
         label: `Candidat ${index + 1}`,
         data: values.map(item => item[index]),
-        backgroundColor: ['red', 'blue', 'green', 'purple', 'orange', 'yellow'][index],
+        backgroundColor: this.getColorForCandidate(index),
       }));
 
       const ctx = document.getElementById('prov').getContext('2d');
@@ -181,68 +171,80 @@ export default {
           },
         },
       });
-    }
+    },
 
 
 
-    // renderSecondChart() {
-    //   // Extraire dynamiquement les noms des candidats
-    //   const candidates = Object.keys(this.datas[0]).filter(key => key.startsWith('candidate_')); // Filtrer les clés commençant par 'candidate_'
+    renderget_stat_by_zone() {
+      // Vérifiez si un graphique existe déjà et détruisez-le
+      if (this.chartInstanceZone) {
+        this.chartInstanceZone.destroy();
+      }
 
-    //   // Préparer les labels pour les centres de vote
-    //   const labels = this.datas.map(item => item.libelle); // Utilisation du libellé pour les centres de vote
+      // Préparez les labels pour l'axe X (libellés des zones)
+      const labels = this.datas.map((zone) => zone.libelle);
 
-    //   // Préparer un tableau pour chaque candidat avec les votes par centre
-    //   const datasets = candidates.map((candidate, index) => {
-    //     return {
-    //       label: `Candidat ${index + 1}`,  // Nom dynamique du candidat
-    //       data: this.datas.map(item => item[candidate] || 0), // Récupérer les votes pour chaque candidat, avec 0 par défaut
-    //       backgroundColor: `rgba(${(index * 40 + 50) % 255}, ${(index * 60 + 80) % 255}, ${(index * 80 + 100) % 255}, 0.6)`, // Couleurs dynamiques pour chaque candidat
-    //       borderColor: `rgba(${(index * 40 + 50) % 255}, ${(index * 60 + 80) % 255}, ${(index * 80 + 100) % 255}, 1)`,
-    //       borderWidth: 1,
-    //     };
-    //   });
+      // Préparer les datasets pour chaque candidat
+      const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
+        key.startsWith("candidate_")
+      );
 
-    //   console.log('labels vote=', labels);
-    //   console.log('datasets vote=', datasets);
+      const datasets = candidateKeys.map((candidate, index) => ({
+        label: `Candidat ${index + 1}`,
+        data: this.datas.map((zone) => zone[candidate]), // Extraire les votes pour ce candidat dans chaque zone
+        backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
+      }));
 
-    //   // Récupérer le contexte du canvas
-    //   const ctx = document.getElementById('secondChart').getContext('2d');
+      // Récupérer le contexte du canvas
+      const ctx = document.getElementById("zone").getContext("2d");
 
-    //   // Créer le graphique avec Chart.js
-    //   new Chart(ctx, {
-    //     type: 'bar', // Type de graphique (bar)
-    //     data: {
-    //       labels: labels, // Centres de vote comme labels
-    //       datasets: datasets, // Datasets pour chaque candidat
-    //     },
-    //     options: {
-    //       responsive: true, // Rend le graphique réactif
-    //       plugins: {
-    //         legend: {
-    //           display: true, // Affiche la légende
-    //           position: 'top', // Position de la légende
-    //         },
-    //       },
-    //       scales: {
-    //         x: {
-    //           title: {
-    //             display: true, // Affiche le titre de l'axe X
-    //             text: 'Centres de vote', // Titre de l'axe X
-    //           },
-    //           barPercentage: 0.5, // Ajuste la largeur des barres
-    //         },
-    //         y: {
-    //           beginAtZero: true, // Commence l'axe Y à 0
-    //           title: {
-    //             display: true, // Affiche le titre de l'axe Y
-    //             text: 'Votes', // Titre de l'axe Y
-    //           },
-    //         },
-    //       },
-    //     },
-    //   });
-    // },
+      // Créez un graphique bar
+      this.chartInstanceZone = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels, // Zones sur l'axe X
+          datasets: datasets, // Données pour chaque candidat
+        },
+        options: {
+          responsive: true,
+          plugins: {
+            tooltip: {
+              callbacks: {
+                label: function (tooltipItem) {
+                  return `${tooltipItem.dataset.label}: ${tooltipItem.raw} votes`;
+                },
+              },
+            },
+          },
+          scales: {
+            x: {
+              title: { display: true, text: "Zones" },
+              stacked: false,
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Votes" },
+              stacked: false,
+            },
+          },
+        },
+      });
+    },
+
+    // Fonction pour attribuer des couleurs aux candidats
+    getColorForCandidate(index) {
+      const colors = [
+        "#FF6384",
+        "#36A2EB",
+        "#FFCE56",
+        "#4BC0C0",
+        "#9966FF",
+        "#FF9F40",
+      ];
+      return colors[index % colors.length]; // Répéter les couleurs si plus de 6 candidats
+    },
+
+
 
 
   },
