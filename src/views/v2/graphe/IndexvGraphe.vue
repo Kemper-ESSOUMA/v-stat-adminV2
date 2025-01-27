@@ -125,7 +125,7 @@ export default {
     },
 
     get_stat_by_zone() {
-      this.$axios.get(`/dep_com_can/stat_by_zone`).then((response) => {
+      this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
         this.datas = response.data;
         console.log('datas stat_by_zone=', this.datas);
         this.renderget_stat_by_zone();
