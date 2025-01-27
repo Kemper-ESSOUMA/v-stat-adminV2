@@ -98,36 +98,15 @@ export default {
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Événement WebSocket : Message reçu");
+        console.log("Message WebSocket reçu :", event.data);
 
         try {
-          const message = event.data; // Parse les données si elles sont en JSON
-          console.log("Message WebSocket analysé :", message);
-
-          // Vérifiez si le message contient `updatedData`
-          if (message && message.updatedData) {
-            console.log("Données mises à jour reçues :", message.updatedData);
-
-            // Ajoutez les nouvelles données et mettez à jour le graphique
-            this.province = [...this.province, ...message.updatedData];
-            this.get_all_provinces();
-            this.renderChartProvince();
-          }
-
-          // Vérifiez si le message contient `updatedProvinces`
-          if (message && message.updatedProvinces) {
-            console.log("Provinces mises à jour reçues :", message.updatedProvinces);
-
-            // Remplacez les données et mettez à jour le graphique
-            this.province = message.updatedProvinces;
-            this.get_all_provinces();
-            this.renderChartProvince();
-          }
+          // Appeler la fonction pour récupérer et actualiser les données
+          this.get_all_provinces();
         } catch (error) {
-          console.error("Erreur lors de la réception des données WebSocket :", error);
+          console.error("Erreur lors du traitement du message WebSocket :", error);
         }
       };
-
 
       this.ws.onerror = (error) => {
         console.error("Erreur WebSocket :", error);
