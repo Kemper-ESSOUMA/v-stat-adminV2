@@ -10,7 +10,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'mobilization' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
+            <div id="rows_counter" class="card mb-1" style="background-color: #1976D3;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -39,7 +39,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'goodies' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
+            <div id="rows_counter" class="card mb-1" style="background-color: #8E24AA;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -68,7 +68,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
+            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -98,7 +98,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
+            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -131,7 +131,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43A047;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -145,10 +145,12 @@
                     <h4>{{ this.nb_climat }} Fiches de climats</h4>
                     <div class="col-lg-8 col-12">
                       <p>Tendances :</p>
-                      <li>Bon: <b>{{ this.nb_bon_voting_trrends }}</b></li>
-                      <li>Insatisfait: <b>{{ this.nb_insatisfait }}</b></li>
-                      <li>Satisfait: <b>{{ this.nb_satisfait }}</b></li>
-                  </div>
+                      <li>Defavorable: <b>{{ this.nb_defavorable }}</b></li>
+                      <li>Favorable: <b>{{ this.nb_favorable }}</b></li>
+                      <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
+                      <li>Plutot defavorable: <b>{{ this.nb_plutot_defavorable }}</b></li>
+                      <li>Plutot favorable: <b>{{ this.nb_plutot_favorable }}</b></li>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -188,9 +190,11 @@ export default defineComponent({
       nb_bon: 0,
       nb_indecis: 0,
       nb_risque: 0,
-      nb_bon_voting_trrends:0,
-      nb_insatisfait: 0,
-      nb_satisfait: 0
+      nb_defavorable:0,
+      nb_favorable: 0,
+      nb_indecis_trends: 0,
+      nb_plutot_defavorable: 0,
+      nb_plutot_favorable: 0
     }
   },
 
@@ -332,9 +336,11 @@ export default defineComponent({
          this.nb_bon = response.data.polling_station.nb_bon
          this.nb_indecis = response.data.polling_station.nb_indecis
          this.nb_risque = response.data.polling_station.nb_risque
-         this.nb_bon_voting_trrend = response.data.voting_trends.nb_bon
-         this.nb_insatisfait = response.data.voting_trends.nb_insatisfait
-         this.nb_satisfait = response.data.voting_trends.nb_satisfait
+        this.nb_defavorable = response.data.voting_trends.nb_defavorable
+        this.nb_favorable = response.data.voting_trends.nb_favorable
+        this.nb_indecis_trends = response.data.voting_trends.nb_indecis_trends
+        this.nb_plutot_defavorable = response.data.voting_trends.nb_plutot_defavorable
+        this.nb_plutot_favorable = response.data.voting_trends.nb_plutot_favorable
       })
     }
   }
