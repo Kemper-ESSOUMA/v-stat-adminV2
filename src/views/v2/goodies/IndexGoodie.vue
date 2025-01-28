@@ -5,33 +5,33 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn " :to="{ name: 'mobilization' }"
+        <router-link class="btn " :to="{ name: 'mobilization' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }"
+        <router-link class="btn" :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Climat">
           <i class="pi pi-sitemap" style="color: #3242C5"></i> Climats
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
+        <router-link class="btn" :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'goodies' }"
+        <router-link class="btn btn-primary" :to="{ name: 'goodies' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           :class="{ 'active': this.$route.name === 'goodies' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="goodies">
           <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
+        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
@@ -98,6 +98,7 @@
 import { FilterMatchMode } from 'primevue/api';
 import CreateFicheGoodie from './CreateFicheGoodie.vue';
 import ViewFIcheGoodie from './ViewFIcheGoodie.vue';
+import { useAppStore } from "@/store/app";
 export default {
   data() {
     return {
@@ -111,8 +112,20 @@ export default {
   mounted() {
     this.getGoodies();
     this.connectWebSocket();
+             const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    console.log("Current User", this.currentUser());
+    console.log("Permissions User", mobilizationAction);
   },
   methods: {
+
+                currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+          getPermissionActionByEntity(entityName) {
+    const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
+    return permission ? permission.action : null;
+  },
     openModal(objetData) {
       this.$dialog.open(ViewFIcheGoodie, {
         props: {

@@ -5,7 +5,7 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn " :to="{ name: 'mobilization' }"
+        <router-link class="btn " :to="{ name: 'mobilization' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
@@ -97,6 +97,7 @@ import { FilterMatchMode } from 'primevue/api';
 import CreateFicheClimatVue from './CreateFicheClimat.vue';
 import ViewFicheClimatVue from './ViewFicheClimat.vue';
 import { event } from 'jquery';
+import { useAppStore } from "@/store/app";
 
 export default {
   data() {
@@ -113,6 +114,9 @@ export default {
   mounted() {
     this.getClimat();
     this.connectWebSocket();
+         const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    console.log("Current User", this.currentUser());
+    console.log("Permissions User", mobilizationAction);
   },
   // Déconnecter le WebSocket lorsque le composant est détruit
   beforeUnmount() {
@@ -122,6 +126,15 @@ export default {
   },
 
   methods: {
+
+            currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+          getPermissionActionByEntity(entityName) {
+    const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
+    return permission ? permission.action : null;
+  },
 
     getClimat() {
       // Récupération initiale avec Axios

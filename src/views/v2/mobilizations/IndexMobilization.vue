@@ -5,7 +5,7 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'mobilization' }"
+        <router-link class="btn btn-primary" :to="{ name: 'mobilization' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
@@ -47,7 +47,7 @@
 
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
-    <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
+    <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
       :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['place']">
       <template #header>
 
@@ -95,6 +95,7 @@
 import CreateFicheMobilization from './CreateFicheMobilization.vue';
 import ViewFicheMobilization from './ViewFicheMobilization.vue';
 import { FilterMatchMode } from 'primevue/api';
+import { useAppStore } from "@/store/app";
 export default {
   data() {
     return {
@@ -108,8 +109,19 @@ export default {
   mounted() {
     this.getmoilization();
     this.connectWebSocket();
+     const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    console.log("Current User", this.currentUser());
+    console.log("Permissions User", mobilizationAction);
   },
   methods: {
+        currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+      getPermissionActionByEntity(entityName) {
+    const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
+    return permission ? permission.action : null;
+  },
     openModal(objetData) {
       this.$dialog.open(ViewFicheMobilization, {
         props: {
