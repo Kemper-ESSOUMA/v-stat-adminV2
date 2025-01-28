@@ -62,6 +62,26 @@
           </select>
         </div>
 
+        <div class="form-group col-6">
+          <label>Nombre de banderole<span class="text-danger">*</span></label>
+          <input type="number" v-model="form.banderol" class="form-control" required>
+        </div>
+
+        <div class="form-group col-6">
+          <label>Nombre de tee-shirt<span class="text-danger">*</span></label>
+          <input type="number" v-model="form.t_shirt" class="form-control" required>
+        </div>
+
+        <div class="form-group col-6">
+          <label>Nombre de casquette<span class="text-danger">*</span></label>
+          <input type="number" v-model="form.casquette" class="form-control" required>
+        </div>
+
+        <div class="form-group col-6">
+          <label>Nombre de divers<span class="text-danger">*</span></label>
+          <input type="number" v-model="form.divers" class="form-control" required>
+        </div>
+
         <div class="form-group col-12">
           <label class="fomt-bold">Recommendation</label>
           <TextEditor v-model="form.observation" editorStyle="height: 200px">
@@ -75,6 +95,8 @@
           </TextEditor>
         </div>
       </div>
+
+
 
       <button type="submit" class="btn btn-primary btn-sm mt-3">
         <i class="fas fa-floppy-disk"></i>
@@ -109,8 +131,11 @@ export default defineComponent({
         religious_community: '',
         commands_auxiliary: '',
         unions: '',
-        observation: ''
-
+        observation: '',
+        banderol: 0,
+        t_shirt: 0,
+        casquette: 0,
+        divers: 0
       },
     }
   },
@@ -154,15 +179,17 @@ export default defineComponent({
     },
     resetForm() {
       this.form = {
-        date: '',
-        zone_code: '',
         population: '',
         party_members: '',
         associations: '',
         religious_community: '',
         commands_auxiliary: '',
         unions: '',
-        observation: ''
+        observation: '',
+        banderol: 0,
+        t_shirt: 0,
+        casquette: 0,
+        divers: 0
       }
     }
   }

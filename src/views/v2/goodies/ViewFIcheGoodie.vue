@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <h2 class="text-center font-bold">Fiche de Climat</h2><br>
+    <h2 class="text-center font-bold">Fiche de Goodies</h2><br>
     <div>
       <h4>
         N° 00000{{ this.dialogRef.data.id }}
@@ -56,6 +56,28 @@
           </tr>
         </tbody>
       </table>
+
+      <table class="table table-bordered">
+        <tbody>
+          <tr>
+            <th>Nombre de banderole :</th>
+            <td>{{ this.dialogRef.data.banderol }}</td>
+          </tr>
+          <tr>
+            <th>Nombre de tee-shirt :</th>
+            <td>{{ this.dialogRef.data.t_shirt }}</td>
+          </tr>
+          <tr>
+            <th>Nombre de casquette :</th>
+            <td>{{ this.dialogRef.data.casquette }}</td>
+          </tr>
+          <tr>
+            <th>Nombre de divers :</th>
+            <td>{{ this.dialogRef.data.divers }}</td>
+          </tr>
+        </tbody>
+      </table>
+
       <table class="table table-bordered">
         <tbody>
           <tr>
