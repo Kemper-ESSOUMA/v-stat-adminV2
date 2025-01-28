@@ -9,16 +9,14 @@
         Ajouter une utilisateur <i class="fa-solid fa-plus"></i>
       </button>
     </div>
-
   </div>
-  <hr>
+  <hr />
 
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['lastname']">
       <template #header>
-
         <div class="flex justify-content-end">
           <div class="mr-2" style="padding-right: 80%">
             <button class="btn btn-sm btn-outline-dark mr-2" @click="refreshDatas()" id="refresh-user">
@@ -28,16 +26,11 @@
               <span> Actualiser</span>
             </button>
           </div>
-          <InputText placeholder="Keyword Search" v-model="filters['global'].value" />
+          <InputText placeholder="Recherche" v-model="filters['global'].value" />
         </div>
-
       </template>
-      <template #empty>
-        No customers found.
-      </template>
-      <template #loading>
-        Loading customers data. Please wait.
-      </template>
+      <template #empty> No customers found. </template>
+      <template #loading> Loading customers data. Please wait. </template>
 
       <DataTableColumn field="code_user" header="Code"></DataTableColumn>
       <DataTableColumn field="firstname" header="Prenom"></DataTableColumn>
@@ -55,17 +48,15 @@
           </div>
         </template>
       </DataTableColumn>
-      <template #footer>
-        Total {{ datas ? datas.length : 0 }} .
-      </template>
+      <template #footer> Total {{ datas ? datas.length : 0 }} . </template>
     </DataTable>
   </div>
 </template>
 
 <script>
-import { FilterMatchMode } from 'primevue/api';
-import CreateUsers from './CreateUsers.vue';
-import ViewUser from './ViewUser.vue'
+import { FilterMatchMode } from "primevue/api";
+import CreateUsers from "./CreateUsers.vue";
+import ViewUser from "./ViewUser.vue";
 export default {
   data() {
     return {
@@ -85,9 +76,9 @@ export default {
         props: {
           header: "Fiche utilisateur " + objetData.id,
           style: {
-            width: '50vw'
+            width: "50vw",
           },
-          modal: true
+          modal: true,
         },
         data: objetData,
       });
@@ -97,27 +88,27 @@ export default {
         props: {
           header: "Créer un utilisateur ",
           style: {
-            width: '50vw'
+            width: "50vw",
           },
-          modal: true
+          modal: true,
         },
       });
     },
     getUsers() {
       this.$axios
-        .get('/user/all')
+        .get("/user/all")
         .then((response) => {
-          this.loading = false
+          this.loading = false;
           this.datas = response.data;
         })
         .catch((error) => {
-          console.error('Erreur de recuperation de donnees:', error);
+          console.error("Erreur de recuperation de donnees:", error);
         });
     },
     refreshDatas() {
-      this.loading = true
-      this.getUsers()
-    }
+      this.loading = true;
+      this.getUsers();
+    },
   },
 };
 </script>

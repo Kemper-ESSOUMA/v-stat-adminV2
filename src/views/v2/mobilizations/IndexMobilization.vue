@@ -12,32 +12,32 @@
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }"
+        <router-link class="btn" :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Climat">
           <i class="pi pi-sitemap" style="color: #3242C5"></i> Climats
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
+        <router-link class="btn" :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'goodies' }" :class="{ 'active': this.$route.name === 'goodies' }"
+        <router-link class="btn" :to="{ name: 'goodies' }" :class="{ 'active': this.$route.name === 'goodies' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="goodies">
           <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
+        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"  v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
     </div>
     <div class="px-1 d-flex mr-4">
-      <button type="button" class="btn-app btn-active" @click="openCreateModal()">
+      <button type="button" class="btn-app btn-active" @click="openCreateModal()" v-if="[6, 3, 2].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
         Ajouter une fiche <i class="fa-solid fa-plus"></i>
       </button>
     </div>
@@ -109,9 +109,10 @@ export default {
   mounted() {
     this.getmoilization();
     this.connectWebSocket();
-     const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+  
     console.log("Current User", this.currentUser());
-    console.log("Permissions User", mobilizationAction);
+    console.log("Permissions User", mobilizationAction,);
   },
   methods: {
         currentUser() {

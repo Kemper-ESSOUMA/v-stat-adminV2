@@ -77,9 +77,9 @@
                         <label class="form-check-label" for="selectAllClimat">Tout</label>
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeClimat" v-model="permissions.electoral_climate_sheets.read"
+                        <input type="checkbox" id="readClimat" v-model="permissions.electoral_climate_sheets.read"
                           @change="checkCategorySelectAll('electoral_climate_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeClimat">Lecture</label>
+                        <label class="form-check-label" for="readClimat">Lecture</label>
                       </div>
                       <div class="form-check me-3">
                         <input type="checkbox" id="writeClimat" v-model="permissions.electoral_climate_sheets.write"
@@ -104,9 +104,9 @@
                         <label class="form-check-label" for="selectAllIncident">Tout</label>
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeIncident" v-model="permissions.incident_sheets.read"
+                        <input type="checkbox" id="readIncident" v-model="permissions.incident_sheets.read"
                           @change="checkCategorySelectAll('incident_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeIncident">Lecture</label>
+                        <label class="form-check-label" for="readIncident">Lecture</label>
                       </div>
                       <div class="form-check me-3">
                         <input type="checkbox" id="writeIncident" v-model="permissions.incident_sheets.write"
@@ -133,9 +133,9 @@
                         <label class="form-check-label" for="selectAllBureaux">Tout</label>
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeBureaux" v-model="permissions.polling_station_sheets.read"
+                        <input type="checkbox" id="readBureaux" v-model="permissions.polling_station_sheets.read"
                           @change="checkCategorySelectAll('polling_station_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeBureaux">Lecture</label>
+                        <label class="form-check-label" for="readBureaux">Lecture</label>
                       </div>
                       <div class="form-check me-3">
                         <input type="checkbox" id="writeBureaux" v-model="permissions.polling_station_sheets.write"
@@ -162,9 +162,9 @@
                         <label class="form-check-label" for="selectAllMobilisation">Tout</label>
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeMobilisation" v-model="permissions.mobilization_sheets.read"
+                        <input type="checkbox" id="readMobilisation" v-model="permissions.mobilization_sheets.read"
                           @change="checkCategorySelectAll('mobilization_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeMobilisation">Lecture</label>
+                        <label class="form-check-label" for="readMobilisation">Lecture</label>
                       </div>
                       <div class="form-check me-3">
                         <input type="checkbox" id="writeMobilisation" v-model="permissions.mobilization_sheets.write"
@@ -190,9 +190,9 @@
                         <label class="form-check-label" for="selectAllGoodies">Tout</label>
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeGoodies" v-model="permissions.goodies_sheets.read"
+                        <input type="checkbox" id="readGoodies" v-model="permissions.goodies_sheets.read"
                           @change="checkCategorySelectAll('goodies_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeGoodies">Lecture</label>
+                        <label class="form-check-label" for="readGoodies">Lecture</label>
                       </div>
                       <div class="form-check me-3">
                         <input type="checkbox" id="writeGoodies" v-model="permissions.goodies_sheets.write"
