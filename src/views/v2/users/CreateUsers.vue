@@ -307,8 +307,8 @@ export default defineComponent({
     },
 
     checkCategorySelectAll(category) {
-      const { write, read, execute: ex } = this.permissions[category];
-      this.permissions[category].selectAll = write && read && ex;
+      const { write, read, execute } = this.permissions[category];
+      this.permissions[category].selectAll = write && read && execute;
     },
 
     departements(data) {

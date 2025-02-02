@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="px-1 d-flex mr-4">
-      <button type="button" class="btn-app btn-active" @click="openCreateModal()">
+      <button type="button" class="btn-app btn-active" @click="openCreateModal()" v-if="[6, 3, 2].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
         Ajouter une fiche <i class="fa-solid fa-plus"></i>
       </button>
     </div>
@@ -61,7 +61,7 @@
               <span> Actualiser</span>
             </button>
           </div>
-          <InputText placeholder="Keyword Search" v-model="filters['global'].value" />
+          <InputText placeholder="Recherche" v-model="filters['global'].value" />
         </div>
 
       </template>

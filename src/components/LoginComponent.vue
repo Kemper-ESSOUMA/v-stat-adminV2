@@ -17,7 +17,7 @@
                     <i class="fa-solid fa-user"></i>
                   </span>
                 </div>
-                <input placeholder="Code" type="text" class="form-control form-control-lg" required
+                <input placeholder="Code utilisateur" type="text" class="form-control form-control-lg" required
                   autocomplete="email" autofocus v-model="codeUser" />
               </div>
 
@@ -100,6 +100,11 @@ export default {
             "09": '/woleu_ntem',
             "10": '/',
           };
+          this.$toast.add({
+            severity: 'success',
+            detail: 'Connexion avec succès !!',
+            life: 3000,
+          });
 
           this.$router.push('/');
 
@@ -108,6 +113,12 @@ export default {
 
         }
       } catch (error) {
+        this.$toast.add({
+          severity: 'error',
+          summary: 'Identifiant incorrect',
+          detail: 'Code utilisateur ou mot de passe incorrect !',
+          life: 5000,
+        });
         console.error('Erreur API :', error);
 
       } finally {

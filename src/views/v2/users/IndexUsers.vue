@@ -57,6 +57,7 @@
 import { FilterMatchMode } from "primevue/api";
 import CreateUsers from "./CreateUsers.vue";
 import ViewUser from "./ViewUser.vue";
+import { useAppStore } from "@/store/app";
 export default {
   data() {
     return {
@@ -69,8 +70,16 @@ export default {
   },
   mounted() {
     this.getUsers();
+    console.log("Current User", this.currentUser());
   },
+
+
   methods: {
+        currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+
     openModal(objetData) {
       this.$dialog.open(ViewUser, {
         props: {
