@@ -125,7 +125,7 @@ export default defineComponent({
       form: {
         date: '',
         // zone_code: '',
-        population: '',
+        population: null,
         party_members: '',
         associations: '',
         religious_community: '',

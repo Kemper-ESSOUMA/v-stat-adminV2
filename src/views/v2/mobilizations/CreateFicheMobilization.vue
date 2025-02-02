@@ -24,7 +24,7 @@
 
         <div class="form-group col-6">
           <label>Organisateur</label>
-          
+
           <input type="text" class="form-control" v-model="form.organizer">
         </div>
       </div>
@@ -91,7 +91,7 @@ export default defineComponent({
     }
   },
 
-  
+
   methods: {
 
 
@@ -100,8 +100,8 @@ export default defineComponent({
       this.form.zone_code = appStore.currentUser.zone
       this.$axios.post('/mobilization_sheet/add', this.form).then(response => {
         this.isLoading = false
-        
-        
+
+
         if (response.data !== null) {
           $('#refresh-mobilization').click()
           this.$toast.add({
