@@ -8,8 +8,8 @@ const axiosPlugin = {
         // Crée une instance Axios
         const axiosInstance = axios.create({
             // baseURL: "https://51.222.158.64:8001/api/",
-             baseURL: "http://192.168.2.111:8000/api/",
-            // baseURL: "https://51.222.158.64:8001/api/",
+            //  baseURL: "http://192.168.2.111:8000/api/",
+            baseURL: "https://51.222.158.64:8001/api/",
         });
 
         // URL WebSocket
