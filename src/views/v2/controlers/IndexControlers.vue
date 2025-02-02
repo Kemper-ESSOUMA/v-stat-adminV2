@@ -279,7 +279,7 @@ export default {
       const labels = this.datas1.map((zone) => zone.libelle);
 
       // Préparer les datasets pour chaque candidat
-      const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
+      const candidateKeys = Object.keys(this.datas1[0]).filter((key) =>
         key.startsWith("candidate_")
       );
 
