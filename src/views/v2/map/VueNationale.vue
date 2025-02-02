@@ -1,34 +1,30 @@
 <template>
   <div class="btn-group page-nav " role="group" style="margin-left: 40%">
     <div>
-      <router-link class="btn btn-primary" :to="{ name: 'map' }" :class="{ 'active': this.$route.name === 'map' }"
+      <router-link class="btn " :to="{ name: 'map' }" :class="{ 'active': this.$route.name === 'map' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="map">
         <i class="pi pi-globe" style="color: #3242C5"></i> GLOBAL
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'national' }" :class="{ 'active': this.$route.name === 'national' }"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="national">
+      <router-link class="btn btn-primary" :to="{ name: 'national' }"
+        :class="{ 'active': this.$route.name === 'national' }" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="national">
         <i class="pi pi-map-marker" style="color: #3242C5"></i> NATIONAL
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'international' }" :class="{ 'active': this.$route.name === 'international' }"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="international">
+      <router-link class="btn" :to="{ name: 'international' }"
+        :class="{ 'active': this.$route.name === 'international' }" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="international">
         <i class="pi pi-map" style="color: #3242C5"></i> INTERNATIONAL
       </router-link>
     </div>
   </div>
+
   <div>
     <!-- Carte -->
     <div id="map"></div>
-
-    <div id="map2">
-      <div class="box">Afrique</div>
-      <div class="box">Europe</div>
-      <div class="box">Amerique</div>
-      <div class="box">Asie</div>
-    </div>
     <!-- Filtres -->
     <div id="filters">
       <h3>Filtres</h3>
@@ -81,7 +77,7 @@ export default {
   data() {
     return {
       showVotingCenters: true,
-      showNationalView:true,
+      showNationalView: true,
       votingData: [],
       candidates: [],
       centre_vote: [],
@@ -321,22 +317,6 @@ body {
   left: 50%;
   transform: translate(-50%, -50%);
   background-color: #ffffff;
-}
-
-#map2 {
-  width: 450px;
-  height: 300px;
-  position: absolute;
-  top: 45%;
-  left: 85%;
-  transform: translate(-50%, -50%);
-
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
-  gap: 5px;
-  /* Espacement entre les cases */
-  padding: 5px;
 }
 
 .box {

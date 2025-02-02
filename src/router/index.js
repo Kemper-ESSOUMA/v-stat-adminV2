@@ -267,6 +267,19 @@ const routes = [
         component: () =>
             import ("@/views/v2/graphe/IndexvGraphe.vue"),
     },
+    {
+        path: "/national",
+        name: "national",
+        component: () =>
+            import ("@/views/v2/map/VueNationale.vue"),
+    },
+    {
+        path: "/international",
+        name: "international",
+        component: () =>
+            import ("@/views/v2/map/VueInternationale.vue"),
+    },
+
 ];
 
 const router = createRouter({
