@@ -179,6 +179,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import { useAppStore } from "@/store/app";
 // import RowsCounter from '@/components/RowsCounter.vue';
 // import { data } from 'jquery';
 
@@ -200,7 +201,7 @@ export default defineComponent({
       nb_bon: 0,
       nb_indecis: 0,
       nb_risque: 0,
-      nb_defavorable:0,
+      nb_defavorable: 0,
       nb_favorable: 0,
       nb_indecis_trends: 0,
       nb_plutot_defavorable: 0,
@@ -217,6 +218,7 @@ export default defineComponent({
   },
 
   mounted() {
+    console.log("Current User", this.currentUser());
     this.connectWebSocket()
     this.getmoilization()
     this.getclimat()
@@ -226,6 +228,12 @@ export default defineComponent({
     this.getResultatMobilization()
   },
   methods: {
+
+    currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+
 
     connectWebSocket() {
       // Définir l'URL du WebSocket (à adapter selon votre serveur)
@@ -351,9 +359,9 @@ export default defineComponent({
         console.log('stats = ', response.data)
         this.nb_alerte = response.data.incidents.nb_alerte
         this.nb_incident = response.data.incidents.nb_incident
-         this.nb_bon = response.data.polling_station.nb_bon
-         this.nb_indecis = response.data.polling_station.nb_indecis
-         this.nb_risque = response.data.polling_station.nb_risque
+        this.nb_bon = response.data.polling_station.nb_bon
+        this.nb_indecis = response.data.polling_station.nb_indecis
+        this.nb_risque = response.data.polling_station.nb_risque
         this.nb_defavorable = response.data.voting_trends.nb_defavorable
         this.nb_favorable = response.data.voting_trends.nb_favorable
         this.nb_indecis_trends = response.data.voting_trends.nb_indecis_trends

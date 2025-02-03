@@ -29,7 +29,7 @@
           <InputText placeholder="Recherche" v-model="filters['global'].value" />
         </div>
       </template>
-      <template #empty> No customers found. </template>
+      <template #empty> Aucune données trouvées </template>
       <template #loading> Loading customers data. Please wait. </template>
 
       <DataTableColumn field="code_user" header="Code"></DataTableColumn>

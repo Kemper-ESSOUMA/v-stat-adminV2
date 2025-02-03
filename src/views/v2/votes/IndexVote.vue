@@ -37,7 +37,7 @@
 
       </template>
       <template #empty>
-        No customers found.
+        Aucune données trouvées
       </template>
       <template #loading>
         Loading customers data. Please wait.

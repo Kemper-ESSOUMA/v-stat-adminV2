@@ -38,7 +38,7 @@
       </div>
     </div>
     <div class="px-1 d-flex mr-4">
-      <button type="button" class="btn-app btn-active" @click="openCreateModal()" v-if="[6, 3, 2].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
+      <button type="button" class="btn-app btn-active" @click="openCreateModal()" v-if="[6, 3, 2, 7].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
         Ajouter une fiche <i class="fa-solid fa-plus"></i>
       </button>
     </div>
@@ -66,7 +66,7 @@
 
       </template>
       <template #empty>
-        No customers found.
+        Aucune données trouvées
       </template>
       <template #loading>
         Loading customers data. Please wait.

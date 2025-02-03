@@ -25,6 +25,7 @@
         <div class="form-group col-6">
           <label>Role<span class="text-danger">*</span></label>
           <select class="form-control" v-model="form.role" required>
+            <option value="SUPER_ADMIN">SUPER ADMIN</option>
             <option value="Administrateur">Administrateur</option>
             <option value="Coordonateur">Coordonateur</option>
             <option value="Superviseur">Superviseur</option>

@@ -34,7 +34,7 @@
 
       </template>
       <template #empty>
-        No customers found.
+        Aucune données trouvées
       </template>
       <template #loading>
         Loading customers data. Please wait.
@@ -47,7 +47,7 @@
       <DataTableColumn field="nb_abstention" header="Scrutin nulle"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin blanc"></DataTableColumn>
       <DataTableColumn field="nb_scrutin_valide" header="Scrutin validé"></DataTableColumn>
-      <DataTableColumn field="candidate_1" header="candidate 3"></DataTableColumn>
+      <DataTableColumn field="candidate_1" header="candidate 1"></DataTableColumn>
       <DataTableColumn field="candidate_2" header="candidate 2"></DataTableColumn>
       <DataTableColumn field="candidate_3" header="candidate 3"></DataTableColumn>
       <DataTableColumn header="Actions">
@@ -128,7 +128,7 @@ export default {
 
     get_stat_by_burreau() {
       this.$axios.get("/pol_sta/by_user_zone").then((response) => {
-         this.loading = false
+        this.loading = false
         this.datas = response.data;
         console.log('datas stat_by_burreau=', this.datas);
       });

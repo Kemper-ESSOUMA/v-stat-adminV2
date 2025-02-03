@@ -28,23 +28,39 @@
           <input type="text" v-model="form.zone" class="form-control" disabled>
         </div>
         <div>
-  <h4 class="text-app font-weight-bold">Permissions attribuées</h4>
-  <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>Fiches</th>
-          <th>Permissions</th>
-        </tr>
-      </thead>
-      
-    </table>
-  </div>
-</div>
-
-
+          <h4 class="text-app font-weight-bold">Permissions attribuées</h4>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead>
+                <tr>
+                  <th>Fiches</th>
+                  <th>Lecture</th>
+                  <th>Ecriture</th>
+                  <th>Exécution</th>
+                  <th>Tout</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(perm, index) in form.permissions" :key="index">
+                  <td>{{ formatFicheName(perm.entity) }}</td>
+                  <td>
+                    <input type="checkbox" :checked="perm.action == 4 || perm.action == 7" disabled />
+                  </td>
+                  <td>
+                    <input type="checkbox" :checked="perm.action == 2 || perm.action == 7" disabled />
+                  </td>
+                  <td>
+                    <input type="checkbox" :checked="perm.action == 1 || perm.action == 7" disabled />
+                  </td>
+                  <td>
+                    <input type="checkbox" :checked="perm.action == 7" disabled />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
-
     </form>
 
     <button class="btn btn-sm btn-warning mr-2" @click="updatePassord()">
@@ -81,7 +97,6 @@ export default defineComponent({
         zone: this.dialogRef.data.zone,
         permissions: this.dialogRef.data.permissions
       },
-      
 
       update: {
         password: 'root'
@@ -90,17 +105,9 @@ export default defineComponent({
   },
   mounted() {
     console.log('form = ', this.form.permissions)
-    let permissions = this.dialogRef.data.permissions;
-
-    permissions.forEach(permission => {
-      console.log(`Entity: ${permission.entity}, Action: ${permission.action}, ID: ${permission.id}`);
-    });
-
   },
 
   methods: {
-
-
 
     updatePassord() {
 
@@ -117,18 +124,18 @@ export default defineComponent({
       })
     },
 
-  // Fonction pour formater le nom de la fiche
-  formatFicheName(fiche) {
-    const ficheNames = {
-      mobilization_sheets: 'Fiche de mobilisation',
-      goodies_sheets: 'Fiche de goodies',
-      electoral_climate_sheets: 'Fiche climatique électorale',
-      incident_sheets: 'Fiche d\'incident',
-      polling_station_sheets: 'Fiche de station de vote'
-    };
-    return ficheNames[fiche] || fiche;
-  },
-  // Fonction pour vérifier si l'utilisateur a une permission
+    // Fonction pour formater le nom de la fiche
+    formatFicheName(fiche) {
+      const ficheNames = {
+        mobilization_sheets: 'Fiche de mobilisation',
+        goodies_sheets: 'Fiche de goodies',
+        electoral_climate_sheets: 'Fiche climatique électorale',
+        incident_sheets: 'Fiche d\'incident',
+        polling_station_sheets: 'Fiche de station de vote'
+      };
+      return ficheNames[fiche] || fiche;
+    },
+
 
   }
 })
