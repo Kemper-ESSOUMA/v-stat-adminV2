@@ -27,9 +27,6 @@
           </a>
 
           <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-            <a href="#mon-profil" class="dropdown-item" @click.prevent="openShowModal()">
-              <i class="fas fa-user"></i> Mon profil
-            </a>
             <a href="#se-deconnecter" class="dropdown-item text-danger" @click.prevent="logout">
               <i class="fas fa-arrow-right"></i> Se déconnecter
             </a>

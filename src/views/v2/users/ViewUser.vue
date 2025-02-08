@@ -45,16 +45,16 @@
                   <td>{{ formatFicheName(fiche) }}</td>
                   <td>
                     <input type="checkbox" :checked="hasPermission(fiche, 7)"
-                      @change="toggleAllPermissions(fiche, $event.target.checked)" />
+                      @change="toggleAllPermissions(fiche, $event.target.checked)" disabled/>
                   </td>
                   <td>
-                    <input type="checkbox" :checked="hasPermission(fiche, 4)" @change="togglePermission(fiche, 4)" />
+                    <input type="checkbox" :checked="hasPermission(fiche, 4)" @change="togglePermission(fiche, 4)" disabled />
                   </td>
                   <td>
-                    <input type="checkbox" :checked="hasPermission(fiche, 2)" @change="togglePermission(fiche, 2)" />
+                    <input type="checkbox" :checked="hasPermission(fiche, 2)" @change="togglePermission(fiche, 2)" disabled/>
                   </td>
                   <td>
-                    <input type="checkbox" :checked="hasPermission(fiche, 1)" @change="togglePermission(fiche, 1)" />
+                    <input type="checkbox" :checked="hasPermission(fiche, 1)" @change="togglePermission(fiche, 1)" disabled/>
                   </td>
                 </tr>
               </tbody>
