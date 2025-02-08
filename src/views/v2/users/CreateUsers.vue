@@ -25,11 +25,13 @@
         <div class="form-group col-6">
           <label>Role<span class="text-danger">*</span></label>
           <select class="form-control" v-model="form.role" required>
-            <option value="SUPER_ADMIN">SUPER ADMIN</option>
+            <option v-if="currentUser().role === 'SUPER_ADMIN'">SUPER ADMIN</option>
             <option value="Administrateur">Administrateur</option>
             <option value="Coordonateur">Coordonateur</option>
             <option value="Superviseur">Superviseur</option>
           </select>
+
+
         </div>
         <div class="form-group col-6">
           <label>Zone<span class="text-danger">*</span></label>
@@ -229,7 +231,7 @@
 <script>
 import $ from "jquery";
 import { defineComponent } from 'vue';
-// import { useAppStore } from "@/store/app";
+import { useAppStore } from "@/store/app";
 export default defineComponent({
   inject: ['dialogRef'],
   data() {
@@ -287,10 +289,16 @@ export default defineComponent({
   mounted() {
     this.getProvinces()
     this.departements()
+    console.log("Current User", this.currentUser().role);
     // this.centreVotes()
   },
 
   methods: {
+    currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+
     toggleCategoryPermissions(category) {
       // Vérifie si la catégorie existe dans les permissions
       if (this.permissions[category]) {
