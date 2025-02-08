@@ -6,19 +6,150 @@
   </div>
   <hr>
 
-  <div class="card d-flex flex-column align-items-center justify-content-between">
-    <!-- Premier graphique avec son titre -->
+  <!-- <div class="card d-flex flex-column align-items-center justify-content-between">
     <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
       <h5 class="chart-title text-center">Top cinq (5) par bureaux de vote</h5>
       <ProgressBar mode="indeterminate" style="height: 6px" v-if="loading === true"></ProgressBar>
       <canvas id="prov" width="400" height="200"></canvas>
     </div>
 
-    <!-- Deuxième graphique avec son titre -->
-    <!-- <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
-      <h5 class="chart-title text-center">Top cinq (5) des candidats</h5>
-      <canvas id="candidatesChart" width="400" height="200"></canvas>
+  </div> -->
+
+  <div class="body-contentys">
+    <div class="row justify-content-center">
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'mobilization' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #1976D3;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Mobilisation</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'goodies' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #8E24AA;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Goodies</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43A047;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Climat</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Incidents</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Bureaux de votes</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="card" style="width: 300px; margin-left: 70%; margin-top: 5%;">
+      <VueNationale />
     </div> -->
+
+    <div class="card" style="margin-right: 48%;">
+      <ChartJS type="line" :data="chartData" :options="chartOptions" class="h-30rem" />
+    </div>
   </div>
 </template>
 
@@ -48,30 +179,39 @@
 <script>
 import Chart from 'chart.js/auto';
 import { useAppStore } from "@/store/app";
-
+import VueNationale from '../map/VueNationale.vue';
 export default {
-  data: () => ({
-    ws: null,
-    datas: [],
-    get_top_5_burreau_vote: [],
-    items: [
-      {
-        title: "Analyse de données",
-        disabled: true,
-      },
-      {
-        title: "Accueil",
-        disabled: false,
-        href: "/",
-      },
-    ],
-  }),
+  components: { VueNationale },
+  data (){
+    return {
+      ws: null,
+      datas: [],
+      get_top_5_burreau_vote: [],
+      items: [
+        {
+          title: "Analyse de données",
+          disabled: true,
+        },
+        {
+          title: "Accueil",
+          disabled: false,
+          href: "/",
+        },
+      ],
+      chartData: null,
+      chartOptions: null
+    }
+
+  },
 
   mounted() {
     this.connectWebSocket();
-    this.get_top_5_burreau_votes();
+    // this.get_top_5_burreau_votes();
     // this.get_stat_by_zone();
     this.zoneCode = this.currentUser().zone_code;
+
+    this.chartData = this.setChartData();
+    this.chartOptions = this.setChartOptions();
   },
 
 
@@ -115,13 +255,13 @@ export default {
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
 
-    get_top_5_burreau_votes() {
-      this.$axios.get("/pol_sta/all").then((response) => {
-        this.pol_sta = response.data;
-        console.log('datas pol_sta all=', this.pol_sta);
-        this.renderChartTop_5();
-      });
-    },
+    // get_top_5_burreau_votes() {
+    //   this.$axios.get("/pol_sta/all").then((response) => {
+    //     this.pol_sta = response.data;
+    //     console.log('datas pol_sta all=', this.pol_sta);
+    //     this.renderChartTop_5();
+    //   });
+    // },
 
     // get_stat_by_zone() {
     //   this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
@@ -216,17 +356,17 @@ renderChartTop_5() {
             datasets: [
                 {
                     label: 'Abstentions',
-                    data: abstentionValues.concat(new Array(candidateNames.length).fill(0)), 
+                    data: abstentionValues.concat(new Array(candidateNames.length).fill(0)),
                     backgroundColor: 'rgba(255, 99, 132, 0.7)',
                 },
                 {
                     label: 'Scrutin Valide',
-                    data: scrutinValues.concat(new Array(candidateNames.length).fill(0)), 
+                    data: scrutinValues.concat(new Array(candidateNames.length).fill(0)),
                     backgroundColor: 'rgba(54, 162, 235, 0.7)',
                 },
                 {
                     label: 'Votes par Candidat',
-                    data: new Array(labels.length).fill(0).concat(candidateScores), 
+                    data: new Array(labels.length).fill(0).concat(candidateScores),
                     backgroundColor: 'rgba(75, 192, 192, 0.7)',
                 }
             ]
@@ -241,7 +381,7 @@ renderChartTop_5() {
     });
     },
 
-    
+
 
     //en deux graphiques
 // renderChartTop_5() {
@@ -379,6 +519,65 @@ renderChartTop_5() {
     // Fonction pour attribuer des couleurs aux candidats
 
 
+    setChartData() {
+      const documentStyle = getComputedStyle(document.documentElement);
+
+      return {
+        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        datasets: [
+          {
+            label: 'First Dataset',
+            data: [65, 59, 80, 81, 56, 55, 40],
+            fill: false,
+            borderColor: documentStyle.getPropertyValue('--cyan-500'),
+            tension: 0.4
+          },
+          {
+            label: 'Second Dataset',
+            data: [28, 48, 40, 19, 86, 27, 90],
+            fill: false,
+            borderColor: documentStyle.getPropertyValue('--gray-500'),
+            tension: 0.4
+          }
+        ]
+      };
+    },
+    setChartOptions() {
+      const documentStyle = getComputedStyle(document.documentElement);
+      const textColor = documentStyle.getPropertyValue('--text-color');
+      const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
+      const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+
+      return {
+        maintainAspectRatio: false,
+        aspectRatio: 0.6,
+        plugins: {
+          legend: {
+            labels: {
+              color: textColor
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: {
+              color: textColorSecondary
+            },
+            grid: {
+              color: surfaceBorder
+            }
+          },
+          y: {
+            ticks: {
+              color: textColorSecondary
+            },
+            grid: {
+              color: surfaceBorder
+            }
+          }
+        }
+      };
+    }
   },
 };
 </script>

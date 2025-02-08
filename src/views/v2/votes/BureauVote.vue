@@ -5,14 +5,15 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
+        <router-link class="btn" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
           <i class="pi pi-building" style="color: #3242C5"></i> Centres
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux-vote' }" :class="{ 'active': this.$route.name === 'bureaux-vote' }"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="Burreaux de votes">
+        <router-link class="btn btn-primary" :to="{ name: 'bureaux-vote' }"
+          :class="{ 'active': this.$route.name === 'bureaux-vote' }" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Burreaux de votes">
           <i class="pi pi-table" style="color: #3242C5"></i> Bureaux
         </router-link>
       </div>
@@ -50,7 +51,7 @@
 
       </template>
       <template #empty>
-        Aucune données trouvées
+        No customers found.
       </template>
       <template #loading>
         Loading customers data. Please wait.
@@ -60,7 +61,6 @@
       <DataTableColumn field="libelle" header="Titre"></DataTableColumn>
       <DataTableColumn field="zone" header="Zone"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total Enregistré"></DataTableColumn>
-      <DataTableColumn field="total_offices" header="Nombre Bureau"></DataTableColumn>
       <DataTableColumn field="total_scrutin" header="Total de scrutin"></DataTableColumn>
       <!-- <DataTableColumn field="burreau_code" header="Code du bureau"></DataTableColumn> -->
       <DataTableColumn field="nb_abstention" header="Scrutin nulle"></DataTableColumn>
@@ -70,12 +70,12 @@
         <template #body="slotProps">
 
           <div class="d-flex">
-            <button class="btn btn-sm btn-info m-1" @click="openModal(slotProps.data)">
+            <!-- <button class="btn btn-sm btn-info m-1" @click="openModal(slotProps.data)">
               <i class="fa-solid fa-pen"></i>
-            </button>
-            <!-- <button class="btn btn-sm btn-primary m-1" @click="openViewModal(slotProps.data)">
-              <i class="fa-solid fa-eye"></i>
             </button> -->
+            <button class="btn btn-sm btn-primary m-1" @click="openViewModal(slotProps.data)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </div>
         </template>
       </DataTableColumn>
@@ -88,8 +88,6 @@
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-// import CreateFicheClimatVue from './CreateFicheClimat.vue';
-import EditCentreVote from './EditCentreVote.vue';
 import ViewVote from './ViewVote.vue';
 import { utils, writeFile } from "xlsx";
 
@@ -104,22 +102,11 @@ export default {
     };
   },
   mounted() {
-    this.getvote();
+    this.getbureaux();
     this.connectWebSocket();
   },
   methods: {
-    openModal(objetData) {
-      this.$dialog.open(EditCentreVote, {
-        props: {
-          header: "Modifier le centre " + objetData.zone,
-          style: {
-            width: '50vw'
-          },
-          modal: true
-        },
-        data: objetData,
-      });
-    },
+
     openViewModal(objetData) {
       this.$dialog.open(ViewVote, {
         props: {
@@ -143,9 +130,9 @@ export default {
     //     },
     //   });
     // },
-    getvote() {
+    getbureaux() {
       this.$axios
-        .get('/voting_centre/by_zone')
+        .get('/pol_sta/by_user_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;
@@ -170,7 +157,7 @@ export default {
         try {
           const message = event.data;  // Si c'est un JSON, il faut le parser
           console.log("Message reçu via WebSocket :", message);
-          this.getvote();
+          this.getbureaux();
 
           if (message && message.updatedData) {
             // Mettre à jour les données (si ce message contient une clé `updatedData`)
@@ -197,7 +184,7 @@ export default {
     },
     refreshDatas() {
       this.loading = true
-      this.getvote()
+      this.getbureaux()
     },
     exportToExcel() {
       // Transforme les données en une feuille Excel

@@ -130,11 +130,9 @@ export default defineComponent({
     }
   },
 
-  // mounted() {
-  //   if (this.dialogRef.data.total_offices === this.dialogRef.data.burreaux_votes.length) {
-
-  //   }
-  // },
+  mounted() {
+    console.log('view = ', this.dialogRef.data)
+  },
 
 
   methods: {
