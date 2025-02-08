@@ -1,20 +1,4 @@
 <template>
-  <div class="header-contentys pt-3 d-flex align-items-center">
-    <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Top cinq (5) des statistiques</h4>
-    </div>
-  </div>
-  <hr>
-
-  <!-- <div class="card d-flex flex-column align-items-center justify-content-between">
-    <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
-      <h5 class="chart-title text-center">Top cinq (5) par bureaux de vote</h5>
-      <ProgressBar mode="indeterminate" style="height: 6px" v-if="loading === true"></ProgressBar>
-      <canvas id="prov" width="400" height="200"></canvas>
-    </div>
-
-  </div> -->
-
   <div class="body-contentys">
     <div class="row justify-content-center">
       <div class="col-4">
@@ -28,7 +12,7 @@
                 <p>Mobilisation</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+
                   </div>
                 </div>
               </div>
@@ -53,7 +37,7 @@
                 <p>Goodies</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+
                   </div>
                 </div>
               </div>
@@ -78,7 +62,7 @@
                 <p>Climat</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+
                   </div>
                 </div>
               </div>
@@ -103,7 +87,7 @@
                 <p>Incidents</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+
                   </div>
                 </div>
               </div>
@@ -128,7 +112,7 @@
                 <p>Bureaux de votes</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+
                   </div>
                 </div>
               </div>
@@ -143,47 +127,39 @@
       </div>
     </div>
 
-    <!-- <div class="card" style="width: 300px; margin-left: 70%; margin-top: 5%;">
-      <VueNationale />
-    </div> -->
+
 
     <div class="card" style="margin-right: 48%;">
       <ChartJS type="line" :data="chartData" :options="chartOptions" class="h-30rem" />
+      <div>
+        <div id="map"></div>
+      </div>
     </div>
+
   </div>
+
+  <div class="card">
+
+  </div>
+
 </template>
 
-
-
-
-<style scoped>
-.chart-container {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-.chart-title {
-  margin-bottom: 10px;
-  font-weight: bold;
-  color: #333;
-}
-
-.text-center {
-  text-align: center;
-}
-</style>
-
-
 <script>
-import Chart from 'chart.js/auto';
-import { useAppStore } from "@/store/app";
-import VueNationale from '../map/VueNationale.vue';
+// import { useAppStore } from "../../../store/app";
+// const appStore = useAppStore();
+
 export default {
-  components: { VueNationale },
-  data (){
+  name: "App",
+  data() {
     return {
+      showVotingCenters: true,
+      showNationalView: true,
+      votingData: [],
+      candidates: [],
+      centre_vote: [],
+      total_candidate_1: 0,
+      total_candidate_2: 0,
+      total_candidate_3: 0,
       ws: null,
       datas: [],
       get_top_5_burreau_vote: [],
@@ -200,324 +176,222 @@ export default {
       ],
       chartData: null,
       chartOptions: null
-    }
 
+    };
   },
-
   mounted() {
-    this.connectWebSocket();
-    // this.get_top_5_burreau_votes();
-    // this.get_stat_by_zone();
-    this.zoneCode = this.currentUser().zone_code;
-
+    this.loadExternalScripts();
     this.chartData = this.setChartData();
     this.chartOptions = this.setChartOptions();
+    // this.get_all_donnees();
+    // this.getCandidates();
+    // this.getCentreVote();
+    // this.connectWebSocket();
   },
 
+  // beforeUnmount() {
+  //   if (this.ws) {
+  //     this.ws.close();
+  //   }
+  // },
 
   methods: {
-
-    connectWebSocket() {
-      // Définir l'URL du WebSocket (à adapter selon votre serveur)
-      this.ws = new WebSocket(this.$wsUrl);
-
-      // Gestion des événements WebSocket
-      this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
-      };
-
-      this.ws.onmessage = (event) => {
-        console.log("Message WebSocket reçu :", event.data);
-
-        try {
-          // Appeler la fonction pour récupérer et actualiser les données
-          this.get_top_5_burreau_votes();
-          this.get_stat_by_zone();
-        } catch (error) {
-          console.error("Erreur lors du traitement du message WebSocket :", error);
-        }
-      };
-
-      this.ws.onerror = (error) => {
-        console.error("Erreur WebSocket :", error);
-      };
-
-      this.ws.onclose = () => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...");
-        setTimeout(() => {
-          this.connectWebSocket(); // Reconnexion après 3 secondes
-        }, 3000);
-      };
-    },
-
-    currentUser() {
-      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
-      return appStore.currentUser; // Récupérer les informations utilisateur
-    },
-
-    // get_top_5_burreau_votes() {
-    //   this.$axios.get("/pol_sta/all").then((response) => {
-    //     this.pol_sta = response.data;
-    //     console.log('datas pol_sta all=', this.pol_sta);
-    //     this.renderChartTop_5();
-    //   });
-    // },
-
-    // get_stat_by_zone() {
-    //   this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
-    //     this.datas = response.data;
-    //     console.log('datas stat_by_zone=', this.datas);
-    //     this.renderget_stat_by_zone();
-    //   });
-    // },
-
-    // renderChartTop_5() {
-    //   // Vérifiez si un graphique existe déjà et détruisez-le
-    //   if (this.chartInstance) {
-    //     this.chartInstance.destroy();
+    // get_all_donnees() {
+    //   const accessToken = appStore.token;
+    //   if (accessToken) {
+    //     const headers = { Authorization: `Bearer ${accessToken}` };
+    //     this.$axios
+    //       .get("/voting_centre/get_result_by_province", { headers })
+    //       .then((response) => {
+    //         this.votingData = response.data;
+    //         this.updateMap();
+    //       })
+    //       .catch((error) => {
+    //         console.error("Erreur lors de la récupération des données :", error);
+    //       });
     //   }
+    // },
 
-    //   // Trier les données pour obtenir le top 5 des abstentions et des scrutins
-    //   const sortedData = this.pol_sta.sort((a, b) => b.nb_abstention - a.nb_abstention).slice(0, 5);
+    // getCandidates() {
+    //   this.$axios
+    //     .get("/resultat/get_vote_by_province")
+    //     .then((response) => {
+    //       this.candidates = response.data;
+    //       this.total_candidate_1 = response.data[9].total_candidate_1
+    //       this.total_candidate_2 = response.data[9].total_candidate_2
+    //       this.total_candidate_3 = response.data[9].total_candidate_3
+    //       this.updateMapWithResults(this.candidates);
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de la récupération des candidats :", error);
+    //     });
+    // },
 
-    //   // Récupérer les labels et les valeurs des candidats
-    //   const labels = sortedData.map(item => item.libelle);
-    //   const abstentionValues = sortedData.map(item => item.nb_abstention);
-    //   const scrutinValues = sortedData.map(item => item.nb_scrutin_valide);
-
-    //   const ctx = document.getElementById('prov').getContext('2d');
-
-    //   // Créez un nouveau graphique et stockez l'instance
-    //   this.chartInstance = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //       labels: labels,
-    //       datasets: [
-    //         {
-    //           label: 'Abstentions',
-    //           data: abstentionValues,
-    //           backgroundColor: 'rgba(255, 99, 132, 0.7)',
-    //         },
-    //         {
-    //           label: 'Scrutin Valide',
-    //           data: scrutinValues,
-    //           backgroundColor: 'rgba(54, 162, 235, 0.7)',
-    //         }
-    //       ]
-    //     },
-    //     options: {
-    //       responsive: true,
-    //       scales: {
-    //         x: {
-    //           title: { display: true, text: 'Écoles' }
-    //         },
-    //         y: {
-    //           beginAtZero: true,
-    //           title: { display: true, text: 'Nombre de Votes' }
-    //         }
+    // getCentreVote() {
+    //   this.$axios
+    //     .get("/voting_centre/all")
+    //     .then((response) => {
+    //       this.centre_vote = response.data;
+    //       console.log('centre by zone = ', this.centre_vote)
+    //       if (this.showVotingCenters) {
+    //         this.updateMapLocations();
     //       }
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de la récupération des centres de vote :", error);
+    //     });
+    // },
+
+    // updateMapWithResults(apiData) {
+    //   apiData.forEach((data) => {
+    //     const provinceKey = data.province;
+    //     const description = `
+    //       <p><strong>Candidat 1 :</strong> ${data.candidate_1} votes</p>
+    //       <p><strong>Candidat 2 :</strong> ${data.candidate_2} votes</p>
+    //       <p><strong>Candidat 3 :</strong> ${data.candidate_3} votes</p>
+    //       <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+    //     `;
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[provinceKey].description = description;
+    //     }
+
+    //     const maxVotes = Math.max(data.candidate_1, data.candidate_2, data.candidate_3);
+    //     let color = "#FFFFFF";
+    //     if (data.candidate_1 === 0 && data.candidate_2 === 0 && data.candidate_3 === 0) {
+    //       color = "#D3D3D3"; // Gris si résultats à zéro
+    //     } else {
+    //       if (maxVotes === data.candidate_1) color = "#FF6347";
+    //       else if (maxVotes === data.candidate_2) color = "#32CD32";
+    //       else if (maxVotes === data.candidate_3) color = "#1E90FF";
+    //     }
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[provinceKey].color = color;
+    //       simplemaps_countrymap_mapdata.state_specific[provinceKey].hover_color = color;
     //     }
     //   });
+
+    //   simplemaps_countrymap.load();
     // },
 
-    //Tout en 1
-renderChartTop_5() {
-    // Vérifiez si un graphique existe déjà et détruisez-le
-    if (this.chartInstance) {
-        this.chartInstance.destroy();
-    }
+    // updateMapLocations() {
+    //   simplemaps_countrymap_mapdata.locations = {};
+    //   this.centre_vote.forEach((centre, index) => {
+    //     if (centre.lat && centre.lon && centre.lat !== 0 && centre.lon !== 0) {
+    //       let maxVotes = Math.max(centre.candidate_1, centre.candidate_2, centre.candidate_3);
+    //       let color = "#808080"; // Gris par défaut si tous les résultats sont 0
+    //       if (maxVotes > 0) {
+    //         if (maxVotes === centre.candidate_1) color = "#FF6347"; // Rouge
+    //         else if (maxVotes === centre.candidate_2) color = "#32CD32"; // Vert
+    //         else if (maxVotes === centre.candidate_3) color = "#1E90FF"; // Bleu
+    //       }
 
-    // Trier les données pour obtenir le top 5 des abstentions et des scrutins
-    const sortedData = this.pol_sta.sort((a, b) => b.nb_abstention - a.nb_abstention).slice(0, 5);
+    //       simplemaps_countrymap_mapdata.locations[index + 1] = {
+    //         name: centre.libelle,
+    //         lat: centre.lat,
+    //         lng: centre.lon,
+    //         parent_id: "GA1",
+    //         type: "marker",
+    //         color: color,
+    //         size: "40",
+    //         description: `
+    //           <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices}</p>
+    //           <p><strong>Nombre de participants :</strong> ${centre.total_registered}</p>
+    //           <p><strong>Candidat 1 :</strong> ${centre.candidate_1}</p>
+    //           <p><strong>Candidat 2 :</strong> ${centre.candidate_2}</p>
+    //           <p><strong>Candidat 3 :</strong> ${centre.candidate_3}</p>
+    //           <p><strong>Total des votants :</strong> ${centre.total_registered_bureau || 'N/A'}</p>
+    //         `,
+    //       };
+    //     }
+    //   });
+    //   simplemaps_countrymap.load();
+    // },
 
-    // Récupérer les labels et les valeurs des écoles
-    const labels = sortedData.map(item => item.libelle);
-    const abstentionValues = sortedData.map(item => item.nb_abstention);
-    const scrutinValues = sortedData.map(item => item.nb_scrutin_valide);
-
-    // Récupérer le Top 5 des candidats ayant obtenu le plus de votes
-    const candidateLabels = Object.keys(this.pol_sta[0]).filter(key => key.startsWith('candidate_'));
-    const candidateVotes = candidateLabels.map(label => ({
-        label: label.replace('candidate_', 'Candidat '),
-        total: this.pol_sta.reduce((sum, item) => sum + item[label], 0)
-    }));
-
-    const topCandidates = candidateVotes.sort((a, b) => b.total - a.total).slice(0, 5);
-    const candidateNames = topCandidates.map(item => item.label);
-    const candidateScores = topCandidates.map(item => item.total);
-
-    const ctx = document.getElementById('prov').getContext('2d');
-
-    // Création du graphique combiné
-    this.chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            labels: labels.concat(candidateNames), // Écoles + Candidats
-            datasets: [
-                {
-                    label: 'Abstentions',
-                    data: abstentionValues.concat(new Array(candidateNames.length).fill(0)),
-                    backgroundColor: 'rgba(255, 99, 132, 0.7)',
-                },
-                {
-                    label: 'Scrutin Valide',
-                    data: scrutinValues.concat(new Array(candidateNames.length).fill(0)),
-                    backgroundColor: 'rgba(54, 162, 235, 0.7)',
-                },
-                {
-                    label: 'Votes par Candidat',
-                    data: new Array(labels.length).fill(0).concat(candidateScores),
-                    backgroundColor: 'rgba(75, 192, 192, 0.7)',
-                }
-            ]
-        },
-        options: {
-            responsive: true,
-            scales: {
-                x: { title: { display: true, text: 'Écoles et Candidats' } },
-                y: { beginAtZero: true, title: { display: true, text: 'Votes' } }
-            }
-        }
-    });
-    },
-
-
-
-    //en deux graphiques
-// renderChartTop_5() {
-//     // Vérifiez si un graphique existe déjà et détruisez-le
-//     if (this.chartInstance) {
-//         this.chartInstance.destroy();
-//     }
-
-//     // Trier les données pour obtenir le top 5 des abstentions et des scrutins
-//     const sortedData = this.pol_sta.sort((a, b) => b.nb_abstention - a.nb_abstention).slice(0, 5);
-
-//     // Récupérer les labels et les valeurs des écoles
-//     const labels = sortedData.map(item => item.libelle);
-//     const abstentionValues = sortedData.map(item => item.nb_abstention);
-//     const scrutinValues = sortedData.map(item => item.nb_scrutin_valide);
-
-//     // Récupérer le Top 5 des candidats ayant obtenu le plus de votes
-//     const candidateLabels = Object.keys(this.pol_sta[0]).filter(key => key.startsWith('candidate_'));
-//     const candidateVotes = candidateLabels.map(label => ({
-//         label: label.replace('candidate_', 'Candidat '),
-//         total: this.pol_sta.reduce((sum, item) => sum + item[label], 0)
-//     }));
-
-//     const topCandidates = candidateVotes.sort((a, b) => b.total - a.total).slice(0, 5);
-//     const candidateNames = topCandidates.map(item => item.label);
-//     const candidateScores = topCandidates.map(item => item.total);
-
-//     // Graphique des abstentions et scrutins
-//     const ctxAbstention = document.getElementById('prov').getContext('2d');
-//     this.chartInstance = new Chart(ctxAbstention, {
-//         type: 'bar',
-//         data: {
-//             labels: labels,
-//             datasets: [
-//                 {
-//                     label: 'Abstentions',
-//                     data: abstentionValues,
-//                     backgroundColor: 'rgba(255, 99, 132, 0.7)',
-//                 },
-//                 {
-//                     label: 'Scrutin Valide',
-//                     data: scrutinValues,
-//                     backgroundColor: 'rgba(54, 162, 235, 0.7)',
-//                 }
-//             ]
-//         },
-//         options: {
-//             responsive: true,
-//             scales: {
-//                 y: { beginAtZero: true, title: { display: true, text: 'Votes' } }
-//             }
-//         }
-//     });
-
-//     // Graphique du Top 5 des candidats
-//     const ctxCandidates = document.getElementById('candidatesChart').getContext('2d');
-//     new Chart(ctxCandidates, {
-//         type: 'bar',
-//         data: {
-//             labels: candidateNames,
-//             datasets: [{
-//                 label: 'Votes par Candidat',
-//                 data: candidateScores,
-//                 backgroundColor: 'rgba(75, 192, 192, 0.7)'
-//             }]
-//         },
-//         options: {
-//             responsive: true,
-//             scales: {
-//                 y: { beginAtZero: true, title: { display: true, text: 'Votes' } }
-//             }
-//         }
-//     });
-// }
-
-
-
-
-    // renderget_stat_by_zone() {
-    //   // Vérifiez si un graphique existe déjà et détruisez-le
-    //   if (this.chartInstanceZone) {
-    //     this.chartInstanceZone.destroy();
+    // toggleNationalView() {
+    //   if (this.showNationalView) {
+    //     this.updateMapWithResults(this.candidates); // Appliquer les couleurs
+    //   } else {
+    //     this.resetProvinceColors(); // Enlever les couleurs
     //   }
+    //   simplemaps_countrymap.load();
+    // },
 
-    //   // Préparez les labels pour l'axe X (libellés des zones)
-    //   const labels = this.datas.map((zone) => zone.libelle);
-
-    //   // Préparer les datasets pour chaque candidat
-    //   const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
-    //     key.startsWith("candidate_")
-    //   );
-
-    //   const datasets = candidateKeys.map((candidate, index) => ({
-    //     label: `Candidat ${index + 1}`,
-    //     data: this.datas.map((zone) => zone[candidate]), // Extraire les votes pour ce candidat dans chaque zone
-    //     backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
-    //   }));
-
-    //   // Récupérer le contexte du canvas
-    //   const ctx = document.getElementById("zone").getContext("2d");
-
-    //   // Créez un graphique bar
-    //   this.chartInstanceZone = new Chart(ctx, {
-    //     type: "bar",
-    //     data: {
-    //       labels: labels, // Zones sur l'axe X
-    //       datasets: datasets, // Données pour chaque candidat
-    //     },
-    //     options: {
-    //       responsive: true,
-    //       plugins: {
-    //         tooltip: {
-    //           callbacks: {
-    //             label: function (tooltipItem) {
-    //               return `${tooltipItem.dataset.label}: ${tooltipItem.raw} votes`;
-    //             },
-    //           },
-    //         },
-    //       },
-    //       scales: {
-    //         x: {
-    //           title: { display: true, text: "Zones" },
-    //           stacked: false,
-    //         },
-    //         y: {
-    //           beginAtZero: true,
-    //           title: { display: true, text: "Votes" },
-    //           stacked: false,
-    //         },
-    //       },
-    //     },
+    // resetProvinceColors() {
+    //   Object.keys(simplemaps_countrymap_mapdata.state_specific).forEach((province) => {
+    //     simplemaps_countrymap_mapdata.state_specific[province].color = "#d3d3d3";
+    //     simplemaps_countrymap_mapdata.state_specific[province].hover_color = "#d3d3d3";
+    //     simplemaps_countrymap_mapdata.state_specific[province].description = "";
     //   });
     // },
 
-    // Fonction pour attribuer des couleurs aux candidats
 
+    // toggleVotingCenters() {
+    //   if (this.showVotingCenters) {
+    //     this.updateMapLocations();
+    //   } else {
+    //     simplemaps_countrymap_mapdata.locations = {};
+    //     simplemaps_countrymap.load();
+    //   }
+    // },
+
+    loadExternalScripts() {
+      const scripts = ["/mapdata.js", "/countrymap.js"];
+      scripts.forEach((src) => {
+        const script = document.createElement("script");
+        script.src = src;
+        script.async = false;
+        script.onload = () => {
+          if (src === "/countrymap.js" && this.showVotingCenters) {
+            this.updateMapLocations();
+          }
+        };
+        document.body.appendChild(script);
+      });
+    },
+
+    // updateMap() {
+    //   console.log("Mise à jour de la carte avec les filtres :", {
+    //     showVotingCenters: this.showVotingCenters,
+    //   });
+    // },
+
+    // connectWebSocket() {
+    //   this.ws = new WebSocket(this.$wsUrl);
+
+    //   this.ws.onopen = () => {
+    //     console.log("WebSocket connecté !");
+    //   };
+
+    //   this.ws.onmessage = (event) => {
+    //     try {
+    //       const message = event.data;
+    //       this.getCentreVote();
+    //       this.getCandidates();
+    //       this.updateMapLocations()
+    //       this.toggleVotingCenters()
+    //       this.get_all_donnees()
+    //       this.updateMapWithResults()
+
+    //       if (message && message.updatedData) {
+    //         this.datas = [...this.datas, ...message.updatedData];
+    //       }
+    //     } catch (error) {
+    //       console.error("Erreur WebSocket :", error);
+    //     }
+    //   };
+
+    //   this.ws.onerror = (error) => {
+    //     console.error("Erreur WebSocket :", error);
+    //   };
+
+    //   this.ws.onclose = () => {
+    //     setTimeout(() => {
+    //       this.connectWebSocket();
+    //     }, 3000);
+    //   };
+    // },
 
     setChartData() {
       const documentStyle = getComputedStyle(document.documentElement);
@@ -529,14 +403,14 @@ renderChartTop_5() {
             label: 'First Dataset',
             data: [65, 59, 80, 81, 56, 55, 40],
             fill: false,
-            borderColor: documentStyle.getPropertyValue('--cyan-500'),
+            borderColor: documentStyle.getPropertyValue('--p-cyan-500'),
             tension: 0.4
           },
           {
             label: 'Second Dataset',
             data: [28, 48, 40, 19, 86, 27, 90],
             fill: false,
-            borderColor: documentStyle.getPropertyValue('--gray-500'),
+            borderColor: documentStyle.getPropertyValue('--p-gray-500'),
             tension: 0.4
           }
         ]
@@ -544,9 +418,9 @@ renderChartTop_5() {
     },
     setChartOptions() {
       const documentStyle = getComputedStyle(document.documentElement);
-      const textColor = documentStyle.getPropertyValue('--text-color');
-      const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-      const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
+      const textColor = documentStyle.getPropertyValue('--p-text-color');
+      const textColorSecondary = documentStyle.getPropertyValue('--p-text-muted-color');
+      const surfaceBorder = documentStyle.getPropertyValue('--p-content-border-color');
 
       return {
         maintainAspectRatio: false,
@@ -583,8 +457,24 @@ renderChartTop_5() {
 </script>
 
 <style>
-.chart-container {
-  display: inline-block;
-  vertical-align: top;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
+
+#map {
+  width: 600px;
+  height: 600px;
+  position: absolute;
+  top: 62%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  margin-left: 100%;
+  border-radius: 10px;
+}
+
+
 </style>
