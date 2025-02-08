@@ -29,7 +29,6 @@
             <option value="Administrateur">Administrateur</option>
             <option value="Coordonateur">Coordonateur</option>
             <option value="Superviseur">Superviseur</option>
-            <option value="Finaux">Finaux</option>
           </select>
         </div>
         <div class="form-group col-6">
