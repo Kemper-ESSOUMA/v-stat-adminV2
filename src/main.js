@@ -48,25 +48,25 @@ import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
 
 //empêcher aussi l'inspection avec F12, Ctrl+Shift+I et Ctrl+U et Ctrl+S
-// document.addEventListener("contextmenu", (event) => event.preventDefault());
+ document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-// document.addEventListener("keydown", (event) => {
-//   if (
-//     event.ctrlKey &&
-//     (event.key === "u" ||
-//       event.key === "U" ||
-//       event.key === "s" ||
-//       event.key === "S")
-//   ) {
-//     event.preventDefault();
-//   }
-//   if (
-//     event.key === "F12" ||
-//     (event.ctrlKey && event.shiftKey && event.key === "I")
-//   ) {
-//     event.preventDefault();
-//   }
-// });
+ document.addEventListener("keydown", (event) => {
+   if (
+     event.ctrlKey &&
+     (event.key === "u" ||
+       event.key === "U" ||
+       event.key === "s" ||
+       event.key === "S")
+   ) {
+     event.preventDefault();
+   }
+   if (
+     event.key === "F12" ||
+     (event.ctrlKey && event.shiftKey && event.key === "I")
+   ) {
+     event.preventDefault();
+   }
+ });
 
 const app = createApp(App);
 app.use(PrimeVue);

@@ -24,12 +24,12 @@
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
-      <div>
+      <!-- <div>
         <router-link class="btn " :to="{ name: 'goodies' }" :class="{ 'active': this.$route.name === 'goodies' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="goodies">
           <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
         </router-link>
-      </div>
+      </div> -->
       <div>
         <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
           data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">

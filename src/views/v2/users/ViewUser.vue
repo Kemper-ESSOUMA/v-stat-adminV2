@@ -73,10 +73,10 @@
       <i class="fa-solid fa-trash"></i> Supprimer
       <span v-if="isLoadingdelete" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>
-    <button class="btn btn-sm btn-primary mr-2" @click="updatePermission()">
+    <!-- <button class="btn btn-sm btn-primary mr-2" @click="updatePermission()">
       <i class="fas fa-floppy-disk"></i> Modification des permissions
       <span v-if="isLoadingUpdate" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-    </button>
+    </button> -->
   </div>
 
 </template>

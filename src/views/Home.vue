@@ -40,7 +40,7 @@
         </div>
       </div>
 
-      <div class="col-4">
+      <!-- <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'goodies' }" class="small-box-footer text-decoration-none">
             <div id="rows_counter" class="card mb-1" style="background-color: #8E24AA;">
@@ -51,7 +51,7 @@
                 <p>Goodies</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
+                    
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_goodie }} Fiches de goodies</h4>
@@ -71,7 +71,7 @@
             </div>
           </router-link>
         </div>
-      </div>
+      </div> -->
 
       <div class="col-4">
         <div class="m-1">

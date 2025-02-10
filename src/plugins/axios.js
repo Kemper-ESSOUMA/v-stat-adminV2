@@ -7,14 +7,14 @@ const axiosPlugin = {
 
         // Crée une instance Axios
         const axiosInstance = axios.create({
-            // baseURL: "https://51.222.158.64:8001/api/",
+            //  baseURL: "https://51.222.158.64:8001/api/",
             //  baseURL: "http://192.168.2.111:8000/api/",
-            baseURL: "https://51.222.158.64:8002/api/",
+             baseURL: "https://51.222.158.64:8002/api/",
         });
 
         // URL WebSocket
-        // const WS_URL = "wss://51.222.158.64:8001/api/ws/ws";
          const WS_URL = "wss://51.222.158.64:8002/api/ws/ws";
+        //  const WS_URL = "wss://51.222.158.64:8001/api/ws/ws";
 
         // Ajoute le token aux en-têtes si disponible
         axiosInstance.defaults.headers.common[
