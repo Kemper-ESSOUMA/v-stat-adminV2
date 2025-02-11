@@ -7,14 +7,14 @@
       <div>
         <router-link class="btn" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
-          <i class="pi pi-building" style="color: #3242C5"></i> Centres
+          <i class="pi pi-building" style="color: #3242C5"></i> Centres de votes
         </router-link>
       </div>
       <div>
         <router-link class="btn btn-primary" :to="{ name: 'bureaux-vote' }"
           :class="{ 'active': this.$route.name === 'bureaux-vote' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Burreaux de votes">
-          <i class="pi pi-table" style="color: #3242C5"></i> Bureaux
+          <i class="pi pi-table" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
     </div>
@@ -46,12 +46,12 @@
               <span> Actualiser</span>
             </button>
           </div>
-          <InputText placeholder="Keyword Search" v-model="filters['global'].value" />
+          <InputText placeholder="Recherche" v-model="filters['global'].value" />
         </div>
 
       </template>
       <template #empty>
-        No customers found.
+        Aucune données trouvées.
       </template>
       <template #loading>
         Loading customers data. Please wait.
@@ -80,7 +80,7 @@
         </template>
       </DataTableColumn>
       <template #footer>
-        Total {{ datas ? datas.length : 0 }} .
+        Total {{ filteredData.length }} .
       </template>
     </DataTable>
   </div>
@@ -104,6 +104,15 @@ export default {
   mounted() {
     this.getbureaux();
     this.connectWebSocket();
+  },
+    computed: {
+    filteredData() {
+      if (!this.filters['global'] || !this.filters['global'].value) {
+        return this.datas;
+      }
+      const searchTerm = this.filters['global'].value.toLowerCase();
+      return this.datas.filter(item => item.libelle.toLowerCase().includes(searchTerm));
+    }
   },
   methods: {
 

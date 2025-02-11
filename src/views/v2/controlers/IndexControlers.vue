@@ -66,12 +66,44 @@
   </div>
   <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
     <h5 class="chart-title text-center">Votes par centre de vote</h5>
+    <div class="button-container text-center" v-if="currentUser().role === 'SUPER_ADMIN'">
+      <button v-for="(zone, index) in zones" :key="index" @click="updateZone(zone.code)"
+        :class="['data-btn', { active: selectedZone === zone.code }]">
+        {{ zone.name }}
+      </button>
+    </div>
     <canvas id="zone" width="400" height="200"></canvas>
   </div>
 
 </template>
 
 <style scoped>
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.data-btn {
+  padding: 5px 10px;
+  border: none;
+  background-color: #9abeda;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-btn:hover {
+  background-color: #0056b3;
+}
+
+.data-btn.active {
+  background-color: #0056b3 !important;
+  color: white;
+  font-weight: bold;
+}
+
 .chart-container {
   display: flex;
   flex-direction: column;
@@ -95,6 +127,7 @@ import { FilterMatchMode } from 'primevue/api';
 import EditBureauVote from './EditBureauVote.vue';
 import { utils, writeFile } from "xlsx";
 import Chart from 'chart.js/auto';
+import { useAppStore } from "@/store/app";
 
 export default {
   data() {
@@ -104,6 +137,18 @@ export default {
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
+      selectedZone: "01", // Zone par défaut
+      zones: [
+        { code: "01", name: "Estuaire" },
+        { code: "02", name: "Haut-Ogooué" },
+        { code: "03", name: "Moyen-Ogooué" },
+        { code: "04", name: "Ngounié" },
+        { code: "05", name: "Nyanga" },
+        { code: "06", name: "Ogooué-Ivindo" },
+        { code: "07", name: "Ogooué-Lolo" },
+        { code: "08", name: "Ogooué-Maritime" },
+        { code: "09", name: "Woleu-Ntem" }
+      ]
     };
   },
   mounted() {
@@ -113,6 +158,14 @@ export default {
     this.get_stat_by_zone();
   },
   methods: {
+    currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+    updateZone(zoneCode) {
+      this.selectedZone = zoneCode;
+      this.get_stat_by_zone();
+    },
     openModal(objetData) {
       this.$dialog.open(EditBureauVote, {
         props: {
@@ -134,13 +187,22 @@ export default {
       });
     },
 
+    // get_stat_by_zone() {
+    //   this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
+    //     this.datas1 = response.data;
+    //     this.loading = false
+    //     console.log('datas stat_by_zone=', this.datas1);
+    //     this.renderget_stat_by_zone();
+    //   });
+    // },
     get_stat_by_zone() {
-      this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
-        this.datas1 = response.data;
-        this.loading = false
-        console.log('datas stat_by_zone=', this.datas1);
-        this.renderget_stat_by_zone();
-      });
+      this.$axios.get("/dep_com_can/stat_by_zone", { params: { zone: this.selectedZone } })
+        .then((response) => {
+          this.datas1 = response.data;
+          console.log(`Données pour la zone ${this.selectedZone}:`, this.datas1);
+          this.renderget_stat_by_zone();
+        })
+        .catch((error) => console.error("Erreur de récupération des statistiques :", error));
     },
 
 

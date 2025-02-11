@@ -231,12 +231,12 @@ const routes = [
         component: () =>
             import ("@/views/v2/alerte-indident/IndexIncident.vue"),
     },
-    {
-        path: "/goodies",
-        name: "goodies",
-        component: () =>
-            import ("@/views/v2/goodies/IndexGoodie.vue"),
-    },
+    // {
+    //     path: "/goodies",
+    //     name: "goodies",
+    //     component: () =>
+    //         import ("@/views/v2/goodies/IndexGoodie.vue"),
+    // },
     {
         path: "/bureaux",
         name: "bureaux",

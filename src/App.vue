@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 import AppBar from "@/layouts/default/AppBar.vue";
 import SideBar from "@/layouts/default/SideBar.vue";
 import { useAppStore } from "@/store/app";
@@ -61,10 +61,10 @@ export default defineComponent({
     const appStore = useAppStore();
     appStore.initializeAuth(); // Initialiser l'authentification lors du démarrage
   },
-  mounted() {
-    const appStore = useAppStore();
-    console.log("logged =", appStore.authenticated);
-  },
+ mounted() {
+   const appStore = useAppStore();
+   console.log("logged =", appStore.authenticated);
+   },
 });
 </script>
 
