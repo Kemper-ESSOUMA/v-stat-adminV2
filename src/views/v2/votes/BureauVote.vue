@@ -60,12 +60,12 @@
       <DataTableColumn field="code" header="Code"></DataTableColumn>
       <DataTableColumn field="libelle" header="Titre"></DataTableColumn>
       <DataTableColumn field="zone" header="Zone"></DataTableColumn>
-      <DataTableColumn field="total_registered" header="Total Enregistré"></DataTableColumn>
-      <DataTableColumn field="total_scrutin" header="Total de scrutin"></DataTableColumn>
+      <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
+      <DataTableColumn field="total_scrutin" header="Suffrage exprimé"></DataTableColumn>
       <!-- <DataTableColumn field="burreau_code" header="Code du bureau"></DataTableColumn> -->
-      <DataTableColumn field="nb_abstention" header="Scrutin nulle"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin blanc"></DataTableColumn>
       <DataTableColumn field="nb_scrutin_valide" header="Scrutin validé"></DataTableColumn>
+      <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
 

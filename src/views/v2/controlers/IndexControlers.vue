@@ -59,11 +59,11 @@
 
       <DataTableColumn field="code" header="Code du burreau de vote"></DataTableColumn>
       <DataTableColumn field="libelle" header="Centre de vote"></DataTableColumn>
-      <DataTableColumn field="total_registered" header="Total Enregistré"></DataTableColumn>
-      <DataTableColumn field="total_scrutin" header="Total de scrutin"></DataTableColumn>
-      <DataTableColumn field="nb_abstention" header="Scrutin nulle"></DataTableColumn>
+      <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
+      <DataTableColumn field="total_scrutin" header="Suffrage exprimé"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin blanc"></DataTableColumn>
       <DataTableColumn field="nb_scrutin_valide" header="Scrutin validé"></DataTableColumn>
+      <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn field="candidate_1" header="candidate 1"></DataTableColumn>
       <DataTableColumn field="candidate_2" header="candidate 2"></DataTableColumn>
       <DataTableColumn field="candidate_3" header="candidate 3"></DataTableColumn>
