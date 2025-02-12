@@ -61,9 +61,10 @@
       <DataTableColumn field="code" header="Code du burreau de vote"></DataTableColumn>
       <DataTableColumn field="libelle" header="Centre de vote"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
-      <DataTableColumn field="total_scrutin" header="Suffrage exprimé"></DataTableColumn>
-      <DataTableColumn field="nb_bulletin_blanc" header="Bulletin blanc"></DataTableColumn>
       <DataTableColumn field="nb_scrutin_valide" header="Scrutin validé"></DataTableColumn>
+      <DataTableColumn field="nb_bulletin_blanc" header="Bulletin B/N"></DataTableColumn>
+
+      <DataTableColumn field="total_scrutin" header="Suffrage exprimé"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn field="candidate_1" header="candidate 1"></DataTableColumn>
       <DataTableColumn field="candidate_2" header="candidate 2"></DataTableColumn>
@@ -373,7 +374,7 @@ export default {
         return;
       }
 
-      // Extraire les noms réels et les votes 
+      // Extraire les noms réels et les votes
       const candidateNames = candidateKeys.map(candidate => this.datas1[0][candidate]?.name || `${candidate}`);
       const datasets = candidateKeys.map((candidate, index) => ({
         label: candidateNames[index], // Utilisation des noms réels
