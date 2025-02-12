@@ -13,8 +13,9 @@
         </router-link>
       </div>
       <div>
-        <router-link class="btn " :to="{ name: 'centre-votes' }" :class="{ 'active': this.$route.name === 'centre-votes' }"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
+        <router-link class="btn " :to="{ name: 'centre-votes' }"
+          :class="{ 'active': this.$route.name === 'centre-votes' }" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Centre de votes">
           <i class="pi pi-building" style="color: #3242C5"></i> Centres de votes
         </router-link>
       </div>
@@ -354,17 +355,29 @@ export default {
         this.chartInstanceZone.destroy();
       }
 
+      // Vérifier que this.datas contient des données
+      if (!this.datas1 || this.datas1.length === 0) {
+        console.error("Aucune donnée disponible pour les statistiques par zone.");
+        return;
+      }
+
       // Préparez les labels pour l'axe X (libellés des zones)
-      const labels = this.datas1.map((zone) => zone.libelle);
+      const labels = this.datas1.map(zone => zone.libelle);
 
-      // Préparer les datasets pour chaque candidat
-      const candidateKeys = Object.keys(this.datas1[0]).filter((key) =>
-        key.startsWith("candidate_")
-      );
+      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
+      const candidateKeys = Object.keys(this.datas1[0]).filter(key => key.startsWith("candidate_"));
 
+      // Vérifier que des candidats existent
+      if (candidateKeys.length === 0) {
+        console.error("Aucun candidat trouvé dans les données.");
+        return;
+      }
+
+      // Extraire les noms réels et les votes 
+      const candidateNames = candidateKeys.map(candidate => this.datas1[0][candidate]?.name || `${candidate}`);
       const datasets = candidateKeys.map((candidate, index) => ({
-        label: `Candidat ${index + 1}`,
-        data: this.datas1.map((zone) => zone[candidate]), // Extraire les votes pour ce candidat dans chaque zone
+        label: candidateNames[index], // Utilisation des noms réels
+        data: this.datas1.map(zone => zone[candidate]?.data || 0), // Extraire les votes (0 si valeur manquante)
         backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
       }));
 
@@ -380,15 +393,6 @@ export default {
         },
         options: {
           responsive: true,
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  return `${tooltipItem.dataset.label}: ${tooltipItem.raw} votes`;
-                },
-              },
-            },
-          },
           scales: {
             x: {
               title: { display: true, text: "Zones" },
@@ -408,7 +412,7 @@ export default {
     getColorForCandidate(index) {
       const colors = [
         "#FF6384",
-        "#36A2EB",
+        "#32cd32",
         "#FFCE56",
         "#4BC0C0",
         "#9966FF",
