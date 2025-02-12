@@ -194,19 +194,76 @@ export default {
     //   });
     // },
 
-    renderChartProvince() {
+    // renderChartProvince() {
 
+    //   // Vérifiez si un graphique existe déjà et détruisez-le
+    //   if (this.chartInstance) {
+    //     this.chartInstance.destroy();
+    //   }
+
+    //   // Récupérer les labels et les données
+    //   const labels = Object.keys(this.province[0]).filter(key => key.startsWith('candidate_'));
+    //   const values = this.province.map(item => labels.map(label => item[label]));
+
+    //   const datasets = labels.map((label, index) => ({
+    //     label: `Candidat ${index + 1}`,
+    //     data: values.map(item => item[index]),
+    //     backgroundColor: this.getColorForCandidate(index),
+    //   }));
+
+    //   const ctx = document.getElementById('prov').getContext('2d');
+
+    //   // Créez un nouveau graphique et stockez l'instance
+    //   this.chartInstance = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //       labels: this.province.map(item => item.province),
+    //       datasets: datasets,
+    //     },
+    //     options: {
+    //       responsive: true,
+    //       scales: {
+    //         x: {
+    //           title: { display: true, text: 'Provinces' },
+    //         },
+    //         y: {
+    //           beginAtZero: true,
+    //           title: { display: true, text: 'Votes' },
+    //         },
+    //       },
+    //     },
+    //   });
+    // },
+    renderChartProvince() {
       // Vérifiez si un graphique existe déjà et détruisez-le
       if (this.chartInstance) {
         this.chartInstance.destroy();
       }
 
-      // Récupérer les labels et les données
-      const labels = Object.keys(this.province[0]).filter(key => key.startsWith('candidate_'));
-      const values = this.province.map(item => labels.map(label => item[label]));
+      // Vérifier que this.province n'est pas vide
+      if (!this.province || this.province.length === 0) {
+        console.error("Aucune donnée disponible pour le graphique.");
+        return;
+      }
 
-      const datasets = labels.map((label, index) => ({
-        label: `Candidat ${index + 1}`,
+      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
+      const candidates = Object.keys(this.province[0]).filter(key => key.startsWith("candidate_"));
+
+      // Vérifier que des candidats existent
+      if (candidates.length === 0) {
+        console.error("Aucun candidat trouvé dans les données.");
+        return;
+      }
+
+      // Extraire les noms et les votes avec sécurité
+      const labels = candidates.map(candidate => this.province[0][candidate]?.name || `${candidate}`);
+      const values = this.province.map(item =>
+        candidates.map(candidate => item[candidate]?.data || 0) // Valeur par défaut 0 si undefined
+      );
+
+      // Construire les datasets avec les vrais noms des candidats
+      const datasets = labels.map((name, index) => ({
+        label: name, // Utilisation des noms réels
         data: values.map(item => item[index]),
         backgroundColor: this.getColorForCandidate(index),
       }));
@@ -217,7 +274,7 @@ export default {
       this.chartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: this.province.map(item => item.province),
+          labels: this.province.map(item => item.province), // Nom des provinces sur l'axe X
           datasets: datasets,
         },
         options: {
@@ -237,23 +294,36 @@ export default {
 
 
 
+
     renderget_stat_by_zone() {
       // Vérifiez si un graphique existe déjà et détruisez-le
       if (this.chartInstanceZone) {
         this.chartInstanceZone.destroy();
       }
 
+      // Vérifier que this.datas contient des données
+      if (!this.datas || this.datas.length === 0) {
+        console.error("Aucune donnée disponible pour les statistiques par zone.");
+        return;
+      }
+
       // Préparez les labels pour l'axe X (libellés des zones)
-      const labels = this.datas.map((zone) => zone.libelle);
+      const labels = this.datas.map(zone => zone.libelle);
 
-      // Préparer les datasets pour chaque candidat
-      const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
-        key.startsWith("candidate_")
-      );
+      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
+      const candidateKeys = Object.keys(this.datas[0]).filter(key => key.startsWith("candidate_"));
 
+      // Vérifier que des candidats existent
+      if (candidateKeys.length === 0) {
+        console.error("Aucun candidat trouvé dans les données.");
+        return;
+      }
+
+      // Extraire les noms réels et les votes 
+      const candidateNames = candidateKeys.map(candidate => this.datas[0][candidate]?.name || `${candidate}`);
       const datasets = candidateKeys.map((candidate, index) => ({
-        label: `Candidat ${index + 1}`,
-        data: this.datas.map((zone) => zone[candidate]), // Extraire les votes pour ce candidat dans chaque zone
+        label: candidateNames[index], // Utilisation des noms réels
+        data: this.datas.map(zone => zone[candidate]?.data || 0), // Extraire les votes (0 si valeur manquante)
         backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
       }));
 
@@ -269,15 +339,6 @@ export default {
         },
         options: {
           responsive: true,
-          plugins: {
-            tooltip: {
-              callbacks: {
-                label: function (tooltipItem) {
-                  return `${tooltipItem.dataset.label}: ${tooltipItem.raw} votes`;
-                },
-              },
-            },
-          },
           scales: {
             x: {
               title: { display: true, text: "Zones" },
@@ -293,11 +354,12 @@ export default {
       });
     },
 
+
     // Fonction pour attribuer des couleurs aux candidats
     getColorForCandidate(index) {
       const colors = [
         "#FF6384",
-        "#36A2EB",
+        "#32cd32",
         "#FFCE56",
         "#4BC0C0",
         "#9966FF",
