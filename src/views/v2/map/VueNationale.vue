@@ -1,14 +1,15 @@
 <template>
   <div class="btn-group page-nav" role="group" style="margin-left: 40%">
     <div>
-      <router-link class="btn btn-primary" :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
+      <router-link class="btn " :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="map">
         <i class="pi pi-globe" style="color: #3242c5"></i> GLOBAL
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'national' }" :class="{ active: this.$route.name === 'national' }"
-        data-bs-toggle="tooltip" data-bs-placement="right" title="national">
+      <router-link class="btn btn-primary" :to="{ name: 'national' }"
+        :class="{ active: this.$route.name === 'national' }" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="national">
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
