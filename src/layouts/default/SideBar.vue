@@ -61,13 +61,13 @@
             alt="big-data" />
         </router-link>
 
-        <router-link class="navys-link" :to="{ name: 'tendance' }" v-if="currentUser().role === 'SUPER_ADMIN'"
+        <!-- <router-link class="navys-link" :to="{ name: 'tendance' }" v-if="currentUser().role === 'SUPER_ADMIN'"
           :class="{ active: this.$route.name === 'tendance' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Tendance">
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAACXBIWXMAAAsTAAALEwEAmpwYAAADf0lEQVR4nO2bS0hUURiAb5ilvSCj0ggikmhZYRbRJqIoyaJVm4IWQVAtYlpEGx+hEASB0KJJ2hSR5iJaR2UDQYmLNr2s0WwTTanZg7KHX/zMkS63Qe+9c86ce3M+GBiGmfM/9Jzzv67jFClSpIhBgBKgFjgJtAMpoB8YBn4AY+q9fHZffSehflPixBGgFNgDdAEfCY/89oZaq9SJOsAioBnIoB9ZswmocKIGMAdoAT5jnk/AGaDciQLAbmCAwiNnRp1Nw2cDbcA4dkmKLoU2vgroJTr0AJWFMn4l8JLoIVtitWnjq4G3RBfRrdqU8UuAPqKP/CdUmTjweokPPVoPRuAC8aNN5z0fR8bzjhOAcrWn4sprYG4+Dmgh/jSHNb5Cxd1xR2xYGMYBzRqVeB9Q9jL00hgmn89oVOC5ZQdkAtUTgL2aFUhZdoBQH0SBLs3Cb3rWPwqcmuTVin46g9TwRjQLT3pkfKHwjPiqMQIbDQhvda0/D3vU+HFAwoDghGv9VdjjhB8HtBsQfNC1/mb1mWyDB8A94CnwG/Mk/TggZUDwLtf624FjQFmOdPs0MIo5uv04YMCA4A1TCv4rfw0wiBn6/SgwZEDwCr8OUDqsV10j3UwdkZJtVemmHpjhklEGHAGuAleAA94rCrhsQI/vthwgPAOOA2slNOZfbrmdAGzCkgM+YI/DLj1mGgiYfG2BAexxx6PLYxuHYAp7vPHoctfGNdiOPdKG/xhJW6GwX657dMl1WBoPhWsxw+AUjdRvckN4SnK/bCRDJQbS4Z8qwtsC3M7hiDSwzaPHIc06DPseuSE7lqKTSzni/h3APmBdjiBISnIvNOvQ4ct4Qc3k6OKrlLicAAAXsVwSK9VYFJXttN+n3AXANfTzLvCQFdmBJJ08UenuVmA5MF9Fe5Wy/4FzBs6eCRoCGf+fNUZGQzVGBDWNFXeCNUVyNEflioorr7yVp8AAdRGYBAuD6LwzL+MnUONwceO8owtglho7iQuPRGdtDhCAxQaiMxOkjc0MMp3H5DyDkn3TclByAhW9RelMeAgsdQoJ2TD2bESGpfUeeCHihH5LQY6eez5fVMTYVKDcQWL7xsg8MOFGkg6lXMZQStsQOrEpJGTrCdIO68wzxZUyVodaK/oPTU1SY6yRiqw6sLpVsDKk2nBj6n1azQok1XdrYvvYXJEiRZy48AeSTFOrOCgnrwAAAABJRU5ErkJggg=="
             alt="Top 5" />
-        </router-link>
+        </router-link> -->
         <!-- <router-link class="navys-link" :to="{ name: 'VoteInternational' }"
           :class="{ 'active': this.$route.name === 'VoteInternational' }" data-bs-toggle="tooltip"
           data-bs-placement="right" title="Remomte International">

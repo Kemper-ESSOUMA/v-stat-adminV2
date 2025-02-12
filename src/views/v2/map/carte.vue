@@ -47,16 +47,16 @@
       <h3>Légende des couleurs</h3>
       <ul>
         <li>
-          <span class="icon candidate1"></span> Candidat 1:
-          <b>{{ this.total_candidate_1 }}</b> votes
+          <span class="icon candidate1"></span> {{ this.total_candidate_1.name }}:
+          <b>{{ this.total_candidate_1.data }}</b> votes
         </li>
         <li>
-          <span class="icon candidate2"></span> Candidat 2:
-          <b>{{ this.total_candidate_2 }}</b> votes
+          <span class="icon candidate2"></span> {{ this.total_candidate_2.name }}:
+          <b>{{ this.total_candidate_2.data }}</b> votes
         </li>
         <li>
-          <span class="icon candidate3"></span> Candidat 3:
-          <b>{{ this.total_candidate_3 }}</b> votes
+          <span class="icon candidate3"></span> {{ this.total_candidate_3.name }}:
+          <b>{{ this.total_candidate_3.data }}</b> votes
         </li>
         <li><span class="icon center"></span> Centre de vote</li>
         <li><span class="icon station"></span> Résultats à zéro</li>
@@ -68,12 +68,13 @@
       <h3>Candidats</h3>
       <ul>
         <li v-for="(candidate, index) in candidates" :key="index">
-          <p>Province : {{ candidate.province }}</p>
-          <p>Candidat 1 : {{ candidate.candidate_1 }}</p>
-          <p>Candidat 2 : {{ candidate.candidate_2 }}</p>
-          <p>Candidat 3 : {{ candidate.candidate_3 }}</p>
-          <p>Total votes : {{ candidate.nb_scrutin }}</p>
+          <p>Province : {{ candidate.province || "N/A" }}</p>
+          <p>{{ candidate.candidate_1?.name || "Candidat 1" }} : {{ candidate.candidate_1?.data ?? "N/A" }}</p>
+          <p>{{ candidate.candidate_2?.name || "Candidat 2" }} : {{ candidate.candidate_2?.data ?? "N/A" }}</p>
+          <p>{{ candidate.candidate_3?.name || "Candidat 3" }} : {{ candidate.candidate_3?.data ?? "N/A" }}</p>
+          <p>Total votes : {{ candidate.nb_scrutin ?? "N/A" }}</p>
         </li>
+
         <p v-if="candidates.length === 0">Aucune donnée disponible.</p>
       </ul>
     </div>
@@ -82,14 +83,10 @@
     <div id="progress-bar-container">
       <div class="d-plex">
         <div class="image-container candidate1-image" :style="{ left: candidate1Percentage + '%' }">
-          <img
-            src="https://png.pngtree.com/png-vector/20240601/ourmid/pngtree-casual-man-flat-design-avatar-profile-picture-vector-png-image_12593008.png"
-            class="candidate-photo" alt="Candidate 1">
+          <img src="../../../assets/candidat1.png" class="candidate-photo" alt="Candidate 1">
         </div>
         <div class="image-container candidate1-image" :style="{ left: candidate1Percentage + '%' }">
-          <img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq-wsnmJ8hnfF1fzMykmOzKcqZPMWx8YlegAbfvXL8m9F3Dq_FQLDclj_BWKxVMHjaHeg&usqp=CAU"
-            class="candidate-photo" alt="Candidate 1">
+          <img src="../../../assets/candidat2.png" class="candidate-photo" alt="Candidate 1">
         </div>
       </div>
       <div class="progress-bar">
@@ -127,13 +124,13 @@ export default {
 
   computed: {
     totalVotes() {
-      return this.total_candidate_1 + this.total_candidate_2 + this.total_candidate_3;
+      return this.total_candidate_1.data + this.total_candidate_2.data + this.total_candidate_3.data;
     },
     candidate1Percentage() {
-      return this.totalVotes ? ((this.total_candidate_1 / this.totalVotes) * 100).toFixed(2) : 0;
+      return this.totalVotes ? ((this.total_candidate_1.data / this.totalVotes) * 100).toFixed(2) : 0;
     },
     candidate2Percentage() {
-      return this.totalVotes ? ((this.total_candidate_2 / this.totalVotes) * 100).toFixed(2) : 0;
+      return this.totalVotes ? ((this.total_candidate_2.data / this.totalVotes) * 100).toFixed(2) : 0;
     },
   },
 
@@ -203,9 +200,9 @@ export default {
       apiData.forEach((data) => {
         const provinceKey = data.province;
         const description = `
-          <p><strong>Candidat 1 :</strong> ${data.candidate_1} votes</p>
-          <p><strong>Candidat 2 :</strong> ${data.candidate_2} votes</p>
-          <p><strong>Candidat 3 :</strong> ${data.candidate_3} votes</p>
+          <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
+          <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
+          <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
           <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
         `;
 
@@ -215,14 +212,14 @@ export default {
           ].description = description;
         }
 
-        const maxVotes = Math.max(data.candidate_1, data.candidate_2, data.candidate_3);
+        const maxVotes = Math.max(data.candidate_1.data, data.candidate_2.data, data.candidate_3.data);
         let color = "#FFFFFF";
-        if (data.candidate_1 === 0 && data.candidate_2 === 0 && data.candidate_3 === 0) {
+        if (data.candidate_1.data === 0 && data.candidate_2.data === 0 && data.candidate_3.data === 0) {
           color = "#D3D3D3"; // Gris si résultats à zéro
         } else {
-          if (maxVotes === data.candidate_1) color = "#FF6347";
-          else if (maxVotes === data.candidate_2) color = "#32CD32";
-          else if (maxVotes === data.candidate_3) color = "#1E90FF";
+          if (maxVotes === data.candidate_1.data) color = "#FF6347";
+          else if (maxVotes === data.candidate_2.data) color = "#32CD32";
+          else if (maxVotes === data.candidate_3.data) color = "#1E90FF";
         }
 
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
@@ -239,17 +236,17 @@ export default {
       this.centre_vote.forEach((centre, index) => {
         if (centre.lat && centre.lon && centre.lat !== 0 && centre.lon !== 0) {
           let maxVotes = Math.max(
-            centre.candidate_1,
-            centre.candidate_2,
-            centre.candidate_3
+            centre.candidate_1.data,
+            centre.candidate_2.data,
+            centre.candidate_3.data
           );
           let color = "#808080"; // Gris par défaut si tous les résultats sont 0
           if (maxVotes > 0) {
-            if (maxVotes === centre.candidate_1) color = "#FF6347";
+            if (maxVotes === centre.candidate_1.data) color = "#FF6347";
             // Rouge
-            else if (maxVotes === centre.candidate_2) color = "#32CD32";
+            else if (maxVotes === centre.candidate_2.data) color = "#32CD32";
             // Vert
-            else if (maxVotes === centre.candidate_3) color = "#1E90FF"; // Bleu
+            else if (maxVotes === centre.candidate_3.data) color = "#1E90FF"; // Bleu
           }
 
           simplemaps_countrymap_mapdata.locations[index + 1] = {
@@ -263,9 +260,9 @@ export default {
             description: `
               <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices}</p>
               <p><strong>Nombre de participants :</strong> ${centre.total_registered}</p>
-              <p><strong>Candidat 1 :</strong> ${centre.candidate_1}</p>
-              <p><strong>Candidat 2 :</strong> ${centre.candidate_2}</p>
-              <p><strong>Candidat 3 :</strong> ${centre.candidate_3}</p>
+              <p><strong>${centre.candidate_1.name} :</strong> ${centre.candidate_1.data}</p>
+              <p><strong>${centre.candidate_2.name} :</strong> ${centre.candidate_2.data}</p>
+              <p><strong>${centre.candidate_3.name} :</strong> ${centre.candidate_3.data}</p>
               <p><strong>Total des votants :</strong> ${
                 centre.total_registered_bureau || "N/A"
               }</p>
@@ -467,10 +464,10 @@ body {
 
 
 #progress-bar-container {
-  width: 90%;
-  max-width: 600px;
+  width: 80%;
+  max-width: 800px;
   margin: 20px auto;
-  margin-top: 43%;
+  margin-top: 40%;
 }
 
 .progress-bar {
@@ -533,8 +530,8 @@ body {
 
 
 .candidate-photo {
-  width: 50px;
-  height: 50px;
+  width: 80px;
+  height: 80px;
   margin-right: 30%;
 }
 
