@@ -1,21 +1,21 @@
 <template>
-  <div class="btn-group page-nav " role="group" style="margin-left: 40%">
+  <div class="btn-group page-nav" role="group" style="margin-left: 40%">
     <div>
-      <router-link class="btn btn-primary" :to="{ name: 'map' }" :class="{ 'active': this.$route.name === 'map' }"
+      <router-link class="btn btn-primary" :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="map">
-        <i class="pi pi-globe" style="color: #3242C5"></i> GLOBAL
+        <i class="pi pi-globe" style="color: #3242c5"></i> GLOBAL
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'national' }" :class="{ 'active': this.$route.name === 'national' }"
+      <router-link class="btn" :to="{ name: 'national' }" :class="{ active: this.$route.name === 'national' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="national">
-        <i class="pi pi-map-marker" style="color: #3242C5"></i> NATIONAL
+        <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'international' }" :class="{ 'active': this.$route.name === 'international' }"
+      <router-link class="btn" :to="{ name: 'international' }" :class="{ active: this.$route.name === 'international' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="international">
-        <i class="pi pi-map" style="color: #3242C5"></i> INTERNATIONAL
+        <i class="pi pi-map" style="color: #3242c5"></i> INTERNATIONAL
       </router-link>
     </div>
   </div>
@@ -40,16 +40,24 @@
         <input type="checkbox" v-model="showNationalView" @change="toggleNationalView" checked />
         Vue resultat des provinces
       </label>
-
     </div>
 
     <!-- Légende des couleurs -->
     <div id="legend">
       <h3>Légende des couleurs</h3>
       <ul>
-        <li><span class="icon candidate1"></span> Candidat 1: <b>{{ this.total_candidate_1 }}</b> votes</li>
-        <li><span class="icon candidate2"></span> Candidat 2: <b>{{ this.total_candidate_2 }}</b> votes</li>
-        <li><span class="icon candidate3"></span> Candidat 3: <b>{{ this.total_candidate_3 }}</b> votes</li>
+        <li>
+          <span class="icon candidate1"></span> Candidat 1:
+          <b>{{ this.total_candidate_1 }}</b> votes
+        </li>
+        <li>
+          <span class="icon candidate2"></span> Candidat 2:
+          <b>{{ this.total_candidate_2 }}</b> votes
+        </li>
+        <li>
+          <span class="icon candidate3"></span> Candidat 3:
+          <b>{{ this.total_candidate_3 }}</b> votes
+        </li>
         <li><span class="icon center"></span> Centre de vote</li>
         <li><span class="icon station"></span> Résultats à zéro</li>
       </ul>
@@ -69,6 +77,20 @@
         <p v-if="candidates.length === 0">Aucune donnée disponible.</p>
       </ul>
     </div>
+
+    <!-- Barre de progression des votes -->
+    <div id="progress-bar-container">
+      <div class="progress-bar">
+        <div class="progress-segment candidate1" :style="{ width: candidate1Percentage + '%' }">
+          <div class="candidate-photo candidate1-photo"></div>
+          <span class="percentage-text">{{ candidate1Percentage }}%</span>
+        </div>
+        <div class="progress-segment candidate2" :style="{ width: candidate2Percentage + '%' }">
+          <div class="candidate-photo candidate2-photo"></div>
+          <span class="percentage-text">{{ candidate2Percentage }}%</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -81,15 +103,28 @@ export default {
   data() {
     return {
       showVotingCenters: true,
-      showNationalView:true,
+      showNationalView: true,
       votingData: [],
       candidates: [],
       centre_vote: [],
       total_candidate_1: 0,
       total_candidate_2: 0,
-      total_candidate_3: 0
+      total_candidate_3: 0,
     };
   },
+
+  computed: {
+    totalVotes() {
+      return this.total_candidate_1 + this.total_candidate_2 + this.total_candidate_3;
+    },
+    candidate1Percentage() {
+      return this.totalVotes ? ((this.total_candidate_1 / this.totalVotes) * 100).toFixed(2) : 0;
+    },
+    candidate2Percentage() {
+      return this.totalVotes ? ((this.total_candidate_2 / this.totalVotes) * 100).toFixed(2) : 0;
+    },
+  },
+
   mounted() {
     this.loadExternalScripts();
     this.get_all_donnees();
@@ -126,9 +161,10 @@ export default {
         .get("/resultat/get_vote_by_province")
         .then((response) => {
           this.candidates = response.data;
-          this.total_candidate_1 = response.data[9].total_candidate_1
-          this.total_candidate_2 = response.data[9].total_candidate_2
-          this.total_candidate_3 = response.data[9].total_candidate_3
+          this.total_candidate_1 = response.data[9].total_candidate_1;
+          this.total_candidate_2 = response.data[9].total_candidate_2;
+          this.total_candidate_3 = response.data[9].total_candidate_3;
+          console.log('cadidats  all', this.candidates)
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
@@ -141,7 +177,7 @@ export default {
         .get("/voting_centre/all")
         .then((response) => {
           this.centre_vote = response.data;
-          console.log('centre by zone = ', this.centre_vote)
+          console.log("centre by zone = ", this.centre_vote);
           if (this.showVotingCenters) {
             this.updateMapLocations();
           }
@@ -162,7 +198,9 @@ export default {
         `;
 
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
-          simplemaps_countrymap_mapdata.state_specific[provinceKey].description = description;
+          simplemaps_countrymap_mapdata.state_specific[
+            provinceKey
+          ].description = description;
         }
 
         const maxVotes = Math.max(data.candidate_1, data.candidate_2, data.candidate_3);
@@ -188,11 +226,17 @@ export default {
       simplemaps_countrymap_mapdata.locations = {};
       this.centre_vote.forEach((centre, index) => {
         if (centre.lat && centre.lon && centre.lat !== 0 && centre.lon !== 0) {
-          let maxVotes = Math.max(centre.candidate_1, centre.candidate_2, centre.candidate_3);
+          let maxVotes = Math.max(
+            centre.candidate_1,
+            centre.candidate_2,
+            centre.candidate_3
+          );
           let color = "#808080"; // Gris par défaut si tous les résultats sont 0
           if (maxVotes > 0) {
-            if (maxVotes === centre.candidate_1) color = "#FF6347"; // Rouge
-            else if (maxVotes === centre.candidate_2) color = "#32CD32"; // Vert
+            if (maxVotes === centre.candidate_1) color = "#FF6347";
+            // Rouge
+            else if (maxVotes === centre.candidate_2) color = "#32CD32";
+            // Vert
             else if (maxVotes === centre.candidate_3) color = "#1E90FF"; // Bleu
           }
 
@@ -210,7 +254,9 @@ export default {
               <p><strong>Candidat 1 :</strong> ${centre.candidate_1}</p>
               <p><strong>Candidat 2 :</strong> ${centre.candidate_2}</p>
               <p><strong>Candidat 3 :</strong> ${centre.candidate_3}</p>
-              <p><strong>Total des votants :</strong> ${centre.total_registered_bureau || 'N/A'}</p>
+              <p><strong>Total des votants :</strong> ${
+                centre.total_registered_bureau || "N/A"
+              }</p>
             `,
           };
         }
@@ -234,7 +280,6 @@ export default {
         simplemaps_countrymap_mapdata.state_specific[province].description = "";
       });
     },
-
 
     toggleVotingCenters() {
       if (this.showVotingCenters) {
@@ -278,10 +323,10 @@ export default {
           const message = event.data;
           this.getCentreVote();
           this.getCandidates();
-          this.updateMapLocations()
-          this.toggleVotingCenters()
-          this.get_all_donnees()
-          this.updateMapWithResults()
+          this.updateMapLocations();
+          this.toggleVotingCenters();
+          this.get_all_donnees();
+          this.updateMapWithResults();
 
           if (message && message.updatedData) {
             this.datas = [...this.datas, ...message.updatedData];
@@ -320,7 +365,7 @@ body {
   top: 45%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #ffffff;
+  background-color: transparent;
 }
 
 #map2 {
@@ -389,15 +434,15 @@ body {
 }
 
 .candidate1 {
-  background-color: #FF6347;
+  background-color: #ff6347;
 }
 
 .candidate2 {
-  background-color: #32CD32;
+  background-color: #32cd32;
 }
 
 .candidate3 {
-  background-color: #1E90FF;
+  background-color: #1e90ff;
 }
 
 .center {
@@ -407,4 +452,72 @@ body {
 .station {
   background-color: gray;
 }
+
+
+#progress-bar-container {
+  width: 90%;
+  max-width: 600px;
+  margin: 20px auto;
+  margin-top: 45%;
+}
+
+.progress-bar {
+  display: flex;
+  height: 30px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: #e0e0e0;
+  border: 1px solid #ccc;
+  position: relative;
+}
+
+.progress-segment {
+  height: 100%;
+  transition: width 0.5s ease-in-out;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.progress-segment.candidate1 {
+  background-color: #ff6347;
+  /* Rouge */
+  left: 0;
+  /* Aligné à gauche */
+}
+
+.progress-segment.candidate2 {
+  background-color: #32cd32;
+  /* Vert */
+  right: 0;
+  /* Aligné à droite */
+}
+
+.percentage-text {
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.progress-labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+
+.label {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.label.candidate1 {
+  color: #ff6347;
+}
+
+.label.candidate2 {
+  color: #32cd32;
+}
+
+
 </style>
