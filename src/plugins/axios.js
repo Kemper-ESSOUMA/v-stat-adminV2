@@ -5,6 +5,7 @@ const axiosPlugin = {
         // Récupère le token depuis le localStorage
         let token = localStorage.getItem("token") || "";
         const ip_dev = "51.222.158.64:8002/api/"
+        const ip_prod = "51.222.158.64:8001/api/"
 
         // Crée une instance Axios
         const axiosInstance = axios.create({
