@@ -1,57 +1,105 @@
 <template>
   <div>
-
     <form @submit.prevent="createLine()">
-      <ProgressBar v-if="isLoading === true" mode="indeterminate" style="height: 6px"></ProgressBar>
+      <ProgressBar
+        v-if="isLoading === true"
+        mode="indeterminate"
+        style="height: 6px"
+      ></ProgressBar>
 
       <div class="form-row">
-
         <div class="form-group col-6">
           <label>Prénom<span class="text-danger">*</span></label>
-          <input type="text" v-model="form.firstname" class="form-control" required>
+          <input
+            type="text"
+            v-model="form.firstname"
+            class="form-control"
+            required
+          />
         </div>
         <div class="form-group col-6">
           <label>Nom<span class="text-danger">*</span></label>
-          <input type="text" v-model="form.lastname" class="form-control" required>
+          <input
+            type="text"
+            v-model="form.lastname"
+            class="form-control"
+            required
+          />
         </div>
         <div class="form-group col-6">
           <label>Telephone<span class="text-danger">*</span></label>
-          <input type="text" v-model="form.phone" class="form-control" required>
+          <input
+            type="text"
+            v-model="form.phone"
+            class="form-control"
+            required
+          />
         </div>
         <div class="form-group col-6">
           <label>Email<span class="text-danger">*</span></label>
-          <input type="email" v-model="form.email" class="form-control">
+          <input type="email" v-model="form.email" class="form-control" />
         </div>
         <div class="form-group col-6">
           <label>Role<span class="text-danger">*</span></label>
           <select class="form-control" v-model="form.role" required>
-            <option v-if="currentUser().role === 'SUPER_ADMIN'">SUPER ADMIN</option>
+            <option v-if="currentUser().role === 'SUPER_ADMIN'">
+              SUPER ADMIN
+            </option>
             <option value="Administrateur">Administrateur</option>
             <option value="Coordonateur">Coordonateur</option>
             <option value="Superviseur">Superviseur</option>
           </select>
-
-
         </div>
         <div class="form-group col-6">
           <label>Zone<span class="text-danger">*</span></label>
-          <SearchDropdown v-model="form.zone" filter :options="provinces" optionLabel="libelle" optionValue="code"
-            class="w-100" placeholder="Selectionner une province"
-            v-if="this.form.role === 'Administrateur' || this.form.role === 'Coordonateur'" />
+          <SearchDropdown
+            v-model="form.zone"
+            filter
+            :options="provinces"
+            optionLabel="libelle"
+            optionValue="code"
+            class="w-100"
+            placeholder="Selectionner une province"
+            v-if="
+              this.form.role === 'Administrateur' ||
+              this.form.role === 'Coordonateur'
+            "
+          />
 
-          <SearchDropdown v-model="province" filter :options="provinces" optionLabel="libelle"
-            optionValue="deps_coms_cans" class="w-100" placeholder="Selectionner une province"
-            v-if="this.form.role === 'Superviseur'" @change="departements(province)" />
+          <SearchDropdown
+            v-model="province"
+            filter
+            :options="provinces"
+            optionLabel="libelle"
+            optionValue="deps_coms_cans"
+            class="w-100"
+            placeholder="Selectionner une province"
+            v-if="this.form.role === 'Superviseur'"
+            @change="departements(province)"
+          />
         </div>
         <div class="form-group col-6" v-if="this.form.role === 'Superviseur'">
           <label>Departement<span class="text-danger">*</span></label>
-          <SearchDropdown v-model="form.zone" filter :options="departement" optionLabel="libelle" optionValue="code"
-            class="w-100" placeholder="Selectionner un departement" @change="centreVotes(form.zone)" />
+          <SearchDropdown
+            v-model="form.zone"
+            filter
+            :options="departement"
+            optionLabel="libelle"
+            optionValue="code"
+            class="w-100"
+            placeholder="Selectionner un departement"
+            @change="centreVotes(form.zone)"
+          />
         </div>
 
         <div class="form-group col-6">
           <label>Mot de passe<span class="text-danger">*</span></label>
-          <input type="password" v-model="form.password" class="form-control" required>
+          <input
+            type="password"
+            v-model="form.password"
+            class="form-control"
+            required
+          />
         </div>
 
         <!-- Permissions -->
@@ -73,25 +121,64 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="form-check me-3">
-                        <input type="checkbox" id="selectAllClimat"
-                          v-model="permissions.electoral_climate_sheets.selectAll"
-                          @change="toggleCategoryPermissions('electoral_climate_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="selectAllClimat">Tout</label>
+                        <input
+                          type="checkbox"
+                          id="selectAllClimat"
+                          v-model="
+                            permissions.electoral_climate_sheets.selectAll
+                          "
+                          @change="
+                            toggleCategoryPermissions(
+                              'electoral_climate_sheets'
+                            )
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="selectAllClimat"
+                          >Tout</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="readClimat" v-model="permissions.electoral_climate_sheets.read"
-                          @change="checkCategorySelectAll('electoral_climate_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="readClimat">Lecture</label>
+                        <input
+                          type="checkbox"
+                          id="readClimat"
+                          v-model="permissions.electoral_climate_sheets.read"
+                          @change="
+                            checkCategorySelectAll('electoral_climate_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readClimat"
+                          >Lecture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeClimat" v-model="permissions.electoral_climate_sheets.write"
-                          @change="checkCategorySelectAll('electoral_climate_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeClimat">Écriture</label>
+                        <input
+                          type="checkbox"
+                          id="writeClimat"
+                          v-model="permissions.electoral_climate_sheets.write"
+                          @change="
+                            checkCategorySelectAll('electoral_climate_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeClimat"
+                          >Écriture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="editClimat" v-model="permissions.electoral_climate_sheets.execute"
-                          @change="checkCategorySelectAll('electoral_climate_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="editClimat">Exécution</label>
+                        <input
+                          type="checkbox"
+                          id="editClimat"
+                          v-model="permissions.electoral_climate_sheets.execute"
+                          @change="
+                            checkCategorySelectAll('electoral_climate_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editClimat"
+                          >Exécution</label
+                        >
                       </div>
                     </div>
                   </td>
@@ -101,26 +188,53 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="form-check me-3">
-                        <input type="checkbox" id="selectAllIncident" v-model="permissions.incident_sheets.selectAll"
-                          @change="toggleCategoryPermissions('incident_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="selectAllIncident">Tout</label>
+                        <input
+                          type="checkbox"
+                          id="selectAllIncident"
+                          v-model="permissions.incident_sheets.selectAll"
+                          @change="toggleCategoryPermissions('incident_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="selectAllIncident"
+                          >Tout</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="readIncident" v-model="permissions.incident_sheets.read"
-                          @change="checkCategorySelectAll('incident_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="readIncident">Lecture</label>
+                        <input
+                          type="checkbox"
+                          id="readIncident"
+                          v-model="permissions.incident_sheets.read"
+                          @change="checkCategorySelectAll('incident_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readIncident"
+                          >Lecture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeIncident" v-model="permissions.incident_sheets.write"
-                          @change="checkCategorySelectAll('incident_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeIncident">Écriture</label>
+                        <input
+                          type="checkbox"
+                          id="writeIncident"
+                          v-model="permissions.incident_sheets.write"
+                          @change="checkCategorySelectAll('incident_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeIncident"
+                          >Écriture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="editIncident" v-model="permissions.incident_sheets.execute"
-                          @change="checkCategorySelectAll('incident_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="editIncident">Exécution</label>
+                        <input
+                          type="checkbox"
+                          id="editIncident"
+                          v-model="permissions.incident_sheets.execute"
+                          @change="checkCategorySelectAll('incident_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editIncident"
+                          >Exécution</label
+                        >
                       </div>
-
                     </div>
                   </td>
                 </tr>
@@ -129,27 +243,61 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="form-check me-3">
-                        <input type="checkbox" id="selectAllBureaux"
+                        <input
+                          type="checkbox"
+                          id="selectAllBureaux"
                           v-model="permissions.polling_station_sheets.selectAll"
-                          @change="toggleCategoryPermissions('polling_station_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="selectAllBureaux">Tout</label>
+                          @change="
+                            toggleCategoryPermissions('polling_station_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="selectAllBureaux"
+                          >Tout</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="readBureaux" v-model="permissions.polling_station_sheets.read"
-                          @change="checkCategorySelectAll('polling_station_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="readBureaux">Lecture</label>
+                        <input
+                          type="checkbox"
+                          id="readBureaux"
+                          v-model="permissions.polling_station_sheets.read"
+                          @change="
+                            checkCategorySelectAll('polling_station_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readBureaux"
+                          >Lecture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeBureaux" v-model="permissions.polling_station_sheets.write"
-                          @change="checkCategorySelectAll('polling_station_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeBureaux">Écriture</label>
+                        <input
+                          type="checkbox"
+                          id="writeBureaux"
+                          v-model="permissions.polling_station_sheets.write"
+                          @change="
+                            checkCategorySelectAll('polling_station_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeBureaux"
+                          >Écriture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="editBureaux" v-model="permissions.polling_station_sheets.execute"
-                          @change="checkCategorySelectAll('polling_station_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="editBureaux">Exécute</label>
+                        <input
+                          type="checkbox"
+                          id="editBureaux"
+                          v-model="permissions.polling_station_sheets.execute"
+                          @change="
+                            checkCategorySelectAll('polling_station_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editBureaux"
+                          >Exécute</label
+                        >
                       </div>
-
                     </div>
                   </td>
                 </tr>
@@ -158,27 +306,63 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="form-check me-3">
-                        <input type="checkbox" id="selectAllMobilisation"
+                        <input
+                          type="checkbox"
+                          id="selectAllMobilisation"
                           v-model="permissions.mobilization_sheets.selectAll"
-                          @change="toggleCategoryPermissions('mobilization_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="selectAllMobilisation">Tout</label>
+                          @change="
+                            toggleCategoryPermissions('mobilization_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="selectAllMobilisation"
+                          >Tout</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="readMobilisation" v-model="permissions.mobilization_sheets.read"
-                          @change="checkCategorySelectAll('mobilization_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="readMobilisation">Lecture</label>
+                        <input
+                          type="checkbox"
+                          id="readMobilisation"
+                          v-model="permissions.mobilization_sheets.read"
+                          @change="
+                            checkCategorySelectAll('mobilization_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readMobilisation"
+                          >Lecture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeMobilisation" v-model="permissions.mobilization_sheets.write"
-                          @change="checkCategorySelectAll('mobilization_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeMobilisation">Écriture</label>
+                        <input
+                          type="checkbox"
+                          id="writeMobilisation"
+                          v-model="permissions.mobilization_sheets.write"
+                          @change="
+                            checkCategorySelectAll('mobilization_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeMobilisation"
+                          >Écriture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="editMobilisation" v-model="permissions.mobilization_sheets.execute"
-                          @change="checkCategorySelectAll('mobilization_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="editMobilisation">Exécute</label>
+                        <input
+                          type="checkbox"
+                          id="editMobilisation"
+                          v-model="permissions.mobilization_sheets.execute"
+                          @change="
+                            checkCategorySelectAll('mobilization_sheets')
+                          "
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editMobilisation"
+                          >Exécute</label
+                        >
                       </div>
-
                     </div>
                   </td>
                 </tr>
@@ -187,26 +371,167 @@
                   <td>
                     <div class="d-flex align-items-center">
                       <div class="form-check me-3">
-                        <input type="checkbox" id="selectAllGoodies" v-model="permissions.goodies_sheets.selectAll"
-                          @change="toggleCategoryPermissions('goodies_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="selectAllGoodies">Tout</label>
+                        <input
+                          type="checkbox"
+                          id="selectAllGoodies"
+                          v-model="permissions.goodies_sheets.selectAll"
+                          @change="toggleCategoryPermissions('goodies_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="selectAllGoodies"
+                          >Tout</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="readGoodies" v-model="permissions.goodies_sheets.read"
-                          @change="checkCategorySelectAll('goodies_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="readGoodies">Lecture</label>
+                        <input
+                          type="checkbox"
+                          id="readGoodies"
+                          v-model="permissions.goodies_sheets.read"
+                          @change="checkCategorySelectAll('goodies_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readGoodies"
+                          >Lecture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="writeGoodies" v-model="permissions.goodies_sheets.write"
-                          @change="checkCategorySelectAll('goodies_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="writeGoodies">Écriture</label>
+                        <input
+                          type="checkbox"
+                          id="writeGoodies"
+                          v-model="permissions.goodies_sheets.write"
+                          @change="checkCategorySelectAll('goodies_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeGoodies"
+                          >Écriture</label
+                        >
                       </div>
                       <div class="form-check me-3">
-                        <input type="checkbox" id="editGoodies" v-model="permissions.goodies_sheets.execute"
-                          @change="checkCategorySelectAll('goodies_sheets')" class="form-check-input" />
-                        <label class="form-check-label" for="editGoodies">Exécution</label>
+                        <input
+                          type="checkbox"
+                          id="editGoodies"
+                          v-model="permissions.goodies_sheets.execute"
+                          @change="checkCategorySelectAll('goodies_sheets')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editGoodies"
+                          >Exécution</label
+                        >
                       </div>
-
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Centres des votes</b></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="selectAllCentre_vote"
+                          v-model="permissions.centre_vote.selectAll"
+                          @change="toggleCategoryPermissions('centre_vote')"
+                          class="form-check-input"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="selectAllCentre_vote"
+                          >Tout</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="readCentre_vote"
+                          v-model="permissions.centre_vote.read"
+                          @change="checkCategorySelectAll('centre_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readCentre_vote"
+                          >Lecture</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="writeCentre_vote"
+                          v-model="permissions.centre_vote.write"
+                          @change="checkCategorySelectAll('centre_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeCentre_vote"
+                          >Écriture</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="editCentre_vote"
+                          v-model="permissions.centre_vote.execute"
+                          @change="checkCategorySelectAll('centre_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editCentre_vote"
+                          >Exécution</label
+                        >
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><b>Bureaux des votes</b></td>
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="selectAllBureaux_vote"
+                          v-model="permissions.bureaux_vote.selectAll"
+                          @change="toggleCategoryPermissions('bureaux_vote')"
+                          class="form-check-input"
+                        />
+                        <label
+                          class="form-check-label"
+                          for="selectAllBureaux_vote"
+                          >Tout</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="readBureaux_vote"
+                          v-model="permissions.bureaux_vote.read"
+                          @change="checkCategorySelectAll('bureaux_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="readBureaux_vote"
+                          >Lecture</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="writeBureaux_vote"
+                          v-model="permissions.bureaux_vote.write"
+                          @change="checkCategorySelectAll('bureaux_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="writeBureaux_vote"
+                          >Écriture</label
+                        >
+                      </div>
+                      <div class="form-check me-3">
+                        <input
+                          type="checkbox"
+                          id="editBureaux_vote"
+                          v-model="permissions.bureaux_vote.execute"
+                          @change="checkCategorySelectAll('bureaux_vote')"
+                          class="form-check-input"
+                        />
+                        <label class="form-check-label" for="editBureaux_vote"
+                          >Exécution</label
+                        >
+                      </div>
                     </div>
                   </td>
                 </tr>
@@ -216,24 +541,26 @@
         </div>
       </div>
 
-
       <button type="submit" class="btn btn-primary btn-sm mt-3">
         <i class="fas fa-floppy-disk"></i>
         <span class="mx-2 text-white">Creer</span>
-        <span v-if="isLoading == true" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+        <span
+          v-if="isLoading == true"
+          class="spinner-border spinner-border-sm"
+          role="status"
+          aria-hidden="true"
+        ></span>
       </button>
-
     </form>
   </div>
-
 </template>
 
 <script>
 import $ from "jquery";
-import { defineComponent } from 'vue';
+import { defineComponent } from "vue";
 import { useAppStore } from "@/store/app";
 export default defineComponent({
-  inject: ['dialogRef'],
+  inject: ["dialogRef"],
   data() {
     return {
       isLoading: false,
@@ -241,13 +568,13 @@ export default defineComponent({
       departement: {},
       form: {
         // code_user: '',
-        firstname: '',
-        lastname: '',
-        phone: '',
-        email: '',
-        role: '',
-        zone: '',
-        password: '',
+        firstname: "",
+        lastname: "",
+        phone: "",
+        email: "",
+        role: "",
+        zone: "",
+        password: "",
       },
       permissions: {
         mobilization_sheets: {
@@ -280,15 +607,27 @@ export default defineComponent({
           read: false,
           execute: false,
         },
+        centre_vote: {
+          selectAll: false,
+          write: false,
+          read: false,
+          execute: false,
+        },
+        bureaux_vote: {
+          selectAll: false,
+          write: false,
+          read: false,
+          execute: false,
+        },
       },
       provinces: {},
-      centre: {}
-    }
+      centre: {},
+    };
   },
 
   mounted() {
-    this.getProvinces()
-    this.departements()
+    this.getProvinces();
+    this.departements();
     console.log("Current User", this.currentUser().role);
     // this.centreVotes()
   },
@@ -320,8 +659,8 @@ export default defineComponent({
     },
 
     departements(data) {
-      console.log('departement = ', data)
-      this.departement = data
+      console.log("departement = ", data);
+      this.departement = data;
     },
     // centreVotes(data) {
 
@@ -333,9 +672,9 @@ export default defineComponent({
 
     // },
     getProvinces() {
-      this.$axios.get('/province/all').then(response => {
-        this.provinces = response.data
-      })
+      this.$axios.get("/province/all").then((response) => {
+        this.provinces = response.data;
+      });
     },
     computePermissionValue(permission) {
       let value = 0;
@@ -345,8 +684,11 @@ export default defineComponent({
       return value;
     },
     validatePermissions(permissions) {
-      return Object.values(permissions).every(category =>
-        category.read !== null && category.write !== null && category.execute !== null
+      return Object.values(permissions).every(
+        (category) =>
+          category.read !== null &&
+          category.write !== null &&
+          category.execute !== null
       );
     },
 
@@ -354,7 +696,7 @@ export default defineComponent({
       const permissions = this.permissions;
       const preparedPermissions = [];
 
-      Object.keys(permissions).forEach(category => {
+      Object.keys(permissions).forEach((category) => {
         // Calculer la valeur des actions
         const actions =
           (permissions[category].read ? 4 : 0) +
@@ -378,9 +720,9 @@ export default defineComponent({
       if (!this.validatePermissions(this.permissions)) {
         this.isLoading = false;
         this.$toast.add({
-          severity: 'warn',
-          summary: 'Erreur',
-          detail: 'Veuillez remplir toutes les permissions avant de continuer.',
+          severity: "warn",
+          summary: "Erreur",
+          detail: "Veuillez remplir toutes les permissions avant de continuer.",
           life: 5000,
         });
         return;
@@ -388,25 +730,26 @@ export default defineComponent({
 
       // Préparer les permissions
       const permissions = this.preparePermissions();
-      console.log('datas = ', { ...this.form, permissions })
+      console.log("datas = ", { ...this.form, permissions });
       this.isLoading = false;
       // Requête POST
-      this.$axios.post('/user/add', { ...this.form, permissions })
-        .then(response => {
+      this.$axios
+        .post("/user/add", { ...this.form, permissions })
+        .then((response) => {
           this.isLoading = false;
           if (response.data !== null) {
-            $('#refresh-user').click();
+            $("#refresh-user").click();
             this.$toast.add({
-              severity: 'success',
-              detail: 'Enregistrement avec succès !!',
+              severity: "success",
+              detail: "Enregistrement avec succès !!",
               life: 3000,
             });
             this.dialogRef.close();
           } else {
-            response.data.errors.forEach(element => {
+            response.data.errors.forEach((element) => {
               this.$toast.add({
-                severity: 'warn',
-                summary: 'Oups !',
+                severity: "warn",
+                summary: "Oups !",
                 detail: element,
                 life: 7000,
               });
@@ -416,28 +759,25 @@ export default defineComponent({
         .catch(() => {
           this.isLoading = false;
           this.$toast.add({
-            severity: 'error',
-            summary: 'Problème de connexion',
-            detail: 'Une erreur s\'est produite lors de la connexion au serveur !',
+            severity: "error",
+            summary: "Problème de connexion",
+            detail:
+              "Une erreur s'est produite lors de la connexion au serveur !",
             life: 5000,
           });
         });
     },
 
-
-
-
-
     resetForm() {
       this.form = {
         // code_user: '',
-        firstname: '',
-        lastname: '',
-        phone: '',
-        email: '',
-        role: '',
-        zone: '',
-        password: '',
+        firstname: "",
+        lastname: "",
+        phone: "",
+        email: "",
+        role: "",
+        zone: "",
+        password: "",
         permissions: {
           mobilisation: {
             selectAll: false,
@@ -470,8 +810,8 @@ export default defineComponent({
             delete: false,
           },
         },
-      }
-    }
-  }
-})
+      };
+    },
+  },
+});
 </script>
