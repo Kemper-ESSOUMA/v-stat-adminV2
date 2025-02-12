@@ -80,6 +80,18 @@
 
     <!-- Barre de progression des votes -->
     <div id="progress-bar-container">
+      <div class="d-plex">
+        <div class="image-container candidate1-image" :style="{ left: candidate1Percentage + '%' }">
+          <img
+            src="https://png.pngtree.com/png-vector/20240601/ourmid/pngtree-casual-man-flat-design-avatar-profile-picture-vector-png-image_12593008.png"
+            class="candidate-photo" alt="Candidate 1">
+        </div>
+        <div class="image-container candidate1-image" :style="{ left: candidate1Percentage + '%' }">
+          <img
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSq-wsnmJ8hnfF1fzMykmOzKcqZPMWx8YlegAbfvXL8m9F3Dq_FQLDclj_BWKxVMHjaHeg&usqp=CAU"
+            class="candidate-photo" alt="Candidate 1">
+        </div>
+      </div>
       <div class="progress-bar">
         <div class="progress-segment candidate1" :style="{ width: candidate1Percentage + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
@@ -458,7 +470,7 @@ body {
   width: 90%;
   max-width: 600px;
   margin: 20px auto;
-  margin-top: 45%;
+  margin-top: 43%;
 }
 
 .progress-bar {
@@ -517,6 +529,20 @@ body {
 
 .label.candidate2 {
   color: #32cd32;
+}
+
+
+.candidate-photo {
+  width: 50px;
+  height: 50px;
+  margin-right: 30%;
+}
+
+.d-plex {
+  position: relative;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }
 
 
