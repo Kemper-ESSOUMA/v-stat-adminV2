@@ -73,10 +73,13 @@
       <div class="row">
         <div class="col-md-4">
           <div class="border shadow-md p-1 rounded">
-            <div class="d-flex justify-content-between">
+            <!-- <div class="d-flex justify-content-between">
               <a v-bind:href="form.fichier" target="_blank" class="btn btn-sm mr-2 btn-info ">
                 <i class="fa-solid fa-folder-open"></i> Ouvrir
               </a>
+            </div> -->
+            <div class="card flex justify-content-center">
+              <ShowImage :src="form.fichier" alt="Image" width="250" preview />
             </div>
           </div>
         </div>
