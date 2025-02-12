@@ -4,6 +4,23 @@
       <h4 class="text-app font-weight-bold">Contrôles des données</h4>
     </div>
 
+    <div class="btn-group page-nav " role="group">
+      <div>
+        <router-link class="btn btn-primary" :to="{ name: 'bureaux-vote' }"
+          :class="{ 'active': this.$route.name === 'controles' }" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Burreaux de votes">
+          <i class="pi pi-table" style="color: #3242C5"></i> Bureaux de votes
+        </router-link>
+      </div>
+      <div>
+        <router-link class="btn " :to="{ name: 'centre-votes' }" :class="{ 'active': this.$route.name === 'centre-votes' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
+          <i class="pi pi-building" style="color: #3242C5"></i> Centres de votes
+        </router-link>
+      </div>
+
+    </div>
+
     <div class="px-1 d-flex mr-4">
 
       <button type="button" class="btn-app btn-success ml-3" @click="exportToExcel">

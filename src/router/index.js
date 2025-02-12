@@ -305,6 +305,12 @@ const routes = [
         component: () =>
             import ("@/views/v2/tendances/IndexTendance.vue"),
     },
+    {
+        path: "/centre-votes",
+        name: "centre-votes",
+        component: () =>
+            import ("@/views/v2/controlers/CentreVotes.vue"),
+    },
 
 ];
 

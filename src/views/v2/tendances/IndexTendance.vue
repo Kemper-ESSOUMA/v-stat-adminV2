@@ -1,4 +1,5 @@
 <template>
+
   <div class="body-contentys">
     <div class="row justify-content-center">
       <div class="col-4">

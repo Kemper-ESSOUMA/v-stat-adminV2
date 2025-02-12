@@ -1,7 +1,7 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Gestion des centres de votes</h4>
+      <h4 class="text-app font-weight-bold">Remontées par centres de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
