@@ -69,6 +69,9 @@
 
       <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
+      <DataTableColumn field="candidate_1.data" header="ACBBN"></DataTableColumn>
+      <DataTableColumn field="candidate_2.data" header="CBON"></DataTableColumn>
+      <DataTableColumn field="candidate_3.data" header="DIVERS"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
 
@@ -88,13 +91,59 @@
 
     </DataTable>
   </div>
+  <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
+    <h5 class="chart-title text-center">Votes par Zone</h5>
+    <div class="button-container text-center" v-if="currentUser().role === 'SUPER_ADMIN'">
+      <button v-for="(zone, index) in zones" :key="index" @click="updateZone(zone.code)"
+        :class="['data-btn', { active: selectedZone === zone.code }]">
+        {{ zone.name }}
+      </button>
+    </div>
+    <canvas id="zone" width="400" height="200"></canvas>
+  </div>
 </template>
+
+<style scoped>
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.data-btn {
+  padding: 5px 10px;
+  border: none;
+  background-color: #9abeda;
+  color: white;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.data-btn:hover {
+  background-color: #0056b3;
+}
+
+.data-btn.active {
+  background-color: #0056b3 !important;
+  color: white;
+  font-weight: bold;
+}
+
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+</style>
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-// import CreateFicheClimatVue from './CreateFicheClimat.vue';
-
+import Chart from 'chart.js/auto';
+import { useAppStore } from "@/store/app";
 import { utils, writeFile } from "xlsx";
+import EditCentreVote from './EditCentreVote.vue';
 
 export default {
   data() {
@@ -104,10 +153,23 @@ export default {
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
+      selectedZone: "01", // Zone par défaut
+      zones: [
+        { code: "01", name: "Estuaire" },
+        { code: "02", name: "Haut-Ogooué" },
+        { code: "03", name: "Moyen-Ogooué" },
+        { code: "04", name: "Ngounié" },
+        { code: "05", name: "Nyanga" },
+        { code: "06", name: "Ogooué-Ivindo" },
+        { code: "07", name: "Ogooué-Lolo" },
+        { code: "08", name: "Ogooué-Maritime" },
+        { code: "09", name: "Woleu-Ntem" }
+      ]
     };
   },
   mounted() {
     this.getvote();
+    this.get_stat_by_zone();
     this.connectWebSocket();
   },
   computed: {
@@ -121,18 +183,18 @@ export default {
   },
 
   methods: {
-    // openModal(objetData) {
-    //   this.$dialog.open(EditCentreVote, {
-    //     props: {
-    //       header: "Modifier le centre " + objetData.zone,
-    //       style: {
-    //         width: '50vw'
-    //       },
-    //       modal: true
-    //     },
-    //     data: objetData,
-    //   });
-    // },
+    openModal(objetData) {
+      this.$dialog.open(EditCentreVote, {
+        props: {
+          header: "Modifier le centre " + objetData.zone,
+          style: {
+            width: '50vw'
+          },
+          modal: true
+        },
+        data: objetData,
+      });
+    },
     // openViewModal(objetData) {
     //   this.$dialog.open(ViewVote, {
     //     props: {
@@ -156,6 +218,14 @@ export default {
     //     },
     //   });
     // },
+    currentUser() {
+      const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
+      return appStore.currentUser; // Récupérer les informations utilisateur
+    },
+    updateZone(zoneCode) {
+      this.selectedZone = zoneCode;
+      this.get_stat_by_zone();
+    },
     getvote() {
       this.$axios
         .get('/voting_centre/by_zone')
@@ -166,6 +236,86 @@ export default {
         .catch((error) => {
           console.error('Erreur de recuperation de donnees:', error);
         });
+    },
+    get_stat_by_zone() {
+      this.$axios.get("/dep_com_can/stat_by_zone", { params: { zone: this.selectedZone } })
+        .then((response) => {
+          this.datas1 = response.data;
+          console.log(`Données pour la zone ${this.selectedZone}:`, this.datas1);
+          this.renderget_stat_by_zone();
+        })
+        .catch((error) => console.error("Erreur de récupération des statistiques :", error));
+    },
+    renderget_stat_by_zone() {
+      // Vérifiez si un graphique existe déjà et détruisez-le
+      if (this.chartInstanceZone) {
+        this.chartInstanceZone.destroy();
+      }
+
+      // Vérifier que this.datas contient des données
+      if (!this.datas1 || this.datas1.length === 0) {
+        console.error("Aucune donnée disponible pour les statistiques par zone.");
+        return;
+      }
+
+      // Préparez les labels pour l'axe X (libellés des zones)
+      const labels = this.datas1.map(zone => zone.libelle);
+
+      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
+      const candidateKeys = Object.keys(this.datas1[0]).filter(key => key.startsWith("candidate_"));
+
+      // Vérifier que des candidats existent
+      if (candidateKeys.length === 0) {
+        console.error("Aucun candidat trouvé dans les données.");
+        return;
+      }
+
+      // Extraire les noms réels et les votes
+      const candidateNames = candidateKeys.map(candidate => this.datas1[0][candidate]?.name || `${candidate}`);
+      const datasets = candidateKeys.map((candidate, index) => ({
+        label: candidateNames[index], // Utilisation des noms réels
+        data: this.datas1.map(zone => zone[candidate]?.data || 0), // Extraire les votes (0 si valeur manquante)
+        backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
+      }));
+
+      // Récupérer le contexte du canvas
+      const ctx = document.getElementById("zone").getContext("2d");
+
+      // Créez un graphique bar
+      this.chartInstanceZone = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels: labels, // Zones sur l'axe X
+          datasets: datasets, // Données pour chaque candidat
+        },
+        options: {
+          responsive: true,
+          scales: {
+            x: {
+              title: { display: true, text: "Zones" },
+              stacked: false,
+            },
+            y: {
+              beginAtZero: true,
+              title: { display: true, text: "Votes" },
+              stacked: false,
+            },
+          },
+        },
+      });
+    },
+
+    //  Fonction pour attribuer des couleurs aux candidats
+    getColorForCandidate(index) {
+      const colors = [
+        "#FF6384",
+        "#32cd32",
+        "#FFCE56",
+        "#4BC0C0",
+        "#9966FF",
+        "#FF9F40",
+      ];
+      return colors[index % colors.length]; // Répéter les couleurs si plus de 6 candidats
     },
     connectWebSocket() {
       // Définir l'URL du WebSocket (à adapter selon votre serveur)

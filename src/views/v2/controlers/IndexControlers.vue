@@ -66,9 +66,9 @@
 
       <DataTableColumn field="nb_scrutin_valide" header="Suffrage exprimé"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
-      <DataTableColumn field="candidate_1" header="candidate 1"></DataTableColumn>
-      <DataTableColumn field="candidate_2" header="candidate 2"></DataTableColumn>
-      <DataTableColumn field="candidate_3" header="candidate 3"></DataTableColumn>
+      <DataTableColumn field="candidate_1.data" header="ACBBN"></DataTableColumn>
+      <DataTableColumn field="candidate_2.data" header="CBON"></DataTableColumn>
+      <DataTableColumn field="candidate_3.data" header="DIVERS"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
           <div class="d-flex">
@@ -84,7 +84,7 @@
     </DataTable>
   </div>
   <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
-    <h5 class="chart-title text-center">Votes par centre de vote</h5>
+    <h5 class="chart-title text-center">Votes par Zone</h5>
     <div class="button-container text-center" v-if="currentUser().role === 'SUPER_ADMIN'">
       <button v-for="(zone, index) in zones" :key="index" @click="updateZone(zone.code)"
         :class="['data-btn', { active: selectedZone === zone.code }]">
@@ -181,6 +181,7 @@ export default {
       const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
+
     updateZone(zoneCode) {
       this.selectedZone = zoneCode;
       this.get_stat_by_zone();

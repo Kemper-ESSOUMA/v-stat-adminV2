@@ -421,7 +421,7 @@
                     </div>
                   </td>
                 </tr>
-                <tr>
+                <!-- <tr>
                   <td><b>Centres des votes</b></td>
                   <td>
                     <div class="d-flex align-items-center">
@@ -534,7 +534,7 @@
                       </div>
                     </div>
                   </td>
-                </tr>
+                </tr> -->
               </tbody>
             </table>
           </div>
