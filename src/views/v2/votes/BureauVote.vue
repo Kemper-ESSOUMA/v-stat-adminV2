@@ -65,9 +65,6 @@
 
       <DataTableColumn field="nb_scrutin_valide" header="Suffrage exprimé"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
-      <DataTableColumn field="candidate_1" header="candidate 1"></DataTableColumn>
-      <DataTableColumn field="candidate_2" header="candidate 2"></DataTableColumn>
-      <DataTableColumn field="candidate_3" header="candidate 3"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
 
