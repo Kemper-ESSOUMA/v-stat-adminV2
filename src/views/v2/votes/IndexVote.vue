@@ -62,11 +62,11 @@
       <DataTableColumn field="zone" header="Zone"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
       <DataTableColumn field="total_offices" header="Nombre Bureau"></DataTableColumn>
-      <DataTableColumn field="nb_scrutin_valide" header="Scrutin validé"></DataTableColumn>
+      <DataTableColumn field="nb_scrutin_valide" header="Suffrage exprimé"></DataTableColumn>
       <!-- <DataTableColumn field="burreau_code" header="Code du bureau"></DataTableColumn> -->
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin B/N"></DataTableColumn>
 
-      <DataTableColumn field="total_scrutin" header="Suffrages exprimé"></DataTableColumn>
+      <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
