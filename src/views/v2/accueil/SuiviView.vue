@@ -6,13 +6,13 @@
 
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'Home' }" :class="{ 'active': this.$route.name === 'Home' }"
+        <router-link class="btn" :to="{ name: 'Home' }" :class="{ 'active': this.$route.name === 'Home' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Burreaux de votes">
           <i class="pi pi-table" style="color: #3242C5"></i> Gestion des elections globales
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'suivi' }"
+        <router-link class="btn btn-primary" :to="{ name: 'suivi' }"
           :class="{ 'active': this.$route.name === 'suivi' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Centre de votes">
           <i class="pi pi-building" style="color: #3242C5"></i> Suivi de campagne du candidat
@@ -24,6 +24,38 @@
   <hr>
   <div class="body-contentys">
     <div class="row justify-content-center">
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'mobilization' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #1976D3;">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+              </div>
+              <div class="card-body">
+                <p>Mobilisation</p>
+                <div class="row d-flex align-items-center">
+                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_mobilization }} Fiches de mobilisation</h4>
+                    <p>Effectif :</p>
+                    <li>Handicapés: <b>{{ this.nb_people_disabilities }}</b></li>
+                    <li>Femmes: <b>{{ this.nb_women }}</b></li>
+                    <li>Jeunes: <b>{{ this.nb_young }}</b></li>
+                    <li>Participants: <b>{{ this.participants_nb }}</b></li>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end ">
+                <small>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
 
       <!-- <div class="col-4">
         <div class="m-1">
@@ -57,23 +89,30 @@
           </router-link>
         </div>
       </div> -->
+
       <div class="col-4">
         <div class="m-1">
-          <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E;">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43A047;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
               <div class="card-body">
-                <p>Incidents</p>
+                <p>Climat</p>
                 <div class="row d-flex align-items-center">
                   <div id="icon_animation" class="col-lg-4 col-12 ">
                     <!-- <img :src=" this.icon" alt=""> -->
                   </div>
                   <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_incidents }} Fiches d'alertes et incidents</h4>
-                    <p>Nombre des alertes : <b>{{ this.nb_alerte }}</b></p>
-                    <p>Nombre des incidents : <b>{{ this.nb_incident }}</b></p>
+                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
+                    <div class="col-lg-8 col-12">
+                      <p>Tendances :</p>
+                      <li>Defavorable: <b>{{ this.nb_defavorable }}</b></li>
+                      <li>Favorable: <b>{{ this.nb_favorable }}</b></li>
+                      <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
+                      <li>Plutot defavorable: <b>{{ this.nb_plutot_defavorable }}</b></li>
+                      <li>Plutot favorable: <b>{{ this.nb_plutot_favorable }}</b></li>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -86,41 +125,6 @@
           </router-link>
         </div>
       </div>
-
-      <div class="col-4">
-        <div class="m-1">
-          <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04;">
-              <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
-              </div>
-              <div class="card-body">
-                <p>Bureaux de votes</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
-                    <!-- <img :src=" this.icon" alt=""> -->
-                  </div>
-                  <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_bureaux }} Fiches des bureaux de votes</h4>
-                    <p>Situations :</p>
-                    <li>Bon: <b>{{ this.nb_bon }}</b></li>
-                    <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
-                    <li>Risque: <b>{{ this.nb_risque }}</b></li>
-
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer d-flex justify-content-end ">
-                <small>
-                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
-                </small>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div>
-
-
     </div>
   </div>
 </template>

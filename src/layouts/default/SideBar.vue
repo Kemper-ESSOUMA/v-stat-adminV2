@@ -2,7 +2,7 @@
   <div class="sidebar-container">
     <div class="sidebar">
       <nav class="navys flex-column justify-content-center">
-        <router-link class="navys-link" :to="{ name: 'Home' }" :class="{ active: this.$route.name === 'Home' }"
+        <router-link class="navys-link" :to="{ name: 'Home' }" :class="{ active: this.$route.name === 'Home' || this.$route.name === 'suivi' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Accueil">
           <img
             src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADAAAAAwCAYAAABXAvmHAAAACXBIWXMAAAsTAAALEwEAmpwYAAACPUlEQVR4nO3Wu49NURTH8cMIEqExiUd0XgUdDSPRiCinMApRKlT4C2QKDB1KFQUJHQ21oUIyoSChkDEjGY+EwiNh5iN7Zl85uXPvce7cc+4jOd/kNDtr/9b67b2yz0qSioreA9twFzPxuxPWkn4Aw/huMWFtuEH8Ebyvi50M690o/ixmYxE3sAEbcTOu/QkxdXsmG5idN9HJwgdwLSaew2iDmDMpc9exIq7PUxe7aK3M4tfgfsz5C8czYo/iR4x9iHVdNYDNeB7zfcJQjj0H8DnuedY1A9iNdzHXW+xsYe9WvE43fEcN4DC+xTzjWL8EjUE8jhqzHTOAk/gdc9zGqja0VuMKzpduAMvC65K69atYXmiSsgyEU8atqBtO/1Rh4mUbiL36JGp+xaFChLNz1hhsV2gH3kSx8OLsKqzK7LyvYs6Qe/tSRfbhYxSawJbCK20CNuFpzP0FB1sVGMHPKPAAa5MOY+EPfy/1hz+Rd2N6ZgkvzUDp1WbPWKGGpjNW/YbR1NR4OukRLBxqqClwLiuwNqOMJD0GjsXaZrKCXug+46l6as93moksA3vxMvZbt3iUqifNXDzgPUm/IJL0K9o1EEflfz3ZjwbmKbSqTubXrkCbqAxEcp7WSlzGB82ZxliI7bkbwCX5udiLBqZj+P6MmKHaTRSdvwgDuWLL0GxKZaAB1Q20QtVCDahaqBWqFmpA1UKtkGc8qBsRprqh2ZQ4ObbChW5o/m9EHkudWjOmQqI8Y3IZmhUVydL5C1ZlFCXSdnxmAAAAAElFTkSuQmCC"

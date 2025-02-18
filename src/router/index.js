@@ -311,6 +311,12 @@ const routes = [
         component: () =>
             import ("@/views/v2/controlers/CentreVotes.vue"),
     },
+    {
+        path: "/suivi",
+        name: "suivi",
+        component: () =>
+            import ("@/views/v2/accueil/SuiviView.vue"),
+    },
 
 ];
 
