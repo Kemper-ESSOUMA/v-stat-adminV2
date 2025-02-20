@@ -68,6 +68,14 @@
             <th>Action préconisé :</th>
             <td>{{ this.dialogRef.data.criticality_situation }}</td>
           </tr>
+          <tr>
+            <th>Gravité :</th>
+            <td>
+              {{ dialogRef.data.gravity === 0 ? 'Mineur' : dialogRef.data.gravity === 1 ? 'Majeur' :
+                dialogRef.data.gravity === 2 ? 'Bloquant' : '' }}
+            </td>
+          </tr>
+
         </tbody>
       </table>
 

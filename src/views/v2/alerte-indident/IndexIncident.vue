@@ -5,20 +5,23 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn " :to="{ name: 'mobilization' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
+        <router-link class="btn " :to="{ name: 'mobilization' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
         </router-link>
       </div>
       <div>
-        <router-link class="btn " :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="Climat">
+        <router-link class="btn " :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="Climat">
           <i class="pi pi-sitemap" style="color: #3242C5"></i> Climats
         </router-link>
       </div>
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'incident' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
+        <router-link class="btn btn-primary" :to="{ name: 'incident' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4"
           :class="{ 'active': this.$route.name === 'incident' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
@@ -31,14 +34,16 @@
         </router-link>
       </div> -->
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="bureaux">
+        <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
     </div>
     <div class="px-1 d-flex mr-4">
-      <button type="button" class="btn-app btn-active" @click="openCreateModal()" v-if="[6, 3, 2, 7].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
+      <button type="button" class="btn-app btn-active" @click="openCreateModal()"
+        v-if="[6, 3, 2, 7].includes(parseInt(this.getPermissionActionByEntity('mobilization_sheets')))">
         Ajouter une fiche <i class="fa-solid fa-plus"></i>
       </button>
     </div>
@@ -49,7 +54,8 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters"
+      :globalFilterFields="['zone_code', 'supervisor', 'event', 'voting_center']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -66,7 +72,7 @@
 
       </template>
       <template #empty>
-       Aucune données trouvées
+        Aucune données trouvées
       </template>
       <template #loading>
         Loading customers data. Please wait.
@@ -75,8 +81,18 @@
       <DataTableColumn field="date" header="Date"></DataTableColumn>
       <DataTableColumn field="zone_code" header="Zone"></DataTableColumn>
       <DataTableColumn field="supervisor" header="Nom du superviseur"></DataTableColumn>
-      <DataTableColumn field="description" header="Recommendation"></DataTableColumn>
+      <DataTableColumn field="event" header="Evenement"></DataTableColumn>
       <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+      <DataTableColumn field="gravity" header="Gravité">
+        <template #body="{ data }">
+          <span
+            :style="{ color: data.gravity === 0 ? 'rgb(230, 176, 39)' : data.gravity === 1 ? 'rgb(230, 39, 39)' : data.gravity === 2 ? 'rgb(230, 109, 39)' : '' }">
+            {{ data.gravity === 0 ? 'Mineur' : data.gravity === 1 ? 'Majeur' : data.gravity === 2 ? 'Critique' : '' }}
+          </span>
+
+
+        </template>
+      </DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
           <div class="d-flex">
@@ -98,6 +114,7 @@ import { FilterMatchMode } from 'primevue/api';
 import CreateIncident from './CreateIncident.vue'
 import ViewFicheIncident from './ViewFicheIncident.vue';
 import { useAppStore } from "@/store/app";
+import { Colors } from 'chart.js';
 export default {
   data() {
     return {
@@ -111,19 +128,29 @@ export default {
   mounted() {
     this.getIncident();
     this.connectWebSocket();
-                 const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
     console.log("Current User", this.currentUser());
     console.log("Permissions User", mobilizationAction);
   },
   methods: {
-                    currentUser() {
+    currentUser() {
       const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
-          getPermissionActionByEntity(entityName) {
-    const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
-    return permission ? permission.action : null;
-  },
+    getGravityLabel(gravity) {
+      switch (gravity) {
+        case '1':
+          return 'Faible';
+        case '2':
+          return 'Moyenne';
+        case '3':
+          return 'Elevée';
+      }
+    },
+    getPermissionActionByEntity(entityName) {
+      const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
+      return permission ? permission.action : null;
+    },
     openModal(objetData) {
       this.$dialog.open(ViewFicheIncident, {
         props: {

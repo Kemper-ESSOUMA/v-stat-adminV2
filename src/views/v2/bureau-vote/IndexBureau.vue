@@ -45,7 +45,7 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code', 'supervisor', 'event', 'voting_center']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -69,7 +69,7 @@
       </template>
 
       <DataTableColumn field="date" header="Date"></DataTableColumn>
-      <DataTableColumn field="office_climate" header="Climat"></DataTableColumn>
+      <DataTableColumn field="office_climate" header="Statut"></DataTableColumn>
       <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
       <DataTableColumn field="supervisor" header="Superviseur"></DataTableColumn>
       <DataTableColumn field="observation" header="Observation"></DataTableColumn>

@@ -12,9 +12,8 @@
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'suivi' }"
-          :class="{ 'active': this.$route.name === 'suivi' }" data-bs-toggle="tooltip" data-bs-placement="right"
-          title="Centre de votes">
+        <router-link class="btn" :to="{ name: 'suivi' }" :class="{ 'active': this.$route.name === 'suivi' }"
+          data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
           <i class="pi pi-building" style="color: #3242C5"></i> Suivi de campagne du candidat
         </router-link>
       </div>
@@ -24,60 +23,29 @@
   <hr>
   <div class="body-contentys">
     <div class="row justify-content-center">
-
-      <!-- <div class="col-4">
-        <div class="m-1">
-          <router-link :to="{ name: 'goodies' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #8E24AA;">
-              <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
-              </div>
-              <div class="card-body">
-                <p>Goodies</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
-
-                  </div>
-                  <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_goodie }} Fiches de goodies</h4>
-                    <p>Quantités :</p>
-                    <li>Banderoles: <b>{{ this.nb_banderol }}</b></li>
-                    <li>Casquettes: <b>{{ this.nb_casquette }}</b></li>
-                    <li>Tee-shirts: <b>{{ this.nb_t_shirt }}</b></li>
-                    <li>Divers: <b>{{ this.nb_divers }}</b></li>
-                  </div>
-                </div>
-              </div>
-              <div class="card-footer d-flex justify-content-end ">
-                <small>
-                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
-                </small>
-              </div>
-            </div>
-          </router-link>
-        </div>
-      </div> -->
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E;">
+            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E; min-height: 300px;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
-              <div class="card-body">
+              <div class="card-body d-flex flex-column">
                 <p>Incidents</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                <div class="row d-flex align-items-center flex-grow-1">
+                  <div id="icon_animation" class="col-lg-4 col-12">
                     <!-- <img :src=" this.icon" alt=""> -->
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_incidents }} Fiches d'alertes et incidents</h4>
-                    <p>Nombre des alertes : <b>{{ this.nb_alerte }}</b></p>
-                    <p>Nombre des incidents : <b>{{ this.nb_incident }}</b></p>
+                    <ul class="list-unstyled">
+                      <li>Nombre des alertes : <b>{{ this.nb_alerte }}</b></li>
+                      <li>Nombre des incidents : <b>{{ this.nb_incident }}</b></li>
+                    </ul>
                   </div>
                 </div>
               </div>
-              <div class="card-footer d-flex justify-content-end ">
+              <div class="card-footer d-flex justify-content-end">
                 <small>
                   Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
                 </small>
@@ -90,27 +58,27 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04;">
+            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04; min-height: 300px;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
-              <div class="card-body">
+              <div class="card-body d-flex flex-column">
                 <p>Bureaux de votes</p>
-                <div class="row d-flex align-items-center">
-                  <div id="icon_animation" class="col-lg-4 col-12 ">
+                <div class="row d-flex align-items-center flex-grow-1">
+                  <div id="icon_animation" class="col-lg-4 col-12">
                     <!-- <img :src=" this.icon" alt=""> -->
                   </div>
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_bureaux }} Fiches des bureaux de votes</h4>
-                    <p>Situations :</p>
-                    <li>Bon: <b>{{ this.nb_bon }}</b></li>
-                    <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
-                    <li>Risque: <b>{{ this.nb_risque }}</b></li>
-
+                    <ul class="list-unstyled">
+                      <li>Bon: <b>{{ this.nb_bon }}</b></li>
+                      <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
+                      <li>Risque: <b>{{ this.nb_risque }}</b></li>
+                    </ul>
                   </div>
                 </div>
               </div>
-              <div class="card-footer d-flex justify-content-end ">
+              <div class="card-footer d-flex justify-content-end">
                 <small>
                   Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
                 </small>
@@ -120,17 +88,92 @@
         </div>
       </div>
 
+      <div class="col-6">
+        <div class="m-0">
+          <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
+          <DataTable :value="datas1" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
+            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['voting_center']">
+            <template #header>
+              <div class="flex justify-content-end">
+                <InputText placeholder="Recherche" v-model="filters['global'].value" />
+              </div>
+            </template>
+            <template #empty> Aucune données trouvées </template>
+            <template> Loading customers data. Please wait. </template>
+
+            <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+            <DataTableColumn field="nb_incidents" header="Nombre Incident"></DataTableColumn>
+            <DataTableColumn field="nb_alertes" header="Nombre Alerte"></DataTableColumn>
+            <DataTableColumn field="mineur" header="Mineur"></DataTableColumn>
+            <DataTableColumn field="majeur" header="Majeur"></DataTableColumn>
+            <DataTableColumn field="critique" header="Critique"></DataTableColumn>
+
+            <template #footer> Total {{ datas1 ? datas1.length : 0 }} . </template>
+          </DataTable>
+        </div>
+
+      </div>
+
+      <div class="col-6">
+        <div class="m-0">
+          <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
+          <DataTable :value="datas2" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
+            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['pol_sta_code']">
+            <template #header>
+              <div class="flex justify-content-end">
+                <InputText placeholder="Recherche" v-model="filters['global'].value" />
+              </div>
+            </template>
+            <template #empty> Aucune données trouvées </template>
+            <template #isLoading> Loading customers data. Please wait. </template>
+
+            <DataTableColumn field="pol_sta_code" header="Numéro du bureau"></DataTableColumn>
+            <DataTableColumn field="opening_time" header="Heure ouverture"></DataTableColumn>
+            <DataTableColumn field="office_climate" header="Statut"></DataTableColumn>
+            <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+            <template #footer> Total {{ datas2 ? datas2.length : 0 }} . </template>
+          </DataTable>
+        </div>
+      </div>
+
+
+      <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
+        <h5 class="chart-title text-center">Données</h5>
+        <ProgressBar mode="indeterminate" style="height: 6px" v-if="isLoading === true"></ProgressBar>
+        <canvas id="data" width="400" height="200"></canvas>
+      </div>
 
     </div>
+
+
+
   </div>
 </template>
+
+<style scoped>
+.chart-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.chart-title {
+  margin-bottom: 30px;
+  font-weight: bold;
+  color: #333;
+}
+</style>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useAppStore } from "@/store/app";
+import { FilterMatchMode } from "primevue/api";
+import { DatasetController } from 'chart.js';
 // import RowsCounter from '@/components/RowsCounter.vue';
 // import { data } from 'jquery';
 
+import Chart from 'chart.js/auto';
 
 export default defineComponent({
   name: 'HomeView',
@@ -138,7 +181,7 @@ export default defineComponent({
   data() {
     return {
       datas: [],
-      isLoading: false,
+      isLoading: true,
       nb_mobilization: 0,
       nb_climat: 0,
       nb_goodie: 0,
@@ -154,14 +197,18 @@ export default defineComponent({
       nb_indecis_trends: 0,
       nb_plutot_defavorable: 0,
       nb_plutot_favorable: 0,
-      nb_banderol: 0,
-      nb_casquette: 0,
-      nb_divers: 0,
-      nb_t_shirt: 0,
       nb_people_disabilities: 0,
       nb_women: 0,
       nb_young: 0,
-      participants_nb: 0
+      participants_nb: 0,
+      datas1: [],
+      datas2: [],
+      datas3: [],
+      filters: {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      },
+      type: Array,
+      required: true,
     }
   },
 
@@ -170,17 +217,174 @@ export default defineComponent({
     this.connectWebSocket()
     this.getmoilization()
     this.getclimat()
-    this.getgoodies()
     this.getincident()
     this.getbureaux()
     this.getResultatMobilization()
+    this.getincident_table()
+    this.renderChart()
   },
   methods: {
+
+
 
     currentUser() {
       const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
+
+    renderChart() {
+  if (this.chartInstance) {
+    this.chartInstance.destroy();
+  }
+
+  if (!this.datas3 || this.datas3.length === 0) {
+    console.error("Aucune donnée disponible pour le graphique.");
+    return;
+  }
+
+  // Regrouper les événements par date
+  const groupedData = {};
+  this.datas3.forEach(event => {
+    console.log('Gravity:', event.gravity, 'Event:', event.event);
+
+    const date = event.date.split("T")[0]; // Récupérer uniquement la date (sans l'heure)
+    if (!groupedData[date]) {
+      groupedData[date] = { incident: 0, alerte: 0, majeur: 0, mineur: 0, critique: 0 };
+    }
+
+    // Comptabiliser les types d'événements
+    if (event.type === "Incident") {
+      groupedData[date].incident += 1;
+    } else if (event.type === "Alerte") {
+      groupedData[date].alerte += 1;
+    }
+
+    // Comptabiliser les gravités
+    if (event.gravity === 2) {
+      groupedData[date].critique += 1; // 2 est bloquant
+    } else if (event.gravity === 1) {
+      groupedData[date].majeur += 1; // 1 est majeur
+    } else if (event.gravity === 0) {
+      groupedData[date].mineur += 1; // 0 est mineur
+    }
+  });
+
+  // Extraire les labels et datasets
+  const labels = Object.keys(groupedData).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+  const incidents = labels.map(date => groupedData[date].incident);
+  const alertes = labels.map(date => groupedData[date].alerte);
+  const majeurs = labels.map(date => groupedData[date].majeur);
+  const mineurs = labels.map(date => groupedData[date].mineur);
+  const critiques = labels.map(date => groupedData[date].critique);
+
+  console.log('Labels:', labels);
+  console.log('Incidents:', incidents);
+  console.log('Alertes:', alertes);
+  console.log('Majeurs:', majeurs);
+  console.log('Mineurs:', mineurs);
+  console.log('Critiques:', critiques);
+
+  const ctx = document.getElementById('data').getContext('2d');
+
+  this.chartInstance = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: labels,
+        datasets: [
+              {
+                label: 'Incidents',
+                data: incidents,
+                backgroundColor: 'pink', // Ajout de transparence
+                borderColor: 'pink',
+                borderWidth: 1,
+                type: 'line',
+                yAxisID: 'y2',
+            },
+            {
+                label: 'Alertes',
+                data: alertes,
+                backgroundColor: 'green', // Ajout de transparence
+                borderColor: 'green',
+                borderWidth: 1,
+                type: 'line',
+                yAxisID: 'y2',
+            },
+            {
+                label: 'Mineur',
+                data: mineurs,
+                type: 'bar',
+                borderColor: 'yellow',
+                backgroundColor: 'yellow',
+                fill: false,
+                pointRadius: 4, // Rendre les points plus visibles
+                stack: 'Stack 1', // Activation de l'empilement
+                yAxisID: 'y',
+            },
+            {
+                label: 'Majeur',
+                data: majeurs,
+                type: 'bar',
+                borderColor: 'orange',
+                backgroundColor: 'orange',
+                fill: false,
+                pointRadius: 4,
+                stack: 'Stack 1', // Activation de l'empilement
+                yAxisID: 'y',
+            },
+            {
+                label: 'Critique',
+                data: critiques,
+                type: 'bar',
+                borderColor: 'red',
+                backgroundColor: 'red',
+                fill: false,
+                pointRadius: 4,
+                stack: 'Stack 1', // Activation de l'empilement
+                yAxisID: 'y',
+            },
+        ]
+    },
+    options: {
+        responsive: true,
+        scales: {
+            x: {
+                title: { display: true, text: 'Dates' },
+                stacked: true,  // Désactiver l'empilement sur X pour mieux voir les barres
+            },
+            y: {
+                beginAtZero: true,
+                title: { display: true, text: 'Nombre d\'événements (Mineurs, Majeurs, Critique)' },
+                stacked: true,  // Désactiver l'empilement en Y pour éviter que les valeurs se superposent
+            },
+            y2: { // Axe Y secondaire à droite
+                beginAtZero: true,
+                position: 'right', // Déplacer l'axe sur la droite
+                title: { display: true, text: 'Nombre d\'événements (Incidents & Alertes)' },
+                grid: { drawOnChartArea: false }, // Empêche la grille d’être dupliquée
+            }
+        }
+    }
+});
+
+},
+    getincident() {
+      this.$axios
+        .get('/incident/by_zone')
+        .then((response) => {
+          this.isLoading = false;
+          this.nb_incidents = response.data.length;
+          this.datas3 = response.data;
+
+
+          console.log('datas3', this.datas3);
+
+          this.renderChart();
+        })
+        .catch((error) => {
+          console.error('Erreur de récupération de données:', error);
+        });
+    },
+
 
 
     connectWebSocket() {
@@ -202,6 +406,7 @@ export default defineComponent({
 
           // Appels des fonctions pour mettre à jour les données
           this.updateDataFromWebSocket();
+
 
           if (message && message.updatedData) {
             // Traiter le message si nécessaire, mais pas de modification de `this.datas`
@@ -231,9 +436,9 @@ export default defineComponent({
       this.getmoilization();
       this.getclimat();
       this.getincident();
-      this.getgoodies();
       this.getbureaux();
       this.getResultatMobilization();
+      this.getincident_table();
     },
 
     getmoilization() {
@@ -252,6 +457,7 @@ export default defineComponent({
         });
     },
 
+
     getclimat() {
       this.$axios
         .get('/electoral_climate_sheet/by_zone')
@@ -264,24 +470,13 @@ export default defineComponent({
         });
     },
 
-    getincident() {
-      this.$axios
-        .get('/incident/by_zone')
-        .then((response) => {
-          this.isLoading = false
-          this.nb_incidents = response.data.length
-        })
-        .catch((error) => {
-          console.error('Erreur de recuperation de donnees:', error);
-        });
-    },
 
-    getgoodies() {
+    getincident_table() {
       this.$axios
-        .get('/goodies/by_zone')
+        .get('/incident/get_stats_by_zone')
         .then((response) => {
           this.isLoading = false
-          this.nb_goodie = response.data.length
+          this.datas1 = response.data;
         })
         .catch((error) => {
           console.error('Erreur de recuperation de donnees:', error);
@@ -294,6 +489,7 @@ export default defineComponent({
         .then((response) => {
           this.isLoading = false
           this.nb_bureaux = response.data.length
+          this.datas2 = response.data
         })
         .catch((error) => {
           console.error('Erreur de recuperation de donnees:', error);
@@ -315,16 +511,17 @@ export default defineComponent({
         this.nb_indecis_trends = response.data.voting_trends.nb_indecis_trends
         this.nb_plutot_defavorable = response.data.voting_trends.nb_plutot_defavorable
         this.nb_plutot_favorable = response.data.voting_trends.nb_plutot_favorable
-        this.nb_banderol = response.data.goodies.nb_banderol
-        this.nb_casquette = response.data.goodies.nb_casquette
-        this.nb_divers = response.data.goodies.nb_divers
-        this.nb_t_shirt = response.data.goodies.nb_t_shirt
         this.nb_people_disabilities = response.data.mobilization.nb_people_disabilities
         this.nb_women = response.data.mobilization.nb_women
         this.nb_young = response.data.mobilization.nb_young
         this.participants_nb = response.data.mobilization.participants_nb
       })
-    }
+    },
+
+    refreshDatas() {
+      this.isLoading = true;
+      this.getincident_table();
+    },
   }
 })
 </script>
