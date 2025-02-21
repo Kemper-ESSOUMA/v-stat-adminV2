@@ -154,7 +154,7 @@ export default {
     openModal(objetData) {
       this.$dialog.open(ViewFicheIncident, {
         props: {
-          header: "Fiche alerte et incident " + objetData.id,
+          header: "Fiche alerte et incident N° " + objetData.id,
           style: {
             width: '50vw'
           },

@@ -6,19 +6,17 @@
   </div>
   <div class="container-fluid" id="fiche">
     <div class="row d-flex justify-content-center align-items-center mb-4">
-      <div class="col-3 border-right border-dark">
+      <div class="col-3 border-end border-dark">
         <img src="@/assets/mni.png" class="w-100" style="padding-right: 10%;">
       </div>
-      <div class=" col-6">
-        <div class="text-left">
-          <h3 class="text-primary font-weight-bold">Election Presidentielle 2025 <br>
-          </h3>
-
-        </div>
+      <div class="col-6">
+        <h3 class="text-primary font-weight-bold text-left">
+          Election Présidentielle 2025
+        </h3>
       </div>
     </div>
 
-    <h2 class="text-center font-bold">Fiche d'Incident</h2><br>
+    <h2 class="text-center font-bold">Fiche d'Alerte et Incident</h2><br>
     <div>
       <h4>
         N° 00000{{ this.dialogRef.data.id }}
@@ -57,13 +55,13 @@
             <td>{{ this.dialogRef.data.event }}</td>
           </tr>
           <tr>
-            <th>Type d'incident :</th>
+            <th>Type d'evenement :</th>
             <td>{{ this.dialogRef.data.type }}</td>
           </tr>
-          <tr>
+          <!-- <tr>
             <th>Recommandation :</th>
             <td>{{ this.dialogRef.data.description }}</td>
-          </tr>
+          </tr> -->
           <tr>
             <th>Action préconisé :</th>
             <td>{{ this.dialogRef.data.criticality_situation }}</td>
@@ -72,7 +70,7 @@
             <th>Gravité :</th>
             <td>
               {{ dialogRef.data.gravity === 0 ? 'Mineur' : dialogRef.data.gravity === 1 ? 'Majeur' :
-                dialogRef.data.gravity === 2 ? 'Bloquant' : '' }}
+              dialogRef.data.gravity === 2 ? 'Bloquant' : '' }}
             </td>
           </tr>
 

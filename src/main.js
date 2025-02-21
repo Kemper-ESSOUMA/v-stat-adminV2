@@ -28,7 +28,7 @@ import ProgressBar from "primevue/progressbar";
 import DataView from "primevue/dataview";
 import InputText from "primevue/inputtext";
 
-// import Checkbox from 'primevue/checkbox';
+import Checkbox from 'primevue/checkbox';
 
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
@@ -48,25 +48,25 @@ import { createApp } from "vue";
 import { registerPlugins } from "@/plugins";
 
 //empêcher aussi l'inspection avec F12, Ctrl+Shift+I et Ctrl+U et Ctrl+S
-  // document.addEventListener("contextmenu", (event) => event.preventDefault());
+// document.addEventListener("contextmenu", (event) => event.preventDefault());
 
-  // document.addEventListener("keydown", (event) => {
-  //   if (
-  //     event.ctrlKey &&
-  //     (event.key === "u" ||
-  //       event.key === "U" ||
-  //       event.key === "s" ||
-  //       event.key === "S")
-  //   ) {
-  //     event.preventDefault();
-  //   }
-  //   if (
-  //     event.key === "F12" ||
-  //     (event.ctrlKey && event.shiftKey && event.key === "I")
-  //   ) {
-  //     event.preventDefault();
-  //   }
-  // });
+// document.addEventListener("keydown", (event) => {
+//   if (
+//     event.ctrlKey &&
+//     (event.key === "u" ||
+//       event.key === "U" ||
+//       event.key === "s" ||
+//       event.key === "S")
+//   ) {
+//     event.preventDefault();
+//   }
+//   if (
+//     event.key === "F12" ||
+//     (event.ctrlKey && event.shiftKey && event.key === "I")
+//   ) {
+//     event.preventDefault();
+//   }
+// });
 
 const app = createApp(App);
 app.use(PrimeVue);
@@ -95,7 +95,7 @@ app.component("ChartJS", Chart);
 app.component("SelectButton", SelectButton);
 app.component("SpeedDial", SpeedDial);
 app.component("MultiSelect", MultiSelect);
-// // app.component('Checkbox', Checkbox);
+app.component('CheckboxMulti', Checkbox);
 registerPlugins(app);
 
 app.mount("#app");

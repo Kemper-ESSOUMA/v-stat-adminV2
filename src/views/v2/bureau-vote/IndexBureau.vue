@@ -31,7 +31,7 @@
       </div> -->
       <div>
         <router-link class="btn btn-primary" :to="{ name: 'bureaux' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          :class="{ 'active': this.$route.name === 'bureaux' }" data-bs-toggle="tooltip" data-bs-placement="right" 
+          :class="{ 'active': this.$route.name === 'bureaux' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
@@ -123,7 +123,7 @@ export default {
     openModal(objetData) {
       this.$dialog.open(ViewFicheBureauVote, {
         props: {
-          header: "Fiche de bureau de vote " + objetData.id,
+          header: "Fiche de bureau de vote N° " + objetData.id,
           style: {
             width: '50vw'
           },
