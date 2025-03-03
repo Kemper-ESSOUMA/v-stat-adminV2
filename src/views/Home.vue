@@ -89,6 +89,7 @@
       </div>
 
       <div class="col-6">
+        <h5 class="row justify-content-center">Tableau des alertes et incidents</h5>
         <div class="m-0">
           <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
           <DataTable :value="datas1" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
@@ -102,43 +103,53 @@
             <template> Loading customers data. Please wait. </template>
 
             <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+            <DataTableColumn field="code" header="Code"></DataTableColumn>
             <DataTableColumn field="nb_incidents" header="Nombre Incident"></DataTableColumn>
             <DataTableColumn field="nb_alertes" header="Nombre Alerte"></DataTableColumn>
             <DataTableColumn field="mineur" header="Mineur"></DataTableColumn>
             <DataTableColumn field="majeur" header="Majeur"></DataTableColumn>
             <DataTableColumn field="critique" header="Critique"></DataTableColumn>
-
-            <template #footer> Total {{ datas1 ? datas1.length : 0 }} . </template>
+            <template #footer>
+              Total {{ filteredData1.length }} .
+            </template>
           </DataTable>
         </div>
 
       </div>
 
       <div class="col-6">
+        <h5 class="row justify-content-center">Tableau de bureaux de votes</h5>
         <div class="m-0">
           <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
           <DataTable :value="datas2" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['pol_sta_code']">
+            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters_bureau" :globalFilterFields="['voting_center']">
             <template #header>
               <div class="flex justify-content-end">
-                <InputText placeholder="Recherche" v-model="filters['global'].value" />
+                <InputText placeholder="Recherche" v-model="filters_bureau['global'].value" />
               </div>
             </template>
             <template #empty> Aucune données trouvées </template>
             <template #isLoading> Loading customers data. Please wait. </template>
 
-            <DataTableColumn field="pol_sta_code" header="Numéro du bureau"></DataTableColumn>
+            <DataTableColumn header="Code du bureau">
+              <template #body="slotProps">
+                {{ slotProps.data.voting_center + 'B' + slotProps.data.pol_sta_code }}
+              </template>
+            </DataTableColumn>
+
             <DataTableColumn field="opening_time" header="Heure ouverture"></DataTableColumn>
             <DataTableColumn field="office_climate" header="Statut"></DataTableColumn>
-            <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
-            <template #footer> Total {{ datas2 ? datas2.length : 0 }} . </template>
+            <template #footer>
+              Total {{ filteredData.length }} .
+            </template>
+
           </DataTable>
         </div>
       </div>
 
 
       <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
-        <h5 class="chart-title text-center">Données</h5>
+        <h5 class="chart-title text-center">Statistiques des alertes et incidents par gravités</h5>
         <ProgressBar mode="indeterminate" style="height: 6px" v-if="isLoading === true"></ProgressBar>
         <canvas id="data" width="400" height="200"></canvas>
       </div>
@@ -207,6 +218,9 @@ export default defineComponent({
       filters: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
+      filters_bureau: {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      },
       type: Array,
       required: true,
     }
@@ -223,6 +237,27 @@ export default defineComponent({
     this.getincident_table()
     this.renderChart()
   },
+
+  computed: {
+    filteredData() {
+      if (!this.filters_bureau['global'] || !this.filters_bureau['global'].value) {
+        return this.datas2;
+      }
+      const searchTerm = this.filters_bureau['global'].value.toLowerCase();
+      return this.datas2.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
+    },
+
+    filteredData1() {
+      if (!this.filters['global'] || !this.filters['global'].value) {
+        return this.datas1;
+      }
+      const searchTerm = this.filters['global'].value.toLowerCase();
+      return this.datas1.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
+    }
+    
+  },
+
+
   methods: {
 
 
@@ -233,140 +268,140 @@ export default defineComponent({
     },
 
     renderChart() {
-  if (this.chartInstance) {
-    this.chartInstance.destroy();
-  }
+      if (this.chartInstance) {
+        this.chartInstance.destroy();
+      }
 
-  if (!this.datas3 || this.datas3.length === 0) {
-    console.error("Aucune donnée disponible pour le graphique.");
-    return;
-  }
+      if (!this.datas3 || this.datas3.length === 0) {
+        console.error("Aucune donnée disponible pour le graphique.");
+        return;
+      }
 
-  // Regrouper les événements par date
-  const groupedData = {};
-  this.datas3.forEach(event => {
-    console.log('Gravity:', event.gravity, 'Event:', event.event);
+      // Regrouper les événements par date
+      const groupedData = {};
+      this.datas3.forEach(event => {
+        console.log('Gravity:', event.gravity, 'Event:', event.event);
 
-    const date = event.date.split("T")[0]; // Récupérer uniquement la date (sans l'heure)
-    if (!groupedData[date]) {
-      groupedData[date] = { incident: 0, alerte: 0, majeur: 0, mineur: 0, critique: 0 };
-    }
+        const date = event.date.split("T")[0]; // Récupérer uniquement la date (sans l'heure)
+        if (!groupedData[date]) {
+          groupedData[date] = { incident: 0, alerte: 0, majeur: 0, mineur: 0, critique: 0 };
+        }
 
-    // Comptabiliser les types d'événements
-    if (event.type === "Incident") {
-      groupedData[date].incident += 1;
-    } else if (event.type === "Alerte") {
-      groupedData[date].alerte += 1;
-    }
+        // Comptabiliser les types d'événements
+        if (event.type === "Incident") {
+          groupedData[date].incident += 1;
+        } else if (event.type === "Alerte") {
+          groupedData[date].alerte += 1;
+        }
 
-    // Comptabiliser les gravités
-    if (event.gravity === 2) {
-      groupedData[date].critique += 1; // 2 est bloquant
-    } else if (event.gravity === 1) {
-      groupedData[date].majeur += 1; // 1 est majeur
-    } else if (event.gravity === 0) {
-      groupedData[date].mineur += 1; // 0 est mineur
-    }
-  });
+        // Comptabiliser les gravités
+        if (event.gravity === 2) {
+          groupedData[date].critique += 1; // 2 est bloquant
+        } else if (event.gravity === 1) {
+          groupedData[date].majeur += 1; // 1 est majeur
+        } else if (event.gravity === 0) {
+          groupedData[date].mineur += 1; // 0 est mineur
+        }
+      });
 
-  // Extraire les labels et datasets
-  const labels = Object.keys(groupedData).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-  const incidents = labels.map(date => groupedData[date].incident);
-  const alertes = labels.map(date => groupedData[date].alerte);
-  const majeurs = labels.map(date => groupedData[date].majeur);
-  const mineurs = labels.map(date => groupedData[date].mineur);
-  const critiques = labels.map(date => groupedData[date].critique);
+      // Extraire les labels et datasets
+      const labels = Object.keys(groupedData).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+      const incidents = labels.map(date => groupedData[date].incident);
+      const alertes = labels.map(date => groupedData[date].alerte);
+      const majeurs = labels.map(date => groupedData[date].majeur);
+      const mineurs = labels.map(date => groupedData[date].mineur);
+      const critiques = labels.map(date => groupedData[date].critique);
 
-  console.log('Labels:', labels);
-  console.log('Incidents:', incidents);
-  console.log('Alertes:', alertes);
-  console.log('Majeurs:', majeurs);
-  console.log('Mineurs:', mineurs);
-  console.log('Critiques:', critiques);
+      console.log('Labels:', labels);
+      console.log('Incidents:', incidents);
+      console.log('Alertes:', alertes);
+      console.log('Majeurs:', majeurs);
+      console.log('Mineurs:', mineurs);
+      console.log('Critiques:', critiques);
 
-  const ctx = document.getElementById('data').getContext('2d');
+      const ctx = document.getElementById('data').getContext('2d');
 
-  this.chartInstance = new Chart(ctx, {
-    type: 'bar',
-    data: {
-        labels: labels,
-        datasets: [
-              {
-                label: 'Incidents',
-                data: incidents,
-                backgroundColor: 'pink', // Ajout de transparence
-                borderColor: 'pink',
-                borderWidth: 1,
-                type: 'line',
-                yAxisID: 'y2',
+      this.chartInstance = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: labels,
+          datasets: [
+            {
+              label: 'Incidents',
+              data: incidents,
+              backgroundColor: 'pink', // Ajout de transparence
+              borderColor: 'pink',
+              borderWidth: 1,
+              type: 'line',
+              yAxisID: 'y2',
             },
             {
-                label: 'Alertes',
-                data: alertes,
-                backgroundColor: 'green', // Ajout de transparence
-                borderColor: 'green',
-                borderWidth: 1,
-                type: 'line',
-                yAxisID: 'y2',
+              label: 'Alertes',
+              data: alertes,
+              backgroundColor: 'green', // Ajout de transparence
+              borderColor: 'green',
+              borderWidth: 1,
+              type: 'line',
+              yAxisID: 'y2',
             },
             {
-                label: 'Mineur',
-                data: mineurs,
-                type: 'bar',
-                borderColor: 'yellow',
-                backgroundColor: 'yellow',
-                fill: false,
-                pointRadius: 4, // Rendre les points plus visibles
-                stack: 'Stack 1', // Activation de l'empilement
-                yAxisID: 'y',
+              label: 'Mineur',
+              data: mineurs,
+              type: 'bar',
+              borderColor: 'yellow',
+              backgroundColor: 'yellow',
+              fill: false,
+              pointRadius: 4, // Rendre les points plus visibles
+              stack: 'Stack 1', // Activation de l'empilement
+              yAxisID: 'y',
             },
             {
-                label: 'Majeur',
-                data: majeurs,
-                type: 'bar',
-                borderColor: 'orange',
-                backgroundColor: 'orange',
-                fill: false,
-                pointRadius: 4,
-                stack: 'Stack 1', // Activation de l'empilement
-                yAxisID: 'y',
+              label: 'Majeur',
+              data: majeurs,
+              type: 'bar',
+              borderColor: 'orange',
+              backgroundColor: 'orange',
+              fill: false,
+              pointRadius: 4,
+              stack: 'Stack 1', // Activation de l'empilement
+              yAxisID: 'y',
             },
             {
-                label: 'Critique',
-                data: critiques,
-                type: 'bar',
-                borderColor: 'red',
-                backgroundColor: 'red',
-                fill: false,
-                pointRadius: 4,
-                stack: 'Stack 1', // Activation de l'empilement
-                yAxisID: 'y',
+              label: 'Critique',
+              data: critiques,
+              type: 'bar',
+              borderColor: 'red',
+              backgroundColor: 'red',
+              fill: false,
+              pointRadius: 4,
+              stack: 'Stack 1', // Activation de l'empilement
+              yAxisID: 'y',
             },
-        ]
-    },
-    options: {
-        responsive: true,
-        scales: {
+          ]
+        },
+        options: {
+          responsive: true,
+          scales: {
             x: {
-                title: { display: true, text: 'Dates' },
-                stacked: true,  // Désactiver l'empilement sur X pour mieux voir les barres
+              title: { display: true, text: 'Dates' },
+              stacked: true,  // Désactiver l'empilement sur X pour mieux voir les barres
             },
             y: {
-                beginAtZero: true,
-                title: { display: true, text: 'Nombre d\'événements (Mineurs, Majeurs, Critique)' },
-                stacked: true,  // Désactiver l'empilement en Y pour éviter que les valeurs se superposent
+              beginAtZero: true,
+              title: { display: true, text: 'Nombre d\'événements (Mineurs, Majeurs, Critique)' },
+              stacked: true,  // Désactiver l'empilement en Y pour éviter que les valeurs se superposent
             },
             y2: { // Axe Y secondaire à droite
-                beginAtZero: true,
-                position: 'right', // Déplacer l'axe sur la droite
-                title: { display: true, text: 'Nombre d\'événements (Incidents & Alertes)' },
-                grid: { drawOnChartArea: false }, // Empêche la grille d’être dupliquée
+              beginAtZero: true,
+              position: 'right', // Déplacer l'axe sur la droite
+              title: { display: true, text: 'Nombre d\'événements (Incidents & Alertes)' },
+              grid: { drawOnChartArea: false }, // Empêche la grille d’être dupliquée
             }
+          }
         }
-    }
-});
+      });
 
-},
+    },
     getincident() {
       this.$axios
         .get('/incident/by_zone')
