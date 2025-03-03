@@ -5,7 +5,7 @@
     </div>
 
     <div class="btn-group page-nav" role="group">
-      <div>
+      <!-- <div>
         <router-link class="btn" :to="{ name: 'Home' }" :class="{ active: this.$route.name === 'Home' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Burreaux de votes">
           <i class="pi pi-table" style="color: #3242c5"></i> Gestion des
@@ -18,7 +18,7 @@
           <i class="pi pi-building" style="color: #3242c5"></i> Suivi de
           campagne du candidat
         </router-link>
-      </div>
+      </div> -->
     </div>
   </div>
   <hr />
@@ -147,7 +147,7 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <!-- <div class="col-6">
         <h5 class="row justify-content-center">Tableau de mobilisations</h5>
         <div class="m-0">
           <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
@@ -196,7 +196,7 @@
             <template #footer> Total {{ filteredData.length }} . </template>
           </DataTable>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>

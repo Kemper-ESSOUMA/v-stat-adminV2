@@ -4,7 +4,7 @@
       <h2 class="text-primary"> Accueil </h2>
     </div>
 
-    <div class="btn-group page-nav " role="group">
+    <!-- <div class="btn-group page-nav " role="group">
       <div>
         <router-link class="btn btn-primary" :to="{ name: 'Home' }" :class="{ 'active': this.$route.name === 'Home' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Burreaux de votes">
@@ -18,7 +18,7 @@
         </router-link>
       </div>
 
-    </div>
+    </div> -->
   </div>
   <hr>
   <div class="body-contentys">
@@ -26,7 +26,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E; min-height: 300px;">
+            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E; min-height: 350px;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -58,7 +58,7 @@
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04; min-height: 300px;">
+            <div id="rows_counter" class="card mb-1" style="background-color: #FBBE04; min-height: 350px;">
               <div v-if="isLoading === true" class="card-header">
                 <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
@@ -88,7 +88,130 @@
         </div>
       </div>
 
-      <div class="col-6">
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'mobilization' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #1976d3; min-height: 350px">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff"></ProgressBar>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p>Mobilisation</p>
+                <div class="row d-flex align-items-center flex-grow-1">
+                  <div id="icon_animation" class="col-lg-4 col-12">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_mobilization }} Fiches de mobilisation</h4>
+                    <ul class="list-unstyled">
+                      <li>
+                        Handicapés: <b>{{ this.nb_people_disabilities }}</b>
+                      </li>
+                      <li>
+                        Femmes: <b>{{ this.nb_women }}</b>
+                      </li>
+                      <li>
+                        Jeunes: <b>{{ this.nb_young }}</b>
+                      </li>
+                      <li>
+                        Participants: <b>{{ this.participants_nb }}</b>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end">
+                <small>
+                  Details
+                  <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43a047; min-height: 350px">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff"></ProgressBar>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p>Climat</p>
+                <div class="row d-flex align-items-center flex-grow-1">
+                  <div id="icon_animation" class="col-lg-4 col-12">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
+                    <ul class="list-unstyled">
+                      <li>
+                        Tendu : <b>{{ this.nb_tendu }}</b>
+                      </li>
+                      <li>
+                        Calme : <b>{{ this.nb_calme }}</b>
+                      </li>
+                      <li>
+                        Indifférent : <b>{{ this.nb_indifferent }}</b>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end">
+                <small>
+                  Details
+                  <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <div class="col-4">
+        <div class="m-1">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #755547; min-height: 350px">
+              <div v-if="isLoading === true" class="card-header">
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff"></ProgressBar>
+              </div>
+              <div class="card-body d-flex flex-column">
+                <p>Tendances de votes</p>
+                <div class="row d-flex align-items-center flex-grow-1">
+                  <div id="icon_animation" class="col-lg-4 col-12">
+                    <!-- <img :src=" this.icon" alt=""> -->
+                  </div>
+                  <div class="col-lg-8 col-12">
+                    <h4>{{ this.nb_tendances }} Fiches de tendance de vote</h4>
+                    <ul class="list-unstyled">
+                      <li>
+                        Bon : <b>{{ this.nb_bon }}</b>
+                      </li>
+                      <li>
+                        Satisfait : <b>{{ this.nb_satisfait }}</b>
+                      </li>
+                      <li>
+                        Insatisfait : <b>{{ this.nb_insatifait }}</b>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div class="card-footer d-flex justify-content-end">
+                <small>
+                  Details
+                  <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto"></i>
+                </small>
+              </div>
+            </div>
+          </router-link>
+        </div>
+      </div>
+
+      <!-- <div class="col-6">
         <h5 class="row justify-content-center">Tableau des alertes et incidents</h5>
         <div class="m-0">
           <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
@@ -99,60 +222,60 @@
                 <InputText placeholder="Recherche" v-model="filters['global'].value" />
               </div>
             </template>
-            <template #empty> Aucune données trouvées </template>
-            <template> Loading customers data. Please wait. </template>
+<template #empty> Aucune données trouvées </template>
+<template> Loading customers data. Please wait. </template>
 
-            <DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
-            <DataTableColumn field="code" header="Code"></DataTableColumn>
-            <DataTableColumn field="nb_incidents" header="Nombre Incident"></DataTableColumn>
-            <DataTableColumn field="nb_alertes" header="Nombre Alerte"></DataTableColumn>
-            <DataTableColumn field="mineur" header="Mineur"></DataTableColumn>
-            <DataTableColumn field="majeur" header="Majeur"></DataTableColumn>
-            <DataTableColumn field="critique" header="Critique"></DataTableColumn>
-            <template #footer>
+<DataTableColumn field="voting_center" header="Centre de vote"></DataTableColumn>
+<DataTableColumn field="code" header="Code"></DataTableColumn>
+<DataTableColumn field="nb_incidents" header="Nombre Incident"></DataTableColumn>
+<DataTableColumn field="nb_alertes" header="Nombre Alerte"></DataTableColumn>
+<DataTableColumn field="mineur" header="Mineur"></DataTableColumn>
+<DataTableColumn field="majeur" header="Majeur"></DataTableColumn>
+<DataTableColumn field="critique" header="Critique"></DataTableColumn>
+<template #footer>
               Total {{ filteredData1.length }} .
             </template>
-          </DataTable>
-        </div>
+</DataTable>
+</div>
 
-      </div>
+</div>
 
-      <div class="col-6">
-        <h5 class="row justify-content-center">Tableau de bureaux de votes</h5>
-        <div class="m-0">
-          <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
-          <DataTable :value="datas2" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters_bureau" :globalFilterFields="['voting_center']">
-            <template #header>
+<div class="col-6">
+  <h5 class="row justify-content-center">Tableau de bureaux de votes</h5>
+  <div class="m-0">
+    <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
+    <DataTable :value="datas2" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters_bureau" :globalFilterFields="['voting_center']">
+      <template #header>
               <div class="flex justify-content-end">
                 <InputText placeholder="Recherche" v-model="filters_bureau['global'].value" />
               </div>
             </template>
-            <template #empty> Aucune données trouvées </template>
-            <template #isLoading> Loading customers data. Please wait. </template>
+      <template #empty> Aucune données trouvées </template>
+      <template #isLoading> Loading customers data. Please wait. </template>
 
-            <DataTableColumn header="Code du bureau">
-              <template #body="slotProps">
+      <DataTableColumn header="Code du bureau">
+        <template #body="slotProps">
                 {{ slotProps.data.voting_center + 'B' + slotProps.data.pol_sta_code }}
               </template>
-            </DataTableColumn>
+      </DataTableColumn>
 
-            <DataTableColumn field="opening_time" header="Heure ouverture"></DataTableColumn>
-            <DataTableColumn field="office_climate" header="Statut"></DataTableColumn>
-            <template #footer>
+      <DataTableColumn field="opening_time" header="Heure ouverture"></DataTableColumn>
+      <DataTableColumn field="office_climate" header="Statut"></DataTableColumn>
+      <template #footer>
               Total {{ filteredData.length }} .
             </template>
 
-          </DataTable>
-        </div>
-      </div>
+    </DataTable>
+  </div>
+</div> -->
 
 
-      <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
+      <!-- <div class="chart-container" style="width: 90%; margin-bottom: 10px;">
         <h5 class="chart-title text-center">Statistiques des alertes et incidents par gravités</h5>
         <ProgressBar mode="indeterminate" style="height: 6px" v-if="isLoading === true"></ProgressBar>
         <canvas id="data" width="400" height="200"></canvas>
-      </div>
+      </div> -->
 
     </div>
 
@@ -211,6 +334,12 @@ export default defineComponent({
       nb_people_disabilities: 0,
       nb_women: 0,
       nb_young: 0,
+      nb_tendu: 0,
+      nb_calme: 0,
+      nb_tendances: 0,
+      nb_indifferent: 0,
+      nb_satisfait: 0,
+      nb_insatifait: 0,
       participants_nb: 0,
       datas1: [],
       datas2: [],
@@ -219,6 +348,12 @@ export default defineComponent({
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
       filters_bureau: {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      },
+      filters_mobilisation: {
+        global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+      },
+      filters_tendance: {
         global: { value: null, matchMode: FilterMatchMode.CONTAINS },
       },
       type: Array,
@@ -238,30 +373,28 @@ export default defineComponent({
     this.renderChart()
   },
 
-  computed: {
-    filteredData() {
-      if (!this.filters_bureau['global'] || !this.filters_bureau['global'].value) {
-        return this.datas2;
-      }
-      const searchTerm = this.filters_bureau['global'].value.toLowerCase();
-      return this.datas2.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
-    },
+  // computed: {
+  //   filteredData() {
+  //     if (!this.filters_bureau['global'] || !this.filters_bureau['global'].value) {
+  //       return this.datas2;
+  //     }
+  //     const searchTerm = this.filters_bureau['global'].value.toLowerCase();
+  //     return this.datas2.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
+  //   },
 
-    filteredData1() {
-      if (!this.filters['global'] || !this.filters['global'].value) {
-        return this.datas1;
-      }
-      const searchTerm = this.filters['global'].value.toLowerCase();
-      return this.datas1.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
-    }
-    
-  },
+
+  //   filteredData1() {
+  //     if (!this.filters['global'] || !this.filters['global'].value) {
+  //       return this.datas1;
+  //     }
+  //     const searchTerm = this.filters['global'].value.toLowerCase();
+  //     return this.datas1.filter(item => item.voting_center.toLowerCase().includes(searchTerm));
+  //   }
+
+  // },
 
 
   methods: {
-
-
-
     currentUser() {
       const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
       return appStore.currentUser; // Récupérer les informations utilisateur
@@ -530,6 +663,19 @@ export default defineComponent({
           console.error('Erreur de recuperation de donnees:', error);
         });
     },
+        gettendance_vote() {
+      this.$axios
+        .get("/electoral_climate_sheet/get_stats_by_zone")
+        .then((response) => {
+          this.isLoading = false;
+          console.log("tendance", response.data);
+          this.datas1 = response.data;
+          this.nb_tendances = response.data.length;
+        })
+        .catch((error) => {
+          console.error("Erreur de recuperation de donnees:", error);
+        });
+    },
 
     //fonctions resultats stats
 
@@ -549,6 +695,11 @@ export default defineComponent({
         this.nb_people_disabilities = response.data.mobilization.nb_people_disabilities
         this.nb_women = response.data.mobilization.nb_women
         this.nb_young = response.data.mobilization.nb_young
+        this.nb_tendu = response.data.electoral_climate.nb_tendu;
+        this.nb_calme = response.data.electoral_climate.nb_calme;
+        this.nb_indifferent = response.data.electoral_climate.nb_indifferent;
+        this.nb_satisfait = response.data.voting_trends.nb_satisfait;
+        this.nb_insatifait = response.data.voting_trends.nb_insatifait;
         this.participants_nb = response.data.mobilization.participants_nb
       })
     },
