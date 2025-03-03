@@ -13,12 +13,12 @@
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
-    <div>
+    <!-- <div>
       <router-link class="btn" :to="{ name: 'international' }" :class="{ active: this.$route.name === 'international' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="international">
         <i class="pi pi-map" style="color: #3242c5"></i> INTERNATIONAL
       </router-link>
-    </div>
+    </div> -->
   </div>
   <div>
     <!-- Carte -->
@@ -87,11 +87,11 @@
       <div class="progress-bar">
         <div class="progress-segment candidate1" :style="{ width: candidate1Percentage + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
-          <span class="percentage-text">{{ candidate1Percentage }}%</span>
+          <!-- <span class="percentage-text">{{ candidate1Percentage }}%</span> -->
         </div>
         <div class="progress-segment candidate2" :style="{ width: candidate2Percentage + '%' }">
           <div class="candidate-photo candidate2-photo"></div>
-          <span class="percentage-text">{{ candidate2Percentage }}%</span>
+          <!-- <span class="percentage-text">{{ candidate2Percentage }}%</span> -->
         </div>
       </div>
     </div>
@@ -378,12 +378,10 @@ body {
   top: 45%;
   left: 85%;
   transform: translate(-50%, -50%);
-
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 5px;
-  /* Espacement entre les cases */
   padding: 5px;
 }
 
@@ -415,8 +413,8 @@ body {
 }
 
 #candidates {
-  top: 60%;
   position: absolute;
+  top: 60%;
   left: 5%;
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
@@ -456,7 +454,6 @@ body {
   background-color: gray;
 }
 
-
 #progress-bar-container {
   width: 80%;
   max-width: 800px;
@@ -485,16 +482,12 @@ body {
 
 .progress-segment.candidate1 {
   background-color: #ff6347;
-  /* Rouge */
   left: 0;
-  /* Aligné à gauche */
 }
 
 .progress-segment.candidate2 {
   background-color: #32cd32;
-  /* Vert */
   right: 0;
-  /* Aligné à droite */
 }
 
 .percentage-text {
@@ -522,7 +515,6 @@ body {
   color: #32cd32;
 }
 
-
 .candidate-photo {
   width: 80px;
   height: 80px;
@@ -535,4 +527,117 @@ body {
   display: flex;
   justify-content: space-between;
 }
+
+/* ----------- RESPONSIVE DESIGN ----------- */
+
+/* Écrans tablettes (max 1024px) */
+@media (max-width: 1024px) {
+  #map {
+    width: 90%;
+    height: 50vh;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+  }
+
+  #map2 {
+    width: 300px;
+    height: 200px;
+    left: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+
+  #filters,
+  #legend,
+  #candidates {
+    width: 200px;
+    left: 3%;
+  }
+
+  .progress-bar {
+    height: 20px;
+  }
+
+  .candidate-photo {
+    width: 60px;
+    height: 60px;
+  }
+}
+
+/* Écrans mobiles (max 768px) */
+@media (max-width: 768px) {
+  #map {
+    width: 100%;
+    height: 40vh;
+    position: static;
+    transform: none;
+  }
+
+  #map2 {
+    width: 250px;
+    height: 150px;
+    left: 50%;
+    top: auto;
+    transform: translate(-50%, 0);
+  }
+
+  #filters,
+  #legend,
+  #candidates {
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    top: auto;
+    position: relative;
+    margin-bottom: 10px;
+  }
+
+  #progress-bar-container {
+    width: 90%;
+    margin-top: 20px;
+  }
+
+  .progress-bar {
+    height: 15px;
+  }
+
+  .candidate-photo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
+}
+
+/* Écrans très petits (max 480px) */
+@media (max-width: 480px) {
+  #map {
+    height: 35vh;
+  }
+
+  #map2 {
+    width: 200px;
+    height: 120px;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+  }
+
+  .candidate-photo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .progress-bar {
+    height: 12px;
+  }
+
+  .label {
+    font-size: 12px;
+  }
+}
+
 </style>
