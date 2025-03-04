@@ -35,7 +35,8 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters"
+      :globalFilterFields="['libelle_centre', 'libelle', 'code', 'total_registered', 'total_scrutin', 'nb_bulletin_blanc', 'nb_scrutin_valide', 'nb_abstention', 'candidate_1.data', 'candidate_2.data', 'candidate_3.data']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -59,7 +60,8 @@
       </template>
 
       <DataTableColumn field="code" header="Code du burreau de vote"></DataTableColumn>
-      <DataTableColumn field="libelle" header="Centre de vote"></DataTableColumn>
+      <DataTableColumn field="libelle_centre" header="Libelle centre"></DataTableColumn>
+      <DataTableColumn field="libelle" header="Libelle bureau"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
       <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin B/N"></DataTableColumn>
@@ -79,7 +81,7 @@
         </template>
       </DataTableColumn>
       <template #footer>
-        Total {{ datas ? datas.length : 0 }} .
+        Total {{ filteredData.length }} .
       </template>
     </DataTable>
   </div>
@@ -175,6 +177,15 @@ export default {
     this.connectWebSocket();
     this.get_stat_by_burreau();
     this.get_stat_by_zone();
+  },
+  computed: {
+    filteredData() {
+      if (!this.filters['global'] || !this.filters['global'].value) {
+        return this.datas;
+      }
+      const searchTerm = this.filters['global'].value.toLowerCase();
+      return this.datas.filter(item => item.libelle_centre.toLowerCase().includes(searchTerm));
+    }
   },
   methods: {
     currentUser() {

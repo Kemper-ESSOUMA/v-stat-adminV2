@@ -59,7 +59,7 @@
       </template>
 
       <DataTableColumn field="code" header="Code"></DataTableColumn>
-      <DataTableColumn field="libelle" header="Titre"></DataTableColumn>
+      <DataTableColumn field="libelle" header="Libelle"></DataTableColumn>
       <DataTableColumn field="zone" header="Zone"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
       <DataTableColumn field="total_offices" header="Nombre Bureau"></DataTableColumn>

@@ -1,7 +1,7 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Remontées par centres de votes</h4>
+      <h4 class="text-app font-weight-bold">Remontées par bureaux de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
@@ -34,7 +34,7 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle', 'libelle_centre', 'code', 'total_registered', 'total_scrutin', 'nb_bulletin_blanc', 'nb_scrutin_valide', 'nb_abstention']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -58,7 +58,8 @@
       </template>
 
       <DataTableColumn field="code" header="Code du burreau de vote"></DataTableColumn>
-      <DataTableColumn field="libelle" header="Centre de vote"></DataTableColumn>
+      <DataTableColumn field="libelle_centre" header="Libelle centre"></DataTableColumn>
+      <DataTableColumn field="libelle" header="Libelle bureau"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
       <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin B/N"></DataTableColumn>
@@ -110,7 +111,7 @@ export default {
         return this.datas;
       }
       const searchTerm = this.filters['global'].value.toLowerCase();
-      return this.datas.filter(item => item.libelle.toLowerCase().includes(searchTerm));
+      return this.datas.filter(item => item.libelle_centre.toLowerCase().includes(searchTerm));
     }
   },
   methods: {
