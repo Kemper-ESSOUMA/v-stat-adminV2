@@ -158,45 +158,45 @@
                 <InputText placeholder="Recherche" v-model="filters_mobilisation['global'].value" />
               </div>
             </template>
-            <template #empty> Aucune données trouvées </template>
-            <template> Loading customers data. Please wait. </template>
+<template #empty> Aucune données trouvées </template>
+<template> Loading customers data. Please wait. </template>
 
-            <DataTableColumn field="zone" header="Zone"></DataTableColumn>
-            <DataTableColumn field="zone_code" header="Code"></DataTableColumn>
-            <DataTableColumn field="nb_meetings" header="Meetings"></DataTableColumn>
-            <DataTableColumn field="nb_talking" header="Causeries"></DataTableColumn>
-            <DataTableColumn field="nb_door_to_door" header="Porte à porte"></DataTableColumn>
-            <DataTableColumn field="nb_other" header="Autres"></DataTableColumn>
-            <DataTableColumn field="nb_population" header="Participants"></DataTableColumn>
-            <template #footer> Total {{ filteredData1.length }} . </template>
-          </DataTable>
-        </div>
-      </div>
+<DataTableColumn field="zone" header="Zone"></DataTableColumn>
+<DataTableColumn field="zone_code" header="Code"></DataTableColumn>
+<DataTableColumn field="nb_meetings" header="Meetings"></DataTableColumn>
+<DataTableColumn field="nb_talking" header="Causeries"></DataTableColumn>
+<DataTableColumn field="nb_door_to_door" header="Porte à porte"></DataTableColumn>
+<DataTableColumn field="nb_other" header="Autres"></DataTableColumn>
+<DataTableColumn field="nb_population" header="Participants"></DataTableColumn>
+<template #footer> Total {{ filteredData1.length }} . </template>
+</DataTable>
+</div>
+</div>
 
-      <div class="col-6">
-        <h5 class="row justify-content-center">
-          Tableau de climat électoral et tendances des votes
-        </h5>
-        <div class="m-0">
-          <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
-          <DataTable :value="datas1" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-            :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters_tendance" :globalFilterFields="['zone']">
-            <template #header>
+<div class="col-6">
+  <h5 class="row justify-content-center">
+    Tableau de climat électoral et tendances des votes
+  </h5>
+  <div class="m-0">
+    <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.isLoading === true"></ProgressBar>
+    <DataTable :value="datas1" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters_tendance" :globalFilterFields="['zone']">
+      <template #header>
               <div class="flex justify-content-end">
                 <InputText placeholder="Recherche" v-model="filters_tendance['global'].value" />
               </div>
             </template>
-            <template #empty> Aucune données trouvées </template>
-            <template> Loading customers data. Please wait. </template>
+      <template #empty> Aucune données trouvées </template>
+      <template> Loading customers data. Please wait. </template>
 
-            <DataTableColumn field="zone" header="Zone"></DataTableColumn>
-            <DataTableColumn field="zone_code" header="Code"></DataTableColumn>
-            <DataTableColumn field="climate" header="Climat"></DataTableColumn>
-            <DataTableColumn field="date" header="Date"></DataTableColumn>
-            <template #footer> Total {{ filteredData.length }} . </template>
-          </DataTable>
-        </div>
-      </div> -->
+      <DataTableColumn field="zone" header="Zone"></DataTableColumn>
+      <DataTableColumn field="zone_code" header="Code"></DataTableColumn>
+      <DataTableColumn field="climate" header="Climat"></DataTableColumn>
+      <DataTableColumn field="date" header="Date"></DataTableColumn>
+      <template #footer> Total {{ filteredData.length }} . </template>
+    </DataTable>
+  </div>
+</div> -->
     </div>
   </div>
 </template>
@@ -447,8 +447,7 @@ export default defineComponent({
         this.nb_tendu = response.data.electoral_climate.nb_tendu;
         this.nb_calme = response.data.electoral_climate.nb_calme;
         this.nb_indifferent = response.data.electoral_climate.nb_indifferent;
-        this.nb_people_disabilities =
-          response.data.mobilization.nb_people_disabilities;
+        this.nb_people_disabilities = response.data.mobilization.nb_people_disabilities;
         this.nb_women = response.data.mobilization.nb_women;
         this.nb_young = response.data.mobilization.nb_young;
         this.participants_nb = response.data.mobilization.participants_nb;

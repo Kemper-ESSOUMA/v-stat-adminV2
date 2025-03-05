@@ -25,36 +25,43 @@
     <div class="row justify-content-center">
       <div class="col-4">
         <div class="m-1">
-          <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E; min-height: 350px;">
+          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #43a047; min-height: 350px">
               <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff"></ProgressBar>
               </div>
               <div class="card-body d-flex flex-column">
-                <p>Incidents</p>
+                <p>Climat</p>
                 <div class="row d-flex align-items-center flex-grow-1">
                   <div id="icon_animation" class="col-lg-4 col-12">
                     <!-- <img :src=" this.icon" alt=""> -->
                   </div>
                   <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_incidents }} Fiches d'alertes et incidents</h4>
+                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
                     <ul class="list-unstyled">
-                      <li>Nombre des alertes : <b>{{ this.nb_alerte }}</b></li>
-                      <li>Nombre des incidents : <b>{{ this.nb_incident }}</b></li>
+                      <li>
+                        Tendu : <b>{{ this.nb_tendu }}</b>
+                      </li>
+                      <li>
+                        Calme : <b>{{ this.nb_calme }}</b>
+                      </li>
+                      <li>
+                        Indifférent : <b>{{ this.nb_indifferent }}</b>
+                      </li>
                     </ul>
                   </div>
                 </div>
               </div>
               <div class="card-footer d-flex justify-content-end">
                 <small>
-                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
+                  Details
+                  <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto"></i>
                 </small>
               </div>
             </div>
           </router-link>
         </div>
       </div>
-
       <div class="col-4">
         <div class="m-1">
           <router-link :to="{ name: 'bureaux' }" class="small-box-footer text-decoration-none">
@@ -71,7 +78,7 @@
                   <div class="col-lg-8 col-12">
                     <h4>{{ this.nb_bureaux }} Fiches des bureaux de votes</h4>
                     <ul class="list-unstyled">
-                      <li>Bon: <b>{{ this.nb_bon }}</b></li>
+                      <li>Bon: <b>{{ this.nb_bon_bureaux }}</b></li>
                       <li>Indecis: <b>{{ this.nb_indecis }}</b></li>
                       <li>Risque: <b>{{ this.nb_risque }}</b></li>
                     </ul>
@@ -133,37 +140,29 @@
 
       <div class="col-4">
         <div class="m-1">
-          <router-link :to="{ name: 'climat' }" class="small-box-footer text-decoration-none">
-            <div id="rows_counter" class="card mb-1" style="background-color: #43a047; min-height: 350px">
+          <router-link :to="{ name: 'incident' }" class="small-box-footer text-decoration-none">
+            <div id="rows_counter" class="card mb-1" style="background-color: #9E9E9E; min-height: 350px;">
               <div v-if="isLoading === true" class="card-header">
-                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff"></ProgressBar>
+                <ProgressBar mode="indeterminate" style="height: 6px; color: #fff;"></ProgressBar>
               </div>
               <div class="card-body d-flex flex-column">
-                <p>Climat</p>
+                <p>Incidents</p>
                 <div class="row d-flex align-items-center flex-grow-1">
                   <div id="icon_animation" class="col-lg-4 col-12">
                     <!-- <img :src=" this.icon" alt=""> -->
                   </div>
                   <div class="col-lg-8 col-12">
-                    <h4>{{ this.nb_climat }} Fiches de climats</h4>
+                    <h4>{{ this.nb_incidents }} Fiches d'alertes et incidents</h4>
                     <ul class="list-unstyled">
-                      <li>
-                        Tendu : <b>{{ this.nb_tendu }}</b>
-                      </li>
-                      <li>
-                        Calme : <b>{{ this.nb_calme }}</b>
-                      </li>
-                      <li>
-                        Indifférent : <b>{{ this.nb_indifferent }}</b>
-                      </li>
+                      <li>Nombre des alertes : <b>{{ this.nb_alerte }}</b></li>
+                      <li>Nombre des incidents : <b>{{ this.nb_incident }}</b></li>
                     </ul>
                   </div>
                 </div>
               </div>
               <div class="card-footer d-flex justify-content-end">
                 <small>
-                  Details
-                  <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto"></i>
+                  Details <i class="fa-solid fa-chevron-right" style="font-size: 0.5rem; padding: auto;"></i>
                 </small>
               </div>
             </div>
@@ -307,7 +306,7 @@ import { DatasetController } from 'chart.js';
 // import RowsCounter from '@/components/RowsCounter.vue';
 // import { data } from 'jquery';
 
-import Chart from 'chart.js/auto';
+// import Chart from 'chart.js/auto';
 
 export default defineComponent({
   name: 'HomeView',
@@ -370,7 +369,8 @@ export default defineComponent({
     this.getbureaux()
     this.getResultatMobilization()
     this.getincident_table()
-    this.renderChart()
+    this.gettendance_vote();
+    // this.renderChart()
   },
 
   // computed: {
@@ -400,141 +400,141 @@ export default defineComponent({
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
 
-    renderChart() {
-      if (this.chartInstance) {
-        this.chartInstance.destroy();
-      }
+    // renderChart() {
+    //   if (this.chartInstance) {
+    //     this.chartInstance.destroy();
+    //   }
 
-      if (!this.datas3 || this.datas3.length === 0) {
-        console.error("Aucune donnée disponible pour le graphique.");
-        return;
-      }
+    //   if (!this.datas3 || this.datas3.length === 0) {
+    //     console.error("Aucune donnée disponible pour le graphique.");
+    //     return;
+    //   }
 
-      // Regrouper les événements par date
-      const groupedData = {};
-      this.datas3.forEach(event => {
-        console.log('Gravity:', event.gravity, 'Event:', event.event);
+    //   // Regrouper les événements par date
+    //   const groupedData = {};
+    //   this.datas3.forEach(event => {
+    //     console.log('Gravity:', event.gravity, 'Event:', event.event);
 
-        const date = event.date.split("T")[0]; // Récupérer uniquement la date (sans l'heure)
-        if (!groupedData[date]) {
-          groupedData[date] = { incident: 0, alerte: 0, majeur: 0, mineur: 0, critique: 0 };
-        }
+    //     const date = event.date.split("T")[0]; // Récupérer uniquement la date (sans l'heure)
+    //     if (!groupedData[date]) {
+    //       groupedData[date] = { incident: 0, alerte: 0, majeur: 0, mineur: 0, critique: 0 };
+    //     }
 
-        // Comptabiliser les types d'événements
-        if (event.type === "Incident") {
-          groupedData[date].incident += 1;
-        } else if (event.type === "Alerte") {
-          groupedData[date].alerte += 1;
-        }
+    //     // Comptabiliser les types d'événements
+    //     if (event.type === "Incident") {
+    //       groupedData[date].incident += 1;
+    //     } else if (event.type === "Alerte") {
+    //       groupedData[date].alerte += 1;
+    //     }
 
-        // Comptabiliser les gravités
-        if (event.gravity === 2) {
-          groupedData[date].critique += 1; // 2 est bloquant
-        } else if (event.gravity === 1) {
-          groupedData[date].majeur += 1; // 1 est majeur
-        } else if (event.gravity === 0) {
-          groupedData[date].mineur += 1; // 0 est mineur
-        }
-      });
+    //     // Comptabiliser les gravités
+    //     if (event.gravity === 2) {
+    //       groupedData[date].critique += 1; // 2 est bloquant
+    //     } else if (event.gravity === 1) {
+    //       groupedData[date].majeur += 1; // 1 est majeur
+    //     } else if (event.gravity === 0) {
+    //       groupedData[date].mineur += 1; // 0 est mineur
+    //     }
+    //   });
 
-      // Extraire les labels et datasets
-      const labels = Object.keys(groupedData).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
-      const incidents = labels.map(date => groupedData[date].incident);
-      const alertes = labels.map(date => groupedData[date].alerte);
-      const majeurs = labels.map(date => groupedData[date].majeur);
-      const mineurs = labels.map(date => groupedData[date].mineur);
-      const critiques = labels.map(date => groupedData[date].critique);
+    //   // Extraire les labels et datasets
+    //   const labels = Object.keys(groupedData).sort((a, b) => new Date(a).getTime() - new Date(b).getTime());
+    //   const incidents = labels.map(date => groupedData[date].incident);
+    //   const alertes = labels.map(date => groupedData[date].alerte);
+    //   const majeurs = labels.map(date => groupedData[date].majeur);
+    //   const mineurs = labels.map(date => groupedData[date].mineur);
+    //   const critiques = labels.map(date => groupedData[date].critique);
 
-      console.log('Labels:', labels);
-      console.log('Incidents:', incidents);
-      console.log('Alertes:', alertes);
-      console.log('Majeurs:', majeurs);
-      console.log('Mineurs:', mineurs);
-      console.log('Critiques:', critiques);
+    //   console.log('Labels:', labels);
+    //   console.log('Incidents:', incidents);
+    //   console.log('Alertes:', alertes);
+    //   console.log('Majeurs:', majeurs);
+    //   console.log('Mineurs:', mineurs);
+    //   console.log('Critiques:', critiques);
 
-      const ctx = document.getElementById('data').getContext('2d');
+    //   const ctx = document.getElementById('data').getContext('2d');
 
-      this.chartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: labels,
-          datasets: [
-            {
-              label: 'Incidents',
-              data: incidents,
-              backgroundColor: 'pink', // Ajout de transparence
-              borderColor: 'pink',
-              borderWidth: 1,
-              type: 'line',
-              yAxisID: 'y2',
-            },
-            {
-              label: 'Alertes',
-              data: alertes,
-              backgroundColor: 'green', // Ajout de transparence
-              borderColor: 'green',
-              borderWidth: 1,
-              type: 'line',
-              yAxisID: 'y2',
-            },
-            {
-              label: 'Mineur',
-              data: mineurs,
-              type: 'bar',
-              borderColor: 'yellow',
-              backgroundColor: 'yellow',
-              fill: false,
-              pointRadius: 4, // Rendre les points plus visibles
-              stack: 'Stack 1', // Activation de l'empilement
-              yAxisID: 'y',
-            },
-            {
-              label: 'Majeur',
-              data: majeurs,
-              type: 'bar',
-              borderColor: 'orange',
-              backgroundColor: 'orange',
-              fill: false,
-              pointRadius: 4,
-              stack: 'Stack 1', // Activation de l'empilement
-              yAxisID: 'y',
-            },
-            {
-              label: 'Critique',
-              data: critiques,
-              type: 'bar',
-              borderColor: 'red',
-              backgroundColor: 'red',
-              fill: false,
-              pointRadius: 4,
-              stack: 'Stack 1', // Activation de l'empilement
-              yAxisID: 'y',
-            },
-          ]
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: { display: true, text: 'Dates' },
-              stacked: true,  // Désactiver l'empilement sur X pour mieux voir les barres
-            },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: 'Nombre d\'événements (Mineurs, Majeurs, Critique)' },
-              stacked: true,  // Désactiver l'empilement en Y pour éviter que les valeurs se superposent
-            },
-            y2: { // Axe Y secondaire à droite
-              beginAtZero: true,
-              position: 'right', // Déplacer l'axe sur la droite
-              title: { display: true, text: 'Nombre d\'événements (Incidents & Alertes)' },
-              grid: { drawOnChartArea: false }, // Empêche la grille d’être dupliquée
-            }
-          }
-        }
-      });
+    //   this.chartInstance = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //       labels: labels,
+    //       datasets: [
+    //         {
+    //           label: 'Incidents',
+    //           data: incidents,
+    //           backgroundColor: 'pink', // Ajout de transparence
+    //           borderColor: 'pink',
+    //           borderWidth: 1,
+    //           type: 'line',
+    //           yAxisID: 'y2',
+    //         },
+    //         {
+    //           label: 'Alertes',
+    //           data: alertes,
+    //           backgroundColor: 'green', // Ajout de transparence
+    //           borderColor: 'green',
+    //           borderWidth: 1,
+    //           type: 'line',
+    //           yAxisID: 'y2',
+    //         },
+    //         {
+    //           label: 'Mineur',
+    //           data: mineurs,
+    //           type: 'bar',
+    //           borderColor: 'yellow',
+    //           backgroundColor: 'yellow',
+    //           fill: false,
+    //           pointRadius: 4, // Rendre les points plus visibles
+    //           stack: 'Stack 1', // Activation de l'empilement
+    //           yAxisID: 'y',
+    //         },
+    //         {
+    //           label: 'Majeur',
+    //           data: majeurs,
+    //           type: 'bar',
+    //           borderColor: 'orange',
+    //           backgroundColor: 'orange',
+    //           fill: false,
+    //           pointRadius: 4,
+    //           stack: 'Stack 1', // Activation de l'empilement
+    //           yAxisID: 'y',
+    //         },
+    //         {
+    //           label: 'Critique',
+    //           data: critiques,
+    //           type: 'bar',
+    //           borderColor: 'red',
+    //           backgroundColor: 'red',
+    //           fill: false,
+    //           pointRadius: 4,
+    //           stack: 'Stack 1', // Activation de l'empilement
+    //           yAxisID: 'y',
+    //         },
+    //       ]
+    //     },
+    //     options: {
+    //       responsive: true,
+    //       scales: {
+    //         x: {
+    //           title: { display: true, text: 'Dates' },
+    //           stacked: true,  // Désactiver l'empilement sur X pour mieux voir les barres
+    //         },
+    //         y: {
+    //           beginAtZero: true,
+    //           title: { display: true, text: 'Nombre d\'événements (Mineurs, Majeurs, Critique)' },
+    //           stacked: true,  // Désactiver l'empilement en Y pour éviter que les valeurs se superposent
+    //         },
+    //         y2: { // Axe Y secondaire à droite
+    //           beginAtZero: true,
+    //           position: 'right', // Déplacer l'axe sur la droite
+    //           title: { display: true, text: 'Nombre d\'événements (Incidents & Alertes)' },
+    //           grid: { drawOnChartArea: false }, // Empêche la grille d’être dupliquée
+    //         }
+    //       }
+    //     }
+    //   });
 
-    },
+    // },
     getincident() {
       this.$axios
         .get('/incident/by_zone')
@@ -546,7 +546,7 @@ export default defineComponent({
 
           console.log('datas3', this.datas3);
 
-          this.renderChart();
+          // this.renderChart();
         })
         .catch((error) => {
           console.error('Erreur de récupération de données:', error);
@@ -607,6 +607,7 @@ export default defineComponent({
       this.getbureaux();
       this.getResultatMobilization();
       this.getincident_table();
+      this.gettendance_vote();
     },
 
     getmoilization() {
@@ -663,14 +664,14 @@ export default defineComponent({
           console.error('Erreur de recuperation de donnees:', error);
         });
     },
-        gettendance_vote() {
+    gettendance_vote() {
       this.$axios
-        .get("/electoral_climate_sheet/get_stats_by_zone")
+        .get("/voting_trends_sheet/by_zone")
         .then((response) => {
           this.isLoading = false;
           console.log("tendance", response.data);
-          this.datas1 = response.data;
           this.nb_tendances = response.data.length;
+          // this.datas1 = response.data;
         })
         .catch((error) => {
           console.error("Erreur de recuperation de donnees:", error);
@@ -684,7 +685,8 @@ export default defineComponent({
         console.log('stats = ', response.data)
         this.nb_alerte = response.data.incidents.nb_alerte
         this.nb_incident = response.data.incidents.nb_incident
-        this.nb_bon = response.data.polling_station.nb_bon
+        this.nb_bon_bureaux = response.data.polling_station.nb_bon
+        this.nb_bon = response.data.voting_trends.nb_bon;
         this.nb_indecis = response.data.polling_station.nb_indecis
         this.nb_risque = response.data.polling_station.nb_risque
         this.nb_defavorable = response.data.voting_trends.nb_defavorable
