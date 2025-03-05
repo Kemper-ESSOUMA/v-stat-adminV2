@@ -26,13 +26,14 @@
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
-      <!-- <div>
-        <router-link class="btn" :to="{ name: 'goodies' }" :class="{ 'active': this.$route.name === 'goodies' }"
+      <div>
+        <router-link class="btn " :to="{ name: 'tendancesVotes' }"
+          :class="{ 'active': this.$route.name === 'tendancesVotes' }"
           v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
-          data-bs-placement="right" title="goodies">
-          <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
+          data-bs-placement="right" title="tendancesVotes">
+          <i class="pi pi-gift" style="color: #3242C5"></i> Tendances de votes
         </router-link>
-      </div> -->
+      </div>
       <div>
         <router-link class="btn" :to="{ name: 'bureaux' }" :class="{ 'active': this.$route.name === 'bureaux' }"
           v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"

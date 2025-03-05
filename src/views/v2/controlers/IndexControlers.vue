@@ -1,7 +1,7 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Contrôles des données</h4>
+      <h4 class="text-app font-weight-bold">Contrôles de bureaux de votes</h4>
     </div>
 
     <div class="btn-group page-nav " role="group">
@@ -183,8 +183,14 @@ export default {
       if (!this.filters['global'] || !this.filters['global'].value) {
         return this.datas;
       }
+
       const searchTerm = this.filters['global'].value.toLowerCase();
-      return this.datas.filter(item => item.libelle_centre.toLowerCase().includes(searchTerm));
+
+      return this.datas.filter(item =>
+        Object.values(item).some(value =>
+          typeof value === "string" && value.toLowerCase().includes(searchTerm)
+        )
+      );
     }
   },
   methods: {

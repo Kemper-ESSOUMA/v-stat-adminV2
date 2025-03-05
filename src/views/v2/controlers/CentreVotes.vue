@@ -1,7 +1,7 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold"> centres de votes</h4>
+      <h4 class="text-app font-weight-bold">Contrôles de centres de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
@@ -35,7 +35,7 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle', 'zone', 'total_registered', 'code','total_offices', 'nb_scrutin_valide', 'burreau_code', 'nb_bulletin_blanc', 'total_scrutin', 'nb_abstention']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -177,8 +177,14 @@ export default {
       if (!this.filters['global'] || !this.filters['global'].value) {
         return this.datas;
       }
+
       const searchTerm = this.filters['global'].value.toLowerCase();
-      return this.datas.filter(item => item.libelle.toLowerCase().includes(searchTerm));
+
+      return this.datas.filter(item =>
+        Object.values(item).some(value =>
+          typeof value === "string" && value.toLowerCase().includes(searchTerm)
+        )
+      );
     }
   },
 

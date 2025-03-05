@@ -5,32 +5,38 @@
     </div>
     <div class="btn-group page-nav " role="group">
       <div>
-        <router-link class="btn " :to="{ name: 'mobilization' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
+        <router-link class="btn " :to="{ name: 'mobilization' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4"
           :class="{ 'active': this.$route.name === 'mobilization' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Mobilisation">
           <i class="pi pi-users" style="color: #3242C5"></i> Mobilisation
         </router-link>
       </div>
       <div>
-        <router-link class="btn " :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="Climat">
+        <router-link class="btn " :to="{ name: 'climat' }" :class="{ 'active': this.$route.name === 'climat' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="Climat">
           <i class="pi pi-sitemap" style="color: #3242C5"></i> Climats
         </router-link>
       </div>
       <div>
-        <router-link class="btn " :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="incident">
+        <router-link class="btn " :to="{ name: 'incident' }" :class="{ 'active': this.$route.name === 'incident' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="incident">
           <i class="pi pi-exclamation-circle" style="color: #3242C5"></i> Alerte et Incident
         </router-link>
       </div>
-      <!-- <div>
-        <router-link class="btn " :to="{ name: 'goodies' }" :class="{ 'active': this.$route.name === 'goodies' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
-          data-bs-toggle="tooltip" data-bs-placement="right" title="goodies">
-          <i class="pi pi-gift" style="color: #3242C5"></i> Goodies
-        </router-link>
-      </div> -->
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'bureaux' }" v-if=" parseInt(this.getPermissionActionByEntity('mobilization_sheets'),10) >= 4"
+        <router-link class="btn " :to="{ name: 'tendancesVotes' }"
+          :class="{ 'active': this.$route.name === 'tendancesVotes' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
+          data-bs-placement="right" title="tendancesVotes">
+          <i class="pi pi-gift" style="color: #3242C5"></i> Tendances de votes
+        </router-link>
+      </div>
+      <div>
+        <router-link class="btn btn-primary" :to="{ name: 'bureaux' }"
+          v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4"
           :class="{ 'active': this.$route.name === 'bureaux' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="bureaux">
           <i class="pi pi-envelope" style="color: #3242C5"></i> Bureaux de votes
@@ -45,7 +51,8 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['zone_code', 'supervisor', 'event', 'voting_center']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters"
+      :globalFilterFields="['zone_code', 'supervisor', 'event', 'voting_center']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -107,19 +114,19 @@ export default {
   mounted() {
     this.getBureaux();
     this.connectWebSocket();
-                 const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
+    const mobilizationAction = this.getPermissionActionByEntity('mobilization_sheets');
     console.log("Current User", this.currentUser());
     console.log("Permissions User", mobilizationAction);
   },
   methods: {
-                        currentUser() {
+    currentUser() {
       const appStore = useAppStore(); // Assurez-vous d'importer correctement useAppStore
       return appStore.currentUser; // Récupérer les informations utilisateur
     },
-          getPermissionActionByEntity(entityName) {
-    const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
-    return permission ? permission.action : null;
-  },
+    getPermissionActionByEntity(entityName) {
+      const permission = this.currentUser().permissions.find(permission => permission.entity === entityName);
+      return permission ? permission.action : null;
+    },
     openModal(objetData) {
       this.$dialog.open(ViewFicheBureauVote, {
         props: {

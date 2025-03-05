@@ -106,14 +106,21 @@ export default {
     this.connectWebSocket();
   },
     computed: {
-    filteredData() {
+     filteredData() {
       if (!this.filters['global'] || !this.filters['global'].value) {
         return this.datas;
       }
+
       const searchTerm = this.filters['global'].value.toLowerCase();
-      return this.datas.filter(item => item.libelle_centre.toLowerCase().includes(searchTerm));
+
+      return this.datas.filter(item =>
+        Object.values(item).some(value =>
+          typeof value === "string" && value.toLowerCase().includes(searchTerm)
+        )
+      );
     }
   },
+
   methods: {
 
     openViewModal(objetData) {
