@@ -112,19 +112,20 @@ export default {
     this.connectWebSocket();
   },
   computed: {
-    filteredData() {
-      if (!this.filters['global'] || !this.filters['global'].value) {
-        return this.datas;
-      }
+filteredData() {  
+    if (!this.filters['global'] || !this.filters['global'].value) {  
+        return this.datas;  
+    }  
 
-      const searchTerm = this.filters['global'].value.toLowerCase();
+    const searchTerm = this.filters['global'].value.toLowerCase();  
 
-      return this.datas.filter(item =>
-        Object.values(item).some(value =>
-          typeof value === "string" && value.toLowerCase().includes(searchTerm)
-        )
-      );
-    }
+    return this.datas.filter(item =>  
+        Object.values(item).some(value =>  
+            typeof value === "string" && value.toLowerCase().startsWith(searchTerm)  
+        )  
+    );  
+}
+
 
   },
 
