@@ -116,7 +116,7 @@ export default defineComponent({
     }
   },
   mounted() {
-    console.log('form = ', this.form.permissions)
+ 
   },
 
   methods: {
@@ -124,16 +124,14 @@ export default defineComponent({
     updatePassord() {
 
       this.$axios.put('/user/update_password', this.update).then(response => {
-        console.log('update = ', response.data)
+        
         this.isLoading = false
       })
     },
     deleteUser() {
       this.isLoadingdelete = true;
       this.$axios.delete('/user/delete', this.form)
-        .then(response => {
-          console.log('delete = ', response.data);
-        })
+       
         .finally(() => {
           this.isLoadingdelete = false;
         });
@@ -146,7 +144,7 @@ export default defineComponent({
         user_id: this.form.id,
         permissions: this.form.permissions
       };
-      console.log('permissions = ', this.form.permissions, 'user_id', this.form.id);
+ 
 
       // Envoi de la requête avec le corps (body) contenant l'objet 'data'
       this.$axios.put('/permission/update_by_user_id', data)
@@ -172,7 +170,6 @@ export default defineComponent({
             });
           }
 
-          console.log('update permission = ', response.data);
         })
         .catch(error => {
           console.error('Erreur lors de la mise à jour des permissions:', error);

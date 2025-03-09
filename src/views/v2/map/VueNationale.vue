@@ -168,7 +168,7 @@ export default {
           this.total_candidate_1 = response.data[9].total_candidate_1;
           this.total_candidate_2 = response.data[9].total_candidate_2;
           this.total_candidate_3 = response.data[9].total_candidate_3;
-          console.log('cadidats  all', this.candidates)
+          
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
@@ -181,7 +181,7 @@ export default {
         .get("/voting_centre/all")
         .then((response) => {
           this.centre_vote = response.data;
-          console.log("centre by zone = ", this.centre_vote);
+          
           if (this.showVotingCenters) {
             this.updateMapLocations();
           }
@@ -309,7 +309,7 @@ export default {
     },
 
     updateMap() {
-      console.log("Mise à jour de la carte avec les filtres :", {
+      console.log(" :", {
         showVotingCenters: this.showVotingCenters,
       });
     },
@@ -318,7 +318,7 @@ export default {
       this.ws = new WebSocket(this.$wsUrl);
 
       this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
+        
       };
 
       this.ws.onmessage = (event) => {

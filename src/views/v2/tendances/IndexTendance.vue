@@ -251,7 +251,7 @@ export default {
 
     getResultatMobilization() {
       this.$axios.get('/stats_home/get_stats_by_user_zone').then(response => {
-        console.log('stats = ', response.data)
+        
         this.nb_alerte = response.data.incidents.nb_alerte
         this.nb_incident = response.data.incidents.nb_incident
         this.nb_bon = response.data.polling_station.nb_bon
@@ -276,16 +276,16 @@ export default {
 
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
+        
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Événement WebSocket : Message reçu");
+       
 
         try {
           const message = event.data; // Parsing en JSON si nécessaire
 
-          console.log("Message reçu via WebSocket :", message);
+          
 
           // Appels des fonctions pour mettre à jour les données
           this.updateDataFromWebSocket();
@@ -304,7 +304,7 @@ export default {
       };
 
       this.ws.onclose = (event) => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+        
         setTimeout(() => {
           this.connectWebSocket();
         }, 3000); // Reconnexion après 3 secondes

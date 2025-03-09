@@ -85,7 +85,7 @@ export default defineComponent({
     createLine() {
       this.isLoading = true
       const appStore = useAppStore();
-      // console.log('code = ', appStore.currentUser.zone)
+  
       this.form.zone_code = appStore.currentUser.zone
       this.$axios.post('/voting_trends_sheet/add', this.form,).then(response => {
         this.isLoading = false

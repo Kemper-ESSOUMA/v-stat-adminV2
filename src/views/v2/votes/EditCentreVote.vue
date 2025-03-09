@@ -131,7 +131,7 @@ export default defineComponent({
   },
 
   mounted() {
-    console.log('view = ', this.dialogRef.data)
+    
   },
 
 

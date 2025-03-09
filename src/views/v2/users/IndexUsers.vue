@@ -70,7 +70,7 @@ export default {
   },
   mounted() {
     this.getUsers();
-    console.log("Current User", this.currentUser());
+
   },
 
 

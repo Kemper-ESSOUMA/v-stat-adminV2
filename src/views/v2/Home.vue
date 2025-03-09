@@ -90,7 +90,7 @@ export default {
         .get("/voting_centre/all")
         .then((response) => {
           this.centre_vote = response.data;
-          console.log('map = ', this.centre_vote)
+          
           if (this.showVotingCenters) {
             this.updateMapLocations();
           }
@@ -124,7 +124,7 @@ export default {
 
       // Recharger la carte avec les nouvelles locations
       simplemaps_countrymap.load();
-      console.log("Locations mises à jour avec succès !");
+      
     },
 
     toggleVotingCenters() {
@@ -158,7 +158,7 @@ export default {
     },
 
     updateMap() {
-      console.log("Mise à jour de la carte avec les filtres :", {
+      console.log(" :", {
         showVotingCenters: this.showVotingCenters,
       });
     },

@@ -220,23 +220,13 @@ export default {
       this.$axios.get("/pol_sta/by_user_zone").then((response) => {
         this.loading = false
         this.datas = response.data;
-        console.log('datas stat_by_burreau=', this.datas);
       });
     },
 
-    // get_stat_by_zone() {
-    //   this.$axios.get("/dep_com_can/stat_by_zone").then((response) => {
-    //     this.datas1 = response.data;
-    //     this.loading = false
-    //     console.log('datas stat_by_zone=', this.datas1);
-    //     this.renderget_stat_by_zone();
-    //   });
-    // },
     get_stat_by_zone() {
       this.$axios.get("/dep_com_can/stat_by_zone", { params: { zone: this.selectedZone } })
         .then((response) => {
           this.datas1 = response.data;
-          console.log(`Données pour la zone ${this.selectedZone}:`, this.datas1);
           this.renderget_stat_by_zone();
         })
         .catch((error) => console.error("Erreur de récupération des statistiques :", error));
@@ -260,16 +250,12 @@ export default {
 
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
-        console.log("Données initiales :", this.datas); // Affichage des données initiales
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Événement WebSocket : Message reçu");
 
         try {
           const message = event.data;  // Si c'est un JSON, il faut le parser
-          console.log("Message reçu via WebSocket :", message);
           this.getvote();
 
           if (message && message.updatedData) {
@@ -284,11 +270,8 @@ export default {
         console.error("Erreur WebSocket :", error);
       };
 
-      // this.ws.onclose = (event) => {
-      //   console.log("WebSocket fermé !", event);
-      // };
       this.ws.onclose = () => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+
         setTimeout(() => {
           this.connectWebSocket();
         }, 3000); // Reconnexion après 3 secondes

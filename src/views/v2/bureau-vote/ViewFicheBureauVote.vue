@@ -95,19 +95,17 @@ export default {
     }
   },
   mounted() {
-    console.log('data = ', this.dialogRef.data)
     this.signatureImage = "data:image/png;base64," + this.dialogRef.data.signature
-    this.getCentrebycentre()
+    // this.getCentrebycentre()
   },
 
   methods: {
 
-    getCentrebycentre() {
-      this.$axios.get(`voting_centre/by_province/${this.dialogRef.data.zone_code}`).then(response => {
-        console.log('by centre = ', response)
-        this.code = response
-      })
-    },
+    // getCentrebycentre() {
+    //   this.$axios.get(`voting_centre/by_province/${this.dialogRef.data.zone_code}`).then(response => {
+    //     this.code = response
+    //   })
+    // },
     download() {
       this.isLoading = true
       html2pdf().set({

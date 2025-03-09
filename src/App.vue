@@ -63,7 +63,7 @@ export default defineComponent({
   },
  mounted() {
    const appStore = useAppStore();
-   console.log("logged =", appStore.authenticated);
+   
    },
 });
 </script>

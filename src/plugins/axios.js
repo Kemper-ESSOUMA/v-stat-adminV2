@@ -50,7 +50,7 @@ const axiosPlugin = {
             }
         );
 
-        console.log("log tok = ", token);
+        
 
         // Injecte Axios et une méthode pour mettre à jour le token dans Vue
         App.config.globalProperties.$axios = axiosInstance;

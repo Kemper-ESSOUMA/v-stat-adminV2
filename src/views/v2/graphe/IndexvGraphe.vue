@@ -132,11 +132,9 @@ export default {
 
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Message WebSocket reçu :", event.data);
 
         try {
           // Appeler la fonction pour récupérer et actualiser les données
@@ -152,7 +150,7 @@ export default {
       };
 
       this.ws.onclose = () => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...");
+
         setTimeout(() => {
           this.connectWebSocket(); // Reconnexion après 3 secondes
         }, 3000);
@@ -167,7 +165,6 @@ export default {
     get_all_provinces() {
       this.$axios.get("/resultat/get_vote_by_province").then((response) => {
         this.province = response.data;
-        console.log('datas province=', this.province);
         this.renderChartProvince();
       });
     },
@@ -181,59 +178,11 @@ export default {
       this.$axios.get("/dep_com_can/stat_by_zone", { params: { zone: this.selectedZone } })
         .then((response) => {
           this.datas = response.data;
-          console.log(`Données pour la zone ${this.selectedZone}:`, this.datas);
           this.renderget_stat_by_zone();
         })
         .catch((error) => console.error("Erreur de récupération des statistiques :", error));
     },
-    // get_stat_by_zone() {
-    //   this.$axios.get("/dep_com_can/stat_by_zone", { params: { zone: "01" } }).then((response) => {
-    //     this.datas = response.data;
-    //     console.log('datas stat_by_zone=', this.datas);
-    //     this.renderget_stat_by_zone();
-    //   });
-    // },
 
-    // renderChartProvince() {
-
-    //   // Vérifiez si un graphique existe déjà et détruisez-le
-    //   if (this.chartInstance) {
-    //     this.chartInstance.destroy();
-    //   }
-
-    //   // Récupérer les labels et les données
-    //   const labels = Object.keys(this.province[0]).filter(key => key.startsWith('candidate_'));
-    //   const values = this.province.map(item => labels.map(label => item[label]));
-
-    //   const datasets = labels.map((label, index) => ({
-    //     label: `Candidat ${index + 1}`,
-    //     data: values.map(item => item[index]),
-    //     backgroundColor: this.getColorForCandidate(index),
-    //   }));
-
-    //   const ctx = document.getElementById('prov').getContext('2d');
-
-    //   // Créez un nouveau graphique et stockez l'instance
-    //   this.chartInstance = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //       labels: this.province.map(item => item.province),
-    //       datasets: datasets,
-    //     },
-    //     options: {
-    //       responsive: true,
-    //       scales: {
-    //         x: {
-    //           title: { display: true, text: 'Provinces' },
-    //         },
-    //         y: {
-    //           beginAtZero: true,
-    //           title: { display: true, text: 'Votes' },
-    //         },
-    //       },
-    //     },
-    //   });
-    // },
     renderChartProvince() {
       // Vérifiez si un graphique existe déjà et détruisez-le
       if (this.chartInstance) {

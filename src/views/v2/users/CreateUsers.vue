@@ -628,7 +628,6 @@ export default defineComponent({
   mounted() {
     this.getProvinces();
     this.departements();
-    console.log("Current User", this.currentUser().role);
     // this.centreVotes()
   },
 
@@ -648,8 +647,6 @@ export default defineComponent({
         this.permissions[category].write = selectAll;
         this.permissions[category].read = selectAll;
         this.permissions[category].execute = selectAll;
-      } else {
-        console.error(`Category "${category}" does not exist in permissions.`);
       }
     },
 
@@ -659,18 +656,10 @@ export default defineComponent({
     },
 
     departements(data) {
-      console.log("departement = ", data);
+      
       this.departement = data;
     },
-    // centreVotes(data) {
-
-    //   console.log('centre = ', data)
-    //   this.$axios.get(`/voting_centre/by_zone_dep/${data}`).then(response => {
-    //     this.centre = response.data
-    //     console.log('centre fin = ', this.centre)
-    //   })
-
-    // },
+ 
     getProvinces() {
       this.$axios.get("/province/all").then((response) => {
         this.provinces = response.data;
@@ -730,7 +719,6 @@ export default defineComponent({
 
       // Préparer les permissions
       const permissions = this.preparePermissions();
-      console.log("datas = ", { ...this.form, permissions });
       this.isLoading = false;
       // Requête POST
       this.$axios

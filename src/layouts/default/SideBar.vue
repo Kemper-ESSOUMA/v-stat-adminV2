@@ -98,7 +98,7 @@
 import { useAppStore } from "@/store/app";
 export default {
   mounted() {
-    console.log("Current User", this.currentUser().role);
+    
     // this.centreVotes()
   },
   methods: {

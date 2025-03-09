@@ -130,16 +130,15 @@ export default {
 
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
-        console.log("WebSocket connecté !");
-        console.log("Données initiales :", this.datas); // Affichage des données initiales
+       
       };
 
       this.ws.onmessage = (event) => {
-        console.log("Événement WebSocket : Message reçu");
+        
 
         try {
           const message = event.data;  // Si c'est un JSON, il faut le parser
-          console.log("Message reçu via WebSocket :", message);
+          
           this.getvote();
 
           if (message && message.updatedData) {
@@ -154,11 +153,9 @@ export default {
         console.error("Erreur WebSocket :", error);
       };
 
-      // this.ws.onclose = (event) => {
-      //   console.log("WebSocket fermé !", event);
-      // };
+ 
       this.ws.onclose = () => {
-        console.log("WebSocket fermé ! Tentative de reconnexion...", event);
+     
         setTimeout(() => {
           this.connectWebSocket();
         }, 3000); // Reconnexion après 3 secondes

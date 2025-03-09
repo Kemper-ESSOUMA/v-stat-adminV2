@@ -98,7 +98,7 @@ export default {
     }
   },
   mounted() {
-    console.log('data = ', this.dialogRef.data)
+
     this.signatureImage = "data:image/png;base64," + this.dialogRef.data.signature
     this.getCentrebycentre()
   },
@@ -107,7 +107,6 @@ export default {
 
     getCentrebycentre() {
       this.$axios.get(`voting_centre/by_code/${this.dialogRef.data.voting_center}`).then(response => {
-        console.log('by centre = ', response)
         this.code = response.data.libelle
       })
     },

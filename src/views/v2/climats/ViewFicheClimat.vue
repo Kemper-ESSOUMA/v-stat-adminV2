@@ -77,7 +77,6 @@ export default {
     }
   },
   mounted(){
-    console.log('data = ', this.dialogRef.data)
     this.signatureImage = "data:image/png;base64," + this.dialogRef.data.signature
   },
 

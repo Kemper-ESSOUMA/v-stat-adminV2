@@ -64,7 +64,7 @@ export default {
     //   this.ws = new WebSocket(this.$wsUrl);
 
     //   this.ws.onopen = () => {
-    //     console.log("WebSocket connecté !");
+  
     //   };
 
     //   this.ws.onmessage = (event) => {
