@@ -87,11 +87,11 @@
       <div class="progress-bar">
         <div class="progress-segment candidate1" :style="{ width: candidate1Percentage + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
-          <!-- <span class="percentage-text">{{ candidate1Percentage }}%</span> -->
+          <span class="percentage-text">{{ resu_acbbn }}%</span>
         </div>
         <div class="progress-segment candidate2" :style="{ width: candidate2Percentage + '%' }">
           <div class="candidate-photo candidate2-photo"></div>
-          <!-- <span class="percentage-text">{{ candidate2Percentage }}%</span> -->
+          <span class="percentage-text">{{ resu_cbon }}%</span>
         </div>
       </div>
     </div>
@@ -114,6 +114,8 @@ export default {
       total_candidate_1: 0,
       total_candidate_2: 0,
       total_candidate_3: 0,
+      resu_cbon: 0,
+      resu_acbbn: 0
     };
   },
 
@@ -135,6 +137,7 @@ export default {
     this.getCandidates();
     this.getCentreVote();
     this.connectWebSocket();
+    this.get_stat_candidate();
   },
 
   beforeUnmount() {
@@ -144,6 +147,18 @@ export default {
   },
 
   methods: {
+    get_stat_candidate() {
+      this.$axios
+        .get("/stats_home/get_porcent_by_candidate")
+        .then((response) => {
+          this.resu_cbon = response.data.candidate_2.data.toFixed(2)
+          this.resu_acbbn = response.data.candidate_1.data.toFixed(2)
+          console.log('resss', response.data)
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des données :", error);
+        });
+    },
     get_all_donnees() {
       const accessToken = appStore.token;
       if (accessToken) {

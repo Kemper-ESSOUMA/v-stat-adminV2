@@ -37,7 +37,7 @@
         </router-link>
       </div>
        <div>
-        <router-link class="btn " :to="{ name: 'tendancesVotes' }"
+        <router-link class="btn btn-primary" :to="{ name: 'tendancesVotes' }"
           :class="{ 'active': this.$route.name === 'tendancesVotes' }"
           v-if="parseInt(this.getPermissionActionByEntity('mobilization_sheets'), 10) >= 4" data-bs-toggle="tooltip"
           data-bs-placement="right" title="tendancesVotes">
@@ -90,7 +90,7 @@
       <DataTableColumn field="date" header="Date"></DataTableColumn>
        <DataTableColumn field="centre_vote" header="Centre de vote"></DataTableColumn>
         <DataTableColumn field="zone_code" header="Code"></DataTableColumn>
-        
+
         <DataTableColumn field="trends_candidate" header="trends_candidate"></DataTableColumn>
       <DataTableColumn field="participation_taux" header="Taux de participation"></DataTableColumn>
       <DataTableColumn field="observation" header="Observation"></DataTableColumn>
