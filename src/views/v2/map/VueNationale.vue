@@ -1,26 +1,15 @@
 <template>
   <div class="btn-group page-nav" role="group" style="margin-left: 40%">
     <div>
-      <router-link
-        class="btn"
-        :to="{ name: 'map' }"
-        :class="{ active: this.$route.name === 'map' }"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="map"
-      >
+      <router-link class="btn" :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="map">
         <i class="pi pi-globe" style="color: #3242c5"></i> GLOBAL
       </router-link>
     </div>
     <div>
-      <router-link
-        class="btn btn-primary"
-        :to="{ name: 'national' }"
-        :class="{ active: this.$route.name === 'national' }"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="national"
-      >
+      <router-link class="btn" :to="{ name: 'national' }"
+        :class="{ active: this.$route.name === 'national' }" data-bs-toggle="tooltip" data-bs-placement="right"
+        title="national">
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
@@ -35,24 +24,22 @@
     <!-- Carte -->
     <div id="map"></div>
 
+    <div id="map2" v-if="this.$route.name === 'map'">
+      <div class="box">Afrique</div>
+      <div class="box">Europe</div>
+      <div class="box">Amerique</div>
+      <div class="box">Asie</div>
+    </div>
+
     <!-- Filtres -->
     <div id="filters">
       <h3>Filtres</h3>
       <label>
-        <input
-          type="checkbox"
-          v-model="showVotingCenters"
-          @change="toggleVotingCenters"
-        />
+        <input type="checkbox" v-model="showVotingCenters" @change="toggleVotingCenters" />
         Vue Centres de vote
       </label>
       <label>
-        <input
-          type="checkbox"
-          v-model="showNationalView"
-          @change="toggleNationalView"
-          checked
-        />
+        <input type="checkbox" v-model="showNationalView" @change="toggleNationalView" checked />
         Vue resultat des provinces
       </label>
     </div>
@@ -114,39 +101,20 @@
     <!-- Barre de progression des votes -->
     <div id="progress-bar-container">
       <div class="d-plex">
-        <div
-          class="image-container candidate1-image"
-          :style="{ left: candidate1Percentage + '%' }"
-        >
-          <img
-            src="../../../assets/candidat1.png"
-            class="candidate-photo"
-            alt="Candidate 1"
-          />
+        <div class="image-container candidate1-image" :style="{ left: resu_acbbn + '%' }">
+          <img src="../../../assets/candidat1.png" class="candidate-photo" alt="Candidate 1" />
         </div>
-        <div
-          class="image-container candidate1-image"
-          :style="{ left: candidate1Percentage + '%' }"
-        >
-          <img
-            src="../../../assets/candidat2.png"
-            class="candidate-photo"
-            alt="Candidate 1"
-          />
+        <div class="image-container candidate2-image" :style="{ left: resu_cbon + '%' }">
+          <img src="../../../assets/candidat2.png" class="candidate-photo" alt="Candidate 1" />
         </div>
+
       </div>
       <div class="progress-bar">
-        <div
-          class="progress-segment candidate1"
-          :style="{ width: candidate1Percentage + '%' }"
-        >
+        <div class="progress-segment candidate1" :style="{ width: resu_acbbn + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
           <span class="percentage-text">{{ resu_acbbn }}%</span>
         </div>
-        <div
-          class="progress-segment candidate2"
-          :style="{ width: candidate2Percentage + '%' }"
-        >
+        <div class="progress-segment candidate2" :style="{ width: resu_cbon + '%' }">
           <div class="candidate-photo candidate2-photo"></div>
           <span class="percentage-text">{{ resu_cbon }}%</span>
         </div>
@@ -381,7 +349,7 @@ export default {
               <p><strong>${centre.candidate_4.name} :</strong> ${
               centre.candidate_4.data
             }</p>
-            
+
               <p><strong>Total des votants :</strong> ${
                 centre.total_registered_bureau || "N/A"
               }</p>
@@ -456,6 +424,7 @@ export default {
           this.getCandidates();
           this.updateMapLocations();
           this.toggleVotingCenters();
+          this.toggleNationalView();
           this.get_all_donnees();
           this.updateMapWithResults();
           this.get_stat_candidate();

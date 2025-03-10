@@ -1,26 +1,14 @@
 <template>
   <div class="btn-group page-nav" role="group" style="margin-left: 40%">
     <div>
-      <router-link
-        class="btn btn-primary"
-        :to="{ name: 'map' }"
-        :class="{ active: this.$route.name === 'map' }"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="map"
-      >
+      <router-link class="btn btn-primary" :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="map">
         <i class="pi pi-globe" style="color: #3242c5"></i> GLOBAL
       </router-link>
     </div>
     <div>
-      <router-link
-        class="btn"
-        :to="{ name: 'national' }"
-        :class="{ active: this.$route.name === 'national' }"
-        data-bs-toggle="tooltip"
-        data-bs-placement="right"
-        title="national"
-      >
+      <router-link class="btn " :to="{ name: 'national' }" :class="{ active: this.$route.name === 'national' }"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="national">
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
@@ -41,24 +29,16 @@
       <div class="box">Amerique</div>
       <div class="box">Asie</div>
     </div>
+
     <!-- Filtres -->
     <div id="filters">
       <h3>Filtres</h3>
       <label>
-        <input
-          type="checkbox"
-          v-model="showVotingCenters"
-          @change="toggleVotingCenters"
-        />
+        <input type="checkbox" v-model="showVotingCenters" @change="toggleVotingCenters" />
         Vue Centres de vote
       </label>
       <label>
-        <input
-          type="checkbox"
-          v-model="showNationalView"
-          @change="toggleNationalView"
-          checked
-        />
+        <input type="checkbox" v-model="showNationalView" @change="toggleNationalView" checked />
         Vue resultat des provinces
       </label>
     </div>
@@ -120,39 +100,19 @@
     <!-- Barre de progression des votes -->
     <div id="progress-bar-container">
       <div class="d-plex">
-        <div
-          class="image-container candidate1-image"
-          :style="{ left: candidate1Percentage + '%' }"
-        >
-          <img
-            src="../../../assets/candidat1.png"
-            class="candidate-photo"
-            alt="Candidate 1"
-          />
+        <div class="image-container candidate1-image" :style="{ left: resu_acbbn + '%' }">
+          <img src="../../../assets/candidat1.png" class="candidate-photo" alt="Candidate 1" />
         </div>
-        <div
-          class="image-container candidate1-image"
-          :style="{ left: candidate1Percentage + '%' }"
-        >
-          <img
-            src="../../../assets/candidat2.png"
-            class="candidate-photo"
-            alt="Candidate 1"
-          />
+        <div class="image-container candidate2-image" :style="{ left: resu_cbon + '%' }">
+          <img src="../../../assets/candidat2.png" class="candidate-photo" alt="Candidate 1" />
         </div>
       </div>
       <div class="progress-bar">
-        <div
-          class="progress-segment candidate1"
-          :style="{ width: candidate1Percentage + '%' }"
-        >
+        <div class="progress-segment candidate1" :style="{ width: resu_acbbn + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
           <span class="percentage-text">{{ resu_acbbn }}%</span>
         </div>
-        <div
-          class="progress-segment candidate2"
-          :style="{ width: candidate2Percentage + '%' }"
-        >
+        <div class="progress-segment candidate2" :style="{ width: resu_cbon + '%' }">
           <div class="candidate-photo candidate2-photo"></div>
           <span class="percentage-text">{{ resu_cbon }}%</span>
         </div>
@@ -260,7 +220,7 @@ export default {
           this.total_candidate_2 = response.data[9].total_candidate_2;
           this.total_candidate_3 = response.data[9].total_candidate_3;
           this.total_candidate_4 = response.data[9].total_candidate_4;
-
+          console.log("CBON", response.data);
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
@@ -356,7 +316,7 @@ export default {
             else if (maxVotes === centre.candidate_2.data) color = "#32CD32";
             // Vert
             else if (maxVotes === centre.candidate_3.data)
-              color = "#FFCE56"; // jaune
+              color = "#FFCE56"; // Bleu
             else if (maxVotes === centre.candidate_4.data) color = "#0000FF";
           }
 
@@ -369,26 +329,20 @@ export default {
             color: color,
             size: "40",
             description: `
-              <p><strong>Nombre de bureaux de votes :</strong> ${
-                centre.total_offices
+              <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices
               }</p>
-              <p><strong>Nombre de participants :</strong> ${
-                centre.total_registered
+              <p><strong>Nombre de participants :</strong> ${centre.total_registered
               }</p>
-              <p><strong>${centre.candidate_1.name} :</strong> ${
-              centre.candidate_1.data
-            }</p>
-              <p><strong>${centre.candidate_2.name} :</strong> ${
-              centre.candidate_2.data
-            }</p>
-              <p><strong>${centre.candidate_3.name} :</strong> ${
-              centre.candidate_3.data
-            }</p>
-            <p><strong>${centre.candidate_4.name} :</strong> ${
-              centre.candidate_4.data
-            }</p>
-              <p><strong>Total des votants :</strong> ${
-                centre.total_registered_bureau || "N/A"
+              <p><strong>${centre.candidate_1.name} :</strong> ${centre.candidate_1.data
+              }</p>
+              <p><strong>${centre.candidate_2.name} :</strong> ${centre.candidate_2.data
+              }</p>
+              <p><strong>${centre.candidate_3.name} :</strong> ${centre.candidate_3.data
+              }</p>
+              <p><strong>${centre.candidate_4.name} :</strong> ${centre.candidate_4.data
+              }</p>
+
+              <p><strong>Total des votants :</strong> ${centre.total_registered_bureau || "N/A"
               }</p>
             `,
           };
@@ -452,7 +406,7 @@ export default {
     connectWebSocket() {
       this.ws = new WebSocket(this.$wsUrl);
 
-      this.ws.onopen = () => {};
+      this.ws.onopen = () => { };
 
       this.ws.onmessage = (event) => {
         try {
@@ -538,9 +492,17 @@ body {
   overflow-y: auto;
 }
 
+#filters {
+  top: 10%;
+}
+
+#legend {
+  top: 30%;
+}
+
 #candidates {
-  top: 60%;
   position: absolute;
+  top: 60%;
   left: 5%;
   background: #f9f9f9;
   border: 1px solid #e0e0e0;
@@ -637,6 +599,14 @@ body {
   font-weight: bold;
 }
 
+.label.candidate1 {
+  color: #ff6347;
+}
+
+.label.candidate2 {
+  color: #32cd32;
+}
+
 .candidate-photo {
   width: 80px;
   height: 80px;
@@ -650,11 +620,14 @@ body {
   justify-content: space-between;
 }
 
-/* Responsive Design */
+/* ----------- RESPONSIVE DESIGN ----------- */
+
+/* Écrans tablettes (max 1024px) */
 @media (max-width: 1024px) {
   #map {
     width: 90%;
     height: 50vh;
+    position: absolute;
     left: 50%;
     top: 40%;
     transform: translate(-50%, -50%);
@@ -664,6 +637,8 @@ body {
     width: 300px;
     height: 200px;
     left: 80%;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
   }
 
   #filters,
@@ -672,8 +647,18 @@ body {
     width: 200px;
     left: 3%;
   }
+
+  .progress-bar {
+    height: 20px;
+  }
+
+  .candidate-photo {
+    width: 60px;
+    height: 60px;
+  }
 }
 
+/* Écrans mobiles (max 768px) */
 @media (max-width: 768px) {
   #map {
     width: 100%;
@@ -696,11 +681,31 @@ body {
     width: 90%;
     left: 50%;
     transform: translateX(-50%);
+    top: auto;
     position: relative;
     margin-bottom: 10px;
   }
+
+  #progress-bar-container {
+    width: 90%;
+    margin-top: 20px;
+  }
+
+  .progress-bar {
+    height: 15px;
+  }
+
+  .candidate-photo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .label {
+    font-size: 14px;
+  }
 }
 
+/* Écrans très petits (max 480px) */
 @media (max-width: 480px) {
   #map {
     height: 35vh;
@@ -711,6 +716,19 @@ body {
     height: 120px;
     grid-template-columns: repeat(1, 1fr);
     grid-template-rows: repeat(4, 1fr);
+  }
+
+  .candidate-photo {
+    width: 40px;
+    height: 40px;
+  }
+
+  .progress-bar {
+    height: 12px;
+  }
+
+  .label {
+    font-size: 12px;
   }
 }
 </style>
