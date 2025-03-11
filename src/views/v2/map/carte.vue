@@ -140,6 +140,7 @@ export default {
       total_candidate_4: 0,
       resu_cbon: 0,
       resu_acbbn: 0,
+      
     };
   },
 
@@ -187,6 +188,7 @@ export default {
           this.resu_cbon = response.data.candidate_2.data.toFixed(2);
           this.resu_acbbn = response.data.candidate_1.data.toFixed(2);
           console.log("resss", response.data);
+          this.updateStats();
         })
         .catch((error) => {
           console.error("Erreur lors de la récupération des données :", error);
@@ -211,23 +213,52 @@ export default {
       }
     },
 
+    // getCandidates() {
+    //   this.$axios
+    //     .get("/resultat/get_vote_by_province")
+    //     .then((response) => {
+    //       this.candidates = response.data;
+    //       this.total_candidate_1 = response.data[9].total_candidate_1;
+    //       this.total_candidate_2 = response.data[9].total_candidate_2;
+    //       this.total_candidate_3 = response.data[9].total_candidate_3;
+    //       this.total_candidate_4 = response.data[9].total_candidate_4;
+    //       console.log("CBON", response.data);
+    //       this.updateMapWithResults(this.candidates);
+    //     })
+    //     .catch((error) => {
+    //       console.error(
+    //         "Erreur lors de la récupération des candidats :",
+    //         error
+    //       );
+    //     });
+    // },
+
     getCandidates() {
       this.$axios
         .get("/resultat/get_vote_by_province")
         .then((response) => {
-          this.candidates = response.data;
-          this.total_candidate_1 = response.data[9].total_candidate_1;
-          this.total_candidate_2 = response.data[9].total_candidate_2;
-          this.total_candidate_3 = response.data[9].total_candidate_3;
-          this.total_candidate_4 = response.data[9].total_candidate_4;
-          console.log("CBON", response.data);
+          // Séparer les provinces des totaux
+          const data = response.data;
+
+          // Vérifier si le tableau contient au moins 10 éléments avant d'accéder à l'index 9
+          if (data.length < 10) {
+            console.error("Données incomplètes reçues :", data);
+            return;
+          }
+
+          this.candidates = data.slice(0, -1); // Exclure le dernier élément (totaux)
+          const totalData = data[data.length - 1]; // Dernier élément contenant les totaux
+
+          // Vérifier que les totaux existent avant de les attribuer
+          this.total_candidate_1 = totalData.total_candidate_1 ?? { data: 0, name: "" };
+          this.total_candidate_2 = totalData.total_candidate_2 ?? { data: 0, name: "" };
+          this.total_candidate_3 = totalData.total_candidate_3 ?? { data: 0, name: "" };
+          this.total_candidate_4 = totalData.total_candidate_4 ?? { data: 0, name: "" };
+
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
-          console.error(
-            "Erreur lors de la récupération des candidats :",
-            error
-          );
+          console.error("Erreur lors de la récupération des candidats :", error);
         });
     },
 
@@ -249,55 +280,106 @@ export default {
         });
     },
 
+    // updateMapWithResults(apiData) {
+    //   apiData.forEach((data) => {
+    //     const provinceKey = data.province;
+    //     const description = `
+    //       <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
+    //       <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
+    //       <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
+    //       <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
+    //       <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+    //     `;
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[
+    //         provinceKey
+    //       ].description = description;
+    //     }
+
+    //     const maxVotes = Math.max(
+    //       data.candidate_1.data,
+    //       data.candidate_2.data,
+    //       data.candidate_3.data,
+    //       data.candidate_4.data
+    //     );
+    //     let color = "#FFFFFF";
+    //     if (
+    //       data.candidate_1.data === 0 &&
+    //       data.candidate_2.data === 0 &&
+    //       data.candidate_3.data === 0 &&
+    //       data.candidate_4.data === 0
+    //     ) {
+    //       color = "#D3D3D3"; // Gris si résultats à zéro
+    //     } else {
+    //       if (maxVotes === data.candidate_1.data) color = "#FF6347";
+    //       else if (maxVotes === data.candidate_2.data) color = "#32CD32";
+    //       else if (maxVotes === data.candidate_3.data) color = "#FFCE56";
+    //       else if (maxVotes === data.candidate_4.data) color = "#0000FF";
+    //     }
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[provinceKey].color =
+    //         color;
+    //       simplemaps_countrymap_mapdata.state_specific[
+    //         provinceKey
+    //       ].hover_color = color;
+    //     }
+    //   });
+
+    //   simplemaps_countrymap.load();
+    // },
+
     updateMapWithResults(apiData) {
-      apiData.forEach((data) => {
-        const provinceKey = data.province;
-        const description = `
-          <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
-          <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
-          <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
-          <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
-          <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
-        `;
+  apiData.forEach((data) => {
+    const provinceKey = data.province;
+    const description = `
+      <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
+      <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
+      <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
+      <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
+      <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+    `;
 
-        if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
-          simplemaps_countrymap_mapdata.state_specific[
-            provinceKey
-          ].description = description;
-        }
+    if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+      simplemaps_countrymap_mapdata.state_specific[provinceKey].description = description;
+    }
 
-        const maxVotes = Math.max(
-          data.candidate_1.data,
-          data.candidate_2.data,
-          data.candidate_3.data,
-          data.candidate_4.data
-        );
-        let color = "#FFFFFF";
-        if (
-          data.candidate_1.data === 0 &&
-          data.candidate_2.data === 0 &&
-          data.candidate_3.data === 0 &&
-          data.candidate_4.data === 0
-        ) {
-          color = "#D3D3D3"; // Gris si résultats à zéro
-        } else {
-          if (maxVotes === data.candidate_1.data) color = "#FF6347";
-          else if (maxVotes === data.candidate_2.data) color = "#32CD32";
-          else if (maxVotes === data.candidate_3.data) color = "#FFCE56";
-          else if (maxVotes === data.candidate_4.data) color = "#0000FF";
-        }
+    // Créer un tableau des candidats avec leurs votes
+    const candidates = [
+      { name: data.candidate_1.name, value: data.candidate_1.data, color: "#FF6347" }, // Rouge
+      { name: data.candidate_2.name, value: data.candidate_2.data, color: "#32CD32" }, // Vert
+      { name: data.candidate_3.name, value: data.candidate_3.data, color: "#FFCE56" }, // Jaune
+      { name: data.candidate_4.name, value: data.candidate_4.data, color: "#0000FF" }, // Bleu
+    ];
 
-        if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
-          simplemaps_countrymap_mapdata.state_specific[provinceKey].color =
-            color;
-          simplemaps_countrymap_mapdata.state_specific[
-            provinceKey
-          ].hover_color = color;
-        }
-      });
+    // Trouver le nombre maximum de votes
+    const maxVotes = Math.max(...candidates.map(c => c.value));
 
-      simplemaps_countrymap.load();
-    },
+    // Vérifier combien de candidats ont ce score maximum
+    const leaders = candidates.filter(c => c.value === maxVotes);
+
+    let color = "#FFFFFF"; // Couleur par défaut : blanc
+
+    if (candidates.every(c => c.value === 0)) {
+      color = "#D3D3D3"; // Gris si aucun vote
+    } else if (leaders.length > 1) {
+      color = "#808080"; // Gris neutre si égalité
+    } else {
+      // Si un seul gagnant
+      color = leaders[0].color;
+    }
+
+    // Appliquer la couleur sur la carte
+    if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+      simplemaps_countrymap_mapdata.state_specific[provinceKey].color = color;
+      simplemaps_countrymap_mapdata.state_specific[provinceKey].hover_color = color;
+    }
+  });
+
+  // Recharger la carte après les modifications
+  simplemaps_countrymap.load();
+},
 
     updateMapLocations() {
       simplemaps_countrymap_mapdata.locations = {};
@@ -402,6 +484,12 @@ export default {
         showVotingCenters: this.showVotingCenters,
       });
     },
+    updateStats() {
+      console.log("Mise à jour des statistiques :", {
+        resu_cbon: this.resu_cbon,
+        resu_acbbn: this.resu_acbbn,
+      });
+    },
 
     connectWebSocket() {
       this.ws = new WebSocket(this.$wsUrl);
@@ -416,8 +504,9 @@ export default {
           this.updateMapLocations();
           this.toggleVotingCenters();
           this.get_all_donnees();
-          this.updateMapWithResults();
           this.get_stat_candidate();
+          this.updateStats();
+          this.updateMapWithResults();
 
           if (message && message.updatedData) {
             this.datas = [...this.datas, ...message.updatedData];

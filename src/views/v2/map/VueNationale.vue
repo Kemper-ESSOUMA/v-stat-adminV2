@@ -7,9 +7,8 @@
       </router-link>
     </div>
     <div>
-      <router-link class="btn" :to="{ name: 'national' }"
-        :class="{ active: this.$route.name === 'national' }" data-bs-toggle="tooltip" data-bs-placement="right"
-        title="national">
+      <router-link class="btn" :to="{ name: 'national' }" :class="{ active: this.$route.name === 'national' }"
+        data-bs-toggle="tooltip" data-bs-placement="right" title="national">
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
     </div>
@@ -91,6 +90,10 @@
             {{ candidate.candidate_3?.name || "Candidat 3" }} :
             {{ candidate.candidate_3?.data ?? "N/A" }}
           </p>
+          <p>
+            {{ candidate.candidate_4?.name || "Candidat 4" }} :
+            {{ candidate.candidate_4?.data ?? "N/A" }}
+          </p>
           <p>Total votes : {{ candidate.nb_scrutin ?? "N/A" }}</p>
         </li>
 
@@ -99,7 +102,7 @@
     </div>
 
     <!-- Barre de progression des votes -->
-    <div id="progress-bar-container">
+    <!-- <div id="progress-bar-container">
       <div class="d-plex">
         <div class="image-container candidate1-image" :style="{ left: resu_acbbn + '%' }">
           <img src="../../../assets/candidat1.png" class="candidate-photo" alt="Candidate 1" />
@@ -119,7 +122,39 @@
           <span class="percentage-text">{{ resu_cbon }}%</span>
         </div>
       </div>
+    </div> -->
+    <div id="progress-bar-container">
+      <div class="d-plex">
+        <div v-for="(image, index) in candidate1Images" :key="index" class="image-container candidate1-image"
+          :style="{ transform: 'translateX(' + (index * 0.1) + '%)' }">
+          <img :src="image" class="candidate-photo" alt="Candidate" />
+        </div>
+
+        <div class="image-container candidate2-image" :style="{ left: resu_cbon + '%' }">
+          <img :src="candidate2Image" class="candidate-photo" alt="Candidate 2" />
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <!-- La progress-segment candidate2 reste fixe -->
+        <div class="progress-segment candidate2" :style="{ width: resu_cbon + '%' }">
+          <div class="candidate-photo candidate2-photo"></div>
+          <span class="percentage-text">{{ resu_cbon }}%</span>
+        </div>
+
+        <!-- La progress-segment candidate1 s'ajuste dynamiquement -->
+        <div class="progress-segment candidate1" :style="{ width: resu_acbbn + '%' }">
+          <div class="candidate-photo candidate1-photo"></div>
+          <span class="percentage-text">{{ resu_acbbn }}%</span>
+        </div>
+      </div>
     </div>
+
+
+
+
+
+
   </div>
 </template>
 
@@ -127,10 +162,17 @@
 import { useAppStore } from "../../../store/app";
 const appStore = useAppStore();
 
+import candidat1 from '@/assets/candidat1.png';
+import candidat2 from '@/assets/candidat2.png';
+import candidat3 from '@/assets/candidat3.png';
+import candidat4 from '@/assets/candidat4.png';
+
 export default {
   name: "App",
   data() {
     return {
+      candidate1Image: '', // Utilisation de l'importation statique
+      candidate2Image: candidat2,
       showVotingCenters: true,
       showNationalView: true,
       votingData: [],
@@ -142,6 +184,11 @@ export default {
       total_candidate_4: 0,
       resu_cbon: 0,
       resu_acbbn: 0,
+      resu_jle: 0,
+      resu_sgib: 0,
+
+
+
     };
   },
 
@@ -182,18 +229,114 @@ export default {
   },
 
   methods: {
+    // get_stat_candidate() {
+    //   this.$axios
+    //     .get("/stats_home/get_porcent_by_candidate")
+    //     .then((response) => {
+    //       this.resu_cbon = response.data.candidate_2.data.toFixed(2);
+    //       this.resu_acbbn = response.data.candidate_1.data.toFixed(2);
+    //       this.resu_jle = response.data.candidate_3.data.toFixed(2);
+    //       this.resu_sgib = response.data.candidate_4.data.toFixed(2);
+    //       console.log("resss", response.data);
+    //       // Met à jour l'affichage des stats
+    //       this.updateStats();
+
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de la récupération des données :", error);
+    //     });
+    // },
+
+
+
+    // get_stat_candidate() {
+    //   this.$axios
+    //     .get("/stats_home/get_porcent_by_candidate")
+    //     .then((response) => {
+    //       const candidate_1 = parseFloat(response.data.candidate_1.data.toFixed(2));
+    //       const candidate_2 = parseFloat(response.data.candidate_2.data.toFixed(2));
+    //       const candidate_3 = parseFloat(response.data.candidate_3.data.toFixed(2));
+    //       const candidate_4 = parseFloat(response.data.candidate_4.data.toFixed(2));
+
+    //       // Mise à jour des valeurs des candidats
+    //       this.resu_acbbn = candidate_1;
+    //       this.resu_cbon = candidate_2;
+    //       this.resu_jle = candidate_3;
+    //       this.resu_sgib = candidate_4;
+
+    //       // Comparaison dynamique pour définir l'image, sans modifier les valeurs !
+    //       const maxCandidate = Math.max(this.resu_acbbn, this.resu_jle, this.resu_sgib);
+
+    //       if (maxCandidate === this.resu_jle) {
+    //         this.candidate1Image = candidat3;
+    //       } else if (maxCandidate === this.resu_sgib) {
+    //         this.candidate1Image = candidat4;
+    //       } else {
+    //         this.candidate1Image = candidat1;
+    //       }
+
+    //       console.log("Statistiques mises à jour :", {
+    //         resu_cbon: this.resu_cbon,
+    //         resu_acbbn: this.resu_acbbn,
+    //         resu_jle: this.resu_jle,
+    //         resu_sgib: this.resu_sgib
+    //       });
+
+    //       this.updateStats();
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de la récupération des données :", error);
+    //     });
+    // },
+
     get_stat_candidate() {
       this.$axios
         .get("/stats_home/get_porcent_by_candidate")
         .then((response) => {
-          this.resu_cbon = response.data.candidate_2.data.toFixed(2);
-          this.resu_acbbn = response.data.candidate_1.data.toFixed(2);
-          console.log("resss", response.data);
+          const candidate_1 = parseFloat(response.data.candidate_1.data.toFixed(2));
+          const candidate_2 = parseFloat(response.data.candidate_2.data.toFixed(2));
+          const candidate_3 = parseFloat(response.data.candidate_3.data.toFixed(2));
+          const candidate_4 = parseFloat(response.data.candidate_4.data.toFixed(2));
+
+          // Mise à jour des valeurs
+          this.resu_acbbn = candidate_1;
+          this.resu_cbon = candidate_2;
+          this.resu_jle = candidate_3;
+          this.resu_sgib = candidate_4;
+
+          // Trouver la valeur maximale
+          const maxCandidate = Math.max(this.resu_acbbn, this.resu_jle, this.resu_sgib);
+
+          // Trouver les candidats qui ont cette valeur maximale
+          let topCandidates = [];
+          if (this.resu_acbbn === maxCandidate) topCandidates.push(candidat1);
+          if (this.resu_jle === maxCandidate) topCandidates.push(candidat3);
+          if (this.resu_sgib === maxCandidate) topCandidates.push(candidat4);
+
+          // Mettre à jour les images dynamiquement
+          this.candidate1Images = topCandidates;
+
+          console.log("Candidats affichés :", this.candidate1Images);
+
+          // Met à jour les statistiques si nécessaire
+          this.updateStats();
         })
         .catch((error) => {
           console.error("Erreur lors de la récupération des données :", error);
         });
     },
+
+
+
+
+
+
+
+
+
+
+
+
     get_all_donnees() {
       const accessToken = appStore.token;
       if (accessToken) {
@@ -213,25 +356,54 @@ export default {
       }
     },
 
+    // getCandidates() {
+    //   this.$axios
+    //     .get("/resultat/get_vote_by_province")
+    //     .then((response) => {
+    //       this.candidates = response.data;
+    //       this.total_candidate_1 = response.data[9].total_candidate_1;
+    //       this.total_candidate_2 = response.data[9].total_candidate_2;
+    //       this.total_candidate_3 = response.data[9].total_candidate_3;
+    //       this.total_candidate_4 = response.data[9].total_candidate_4;
+
+    //       this.updateMapWithResults(this.candidates);
+    //     })
+    //     .catch((error) => {
+    //       console.error(
+    //         "Erreur lors de la récupération des candidats :",
+    //         error
+    //       );
+    //     });
+    // },
     getCandidates() {
       this.$axios
         .get("/resultat/get_vote_by_province")
         .then((response) => {
-          this.candidates = response.data;
-          this.total_candidate_1 = response.data[9].total_candidate_1;
-          this.total_candidate_2 = response.data[9].total_candidate_2;
-          this.total_candidate_3 = response.data[9].total_candidate_3;
-          this.total_candidate_4 = response.data[9].total_candidate_4;
+          // Séparer les provinces des totaux
+          const data = response.data;
+
+          // Vérifier si le tableau contient au moins 10 éléments avant d'accéder à l'index 9
+          if (data.length < 10) {
+            console.error("Données incomplètes reçues :", data);
+            return;
+          }
+
+          this.candidates = data.slice(0, -1); // Exclure le dernier élément (totaux)
+          const totalData = data[data.length - 1]; // Dernier élément contenant les totaux
+
+          // Vérifier que les totaux existent avant de les attribuer
+          this.total_candidate_1 = totalData.total_candidate_1 ?? { data: 0, name: "" };
+          this.total_candidate_2 = totalData.total_candidate_2 ?? { data: 0, name: "" };
+          this.total_candidate_3 = totalData.total_candidate_3 ?? { data: 0, name: "" };
+          this.total_candidate_4 = totalData.total_candidate_4 ?? { data: 0, name: "" };
 
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
-          console.error(
-            "Erreur lors de la récupération des candidats :",
-            error
-          );
+          console.error("Erreur lors de la récupération des candidats :", error);
         });
     },
+
 
     getCentreVote() {
       this.$axios
@@ -251,53 +423,104 @@ export default {
         });
     },
 
+    // updateMapWithResults(apiData) {
+    //   apiData.forEach((data) => {
+    //     const provinceKey = data.province;
+    //     const description = `
+    //       <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
+    //       <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
+    //       <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
+    //       <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
+    //       <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+    //     `;
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[
+    //         provinceKey
+    //       ].description = description;
+    //     }
+
+    //     const maxVotes = Math.max(
+    //       data.candidate_1.data,
+    //       data.candidate_2.data,
+    //       data.candidate_3.data,
+    //       data.candidate_4.data
+    //     );
+    //     let color = "#FFFFFF";
+    //     if (
+    //       data.candidate_1.data === 0 &&
+    //       data.candidate_2.data === 0 &&
+    //       data.candidate_3.data === 0 &&
+    //       data.candidate_4.data === 0
+    //     ) {
+    //       color = "#D3D3D3"; // Gris si résultats à zéro
+    //     } else {
+    //       if (maxVotes === data.candidate_1.data) color = "#FF6347";
+    //       else if (maxVotes === data.candidate_2.data) color = "#32CD32";
+    //       else if (maxVotes === data.candidate_3.data) color = "#FFCE56";
+    //       else if (maxVotes === data.candidate_4.data) color = "#0000FF";
+    //     }
+
+    //     if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
+    //       simplemaps_countrymap_mapdata.state_specific[provinceKey].color =
+    //         color;
+    //       simplemaps_countrymap_mapdata.state_specific[
+    //         provinceKey
+    //       ].hover_color = color;
+    //     }
+    //   });
+
+    //   simplemaps_countrymap.load();
+    // },
+
     updateMapWithResults(apiData) {
       apiData.forEach((data) => {
         const provinceKey = data.province;
         const description = `
-          <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
-          <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
-          <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
-          <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
-          <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
-        `;
+      <p><strong>${data.candidate_1.name} :</strong> ${data.candidate_1.data} votes</p>
+      <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
+      <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
+      <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
+      <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
+    `;
 
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
-          simplemaps_countrymap_mapdata.state_specific[
-            provinceKey
-          ].description = description;
+          simplemaps_countrymap_mapdata.state_specific[provinceKey].description = description;
         }
 
-        const maxVotes = Math.max(
-          data.candidate_1.data,
-          data.candidate_2.data,
-          data.candidate_3.data,
-          data.candidate_4.data
-        );
-        let color = "#FFFFFF";
-        if (
-          data.candidate_1.data === 0 &&
-          data.candidate_2.data === 0 &&
-          data.candidate_3.data === 0 &&
-          data.candidate_4.data === 0
-        ) {
-          color = "#D3D3D3"; // Gris si résultats à zéro
+        // Créer un tableau des candidats avec leurs votes
+        const candidates = [
+          { name: data.candidate_1.name, value: data.candidate_1.data, color: "#FF6347" }, // Rouge
+          { name: data.candidate_2.name, value: data.candidate_2.data, color: "#32CD32" }, // Vert
+          { name: data.candidate_3.name, value: data.candidate_3.data, color: "#FFCE56" }, // Jaune
+          { name: data.candidate_4.name, value: data.candidate_4.data, color: "#0000FF" }, // Bleu
+        ];
+
+        // Trouver le nombre maximum de votes
+        const maxVotes = Math.max(...candidates.map(c => c.value));
+
+        // Vérifier combien de candidats ont ce score maximum
+        const leaders = candidates.filter(c => c.value === maxVotes);
+
+        let color = "#FFFFFF"; // Couleur par défaut : blanc
+
+        if (candidates.every(c => c.value === 0)) {
+          color = "#D3D3D3"; // Gris si aucun vote
+        } else if (leaders.length > 1) {
+          color = "#808080"; // Gris neutre si égalité
         } else {
-          if (maxVotes === data.candidate_1.data) color = "#FF6347";
-          else if (maxVotes === data.candidate_2.data) color = "#32CD32";
-          else if (maxVotes === data.candidate_3.data) color = "#FFCE56";
-          else if (maxVotes === data.candidate_4.data) color = "#0000FF";
+          // Si un seul gagnant
+          color = leaders[0].color;
         }
 
+        // Appliquer la couleur sur la carte
         if (simplemaps_countrymap_mapdata.state_specific[provinceKey]) {
-          simplemaps_countrymap_mapdata.state_specific[provinceKey].color =
-            color;
-          simplemaps_countrymap_mapdata.state_specific[
-            provinceKey
-          ].hover_color = color;
+          simplemaps_countrymap_mapdata.state_specific[provinceKey].color = color;
+          simplemaps_countrymap_mapdata.state_specific[provinceKey].hover_color = color;
         }
       });
 
+      // Recharger la carte après les modifications
       simplemaps_countrymap.load();
     },
 
@@ -331,27 +554,20 @@ export default {
             color: color,
             size: "40",
             description: `
-              <p><strong>Nombre de bureaux de votes :</strong> ${
-                centre.total_offices
+              <p><strong>Nombre de bureaux de votes :</strong> ${centre.total_offices
               }</p>
-              <p><strong>Nombre de participants :</strong> ${
-                centre.total_registered
+              <p><strong>Nombre de participants :</strong> ${centre.total_registered
               }</p>
-              <p><strong>${centre.candidate_1.name} :</strong> ${
-              centre.candidate_1.data
-            }</p>
-              <p><strong>${centre.candidate_2.name} :</strong> ${
-              centre.candidate_2.data
-            }</p>
-              <p><strong>${centre.candidate_3.name} :</strong> ${
-              centre.candidate_3.data
-            }</p>
-              <p><strong>${centre.candidate_4.name} :</strong> ${
-              centre.candidate_4.data
-            }</p>
+              <p><strong>${centre.candidate_1.name} :</strong> ${centre.candidate_1.data
+              }</p>
+              <p><strong>${centre.candidate_2.name} :</strong> ${centre.candidate_2.data
+              }</p>
+              <p><strong>${centre.candidate_3.name} :</strong> ${centre.candidate_3.data
+              }</p>
+              <p><strong>${centre.candidate_4.name} :</strong> ${centre.candidate_4.data
+              }</p>
 
-              <p><strong>Total des votants :</strong> ${
-                centre.total_registered_bureau || "N/A"
+              <p><strong>Total des votants :</strong> ${centre.total_registered_bureau || "N/A"
               }</p>
             `,
           };
@@ -411,11 +627,20 @@ export default {
         showVotingCenters: this.showVotingCenters,
       });
     },
+    updateStats() {
+      console.log("Mise à jour des statistiques :", {
+        resu_cbon: this.resu_cbon,
+        resu_acbbn: this.resu_acbbn,
+        resu_jle: this.resu_jle,
+        resu_sgib: this.resu_sgib,
+      });
+    },
+
 
     connectWebSocket() {
       this.ws = new WebSocket(this.$wsUrl);
 
-      this.ws.onopen = () => {};
+      this.ws.onopen = () => { };
 
       this.ws.onmessage = (event) => {
         try {
@@ -426,8 +651,10 @@ export default {
           this.toggleVotingCenters();
           this.toggleNationalView();
           this.get_all_donnees();
-          this.updateMapWithResults();
           this.get_stat_candidate();
+          this.updateStats();
+          this.updateMapWithResults();
+
 
           if (message && message.updatedData) {
             this.datas = [...this.datas, ...message.updatedData];
@@ -458,6 +685,8 @@ body {
   padding: 0;
   height: 100%;
 }
+
+
 
 #map {
   width: 800px;

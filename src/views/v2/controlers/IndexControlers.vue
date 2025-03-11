@@ -70,7 +70,8 @@
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn field="candidate_1.data" header="ACBBN"></DataTableColumn>
       <DataTableColumn field="candidate_2.data" header="CBON"></DataTableColumn>
-      <DataTableColumn field="candidate_3.data" header="DIVERS"></DataTableColumn>
+      <DataTableColumn field="candidate_3.data" header="JLE"></DataTableColumn>
+      <DataTableColumn field="candidate_4.data" header="SGIB"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
           <div class="d-flex">

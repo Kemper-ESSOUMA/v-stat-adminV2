@@ -70,30 +70,30 @@ import { registerPlugins } from "@/plugins";
 // });
 
 
-(function() {
-    let isOpen = false; // Variable pour éviter les exécutions répétées
+// (function () {
+//   let isOpen = false; // Variable pour éviter les exécutions répétées
 
-    function detectInspector() {
-        const before = performance.now();
-        debugger;
-        const after = performance.now();
+//   function detectInspector() {
+//     const before = performance.now();
+//     debugger;
+//     const after = performance.now();
 
-        if (after - before > 100) {
-            isOpen = true;
-            document.body.innerHTML = ""; // Vide complètement la page
-            document.head.innerHTML = ""; // Supprime les scripts
-            location.href = "about:blank"; // Redirige immédiatement
-        }
-    }
+//     if (after - before > 100) {
+//       isOpen = true;
+//       document.body.innerHTML = ""; // Vide complètement la page
+//       document.head.innerHTML = ""; // Supprime les scripts
+//       location.href = "about:blank"; // Redirige immédiatement
+//     }
+//   }
 
-    // Vérifie au chargement
-    detectInspector();
+//   // Vérifie au chargement
+//   detectInspector();
 
-    // Vérifie en continu pour empêcher l'ouverture après le chargement
-    setInterval(() => {
-        if (!isOpen) detectInspector();
-    }, 500);
-})();
+//   // Vérifie en continu pour empêcher l'ouverture après le chargement
+//   setInterval(() => {
+//     if (!isOpen) detectInspector();
+//   }, 500);
+// })();
 
 
 
