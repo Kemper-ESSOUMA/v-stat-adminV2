@@ -29,7 +29,7 @@ import DataView from "primevue/dataview";
 import InputText from "primevue/inputtext";
 
 import Checkbox from 'primevue/checkbox';
-
+import Avatar from 'primevue/avatar';
 import Toast from "primevue/toast";
 import ToastService from "primevue/toastservice";
 import TabView from "primevue/tabview";
@@ -125,6 +125,7 @@ app.component("SelectButton", SelectButton);
 app.component("SpeedDial", SpeedDial);
 app.component("MultiSelect", MultiSelect);
 app.component('CheckboxMulti', Checkbox);
+app.component('AvatarPrime', Avatar);
 registerPlugins(app);
 
 app.mount("#app");

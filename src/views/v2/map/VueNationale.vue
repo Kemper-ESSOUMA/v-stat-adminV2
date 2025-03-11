@@ -1,6 +1,6 @@
 <template>
   <div class="btn-group page-nav" role="group" style="margin-left: 40%">
-    <div>
+    <!-- <div>
       <router-link class="btn" :to="{ name: 'map' }" :class="{ active: this.$route.name === 'map' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="map">
         <i class="pi pi-globe" style="color: #3242c5"></i> GLOBAL
@@ -11,7 +11,7 @@
         data-bs-toggle="tooltip" data-bs-placement="right" title="national">
         <i class="pi pi-map-marker" style="color: #3242c5"></i> NATIONAL
       </router-link>
-    </div>
+    </div> -->
     <!-- <div>
       <router-link class="btn" :to="{ name: 'international' }" :class="{ active: this.$route.name === 'international' }"
         data-bs-toggle="tooltip" data-bs-placement="right" title="international">
@@ -24,10 +24,54 @@
     <div id="map"></div>
 
     <div id="map2" v-if="this.$route.name === 'map'">
-      <div class="box">Afrique</div>
-      <div class="box">Europe</div>
-      <div class="box">Amerique</div>
-      <div class="box">Asie</div>
+      <div class="box candidat1">
+
+        <AvatarPrime image="/src/assets/candidat1.png" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_acbbn }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate1" :style="{ width: resu_acbbn + '%' }">
+              <span class="percentage-text">{{ resu_acbbn }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box candidat2">
+
+        <AvatarPrime image="/src/assets/candidat2.png" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_cbon }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate2" :style="{ width: resu_cbon + '%' }">
+              <span class="percentage-text">{{ resu_cbon }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box candidat3">
+
+        <AvatarPrime image="/src/assets/candidat3.png" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_jle }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate3" :style="{ width: resu_jle + '%' }">
+              <span class="percentage-text">{{ resu_jle }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="box candidat4">
+
+        <AvatarPrime image="/src/assets/candidat4.png" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_sgib }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate4" :style="{ width: resu_sgib + '%' }">
+              <span class="percentage-text">{{ resu_sgib }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Filtres -->
@@ -123,32 +167,14 @@
         </div>
       </div>
     </div> -->
-    <div id="progress-bar-container">
-      <div class="d-plex">
-        <div v-for="(image, index) in candidate1Images" :key="index" class="image-container candidate1-image"
-          :style="{ transform: 'translateX(' + (index * 0.1) + '%)' }">
-          <img :src="image" class="candidate-photo" alt="Candidate" />
-        </div>
-
-        <div class="image-container candidate2-image" :style="{ left: resu_cbon + '%' }">
-          <img :src="candidate2Image" class="candidate-photo" alt="Candidate 2" />
-        </div>
-      </div>
-
+    <!-- <div id="progress-bar-container">
       <div class="progress-bar">
-        <!-- La progress-segment candidate2 reste fixe -->
-        <div class="progress-segment candidate2" :style="{ width: resu_cbon + '%' }">
-          <div class="candidate-photo candidate2-photo"></div>
-          <span class="percentage-text">{{ resu_cbon }}%</span>
-        </div>
-
-        <!-- La progress-segment candidate1 s'ajuste dynamiquement -->
         <div class="progress-segment candidate1" :style="{ width: resu_acbbn + '%' }">
           <div class="candidate-photo candidate1-photo"></div>
           <span class="percentage-text">{{ resu_acbbn }}%</span>
         </div>
       </div>
-    </div>
+    </div> -->
 
 
 
@@ -183,9 +209,13 @@ export default {
       total_candidate_3: 0,
       total_candidate_4: 0,
       resu_cbon: 0,
+      name_cbon: "",
       resu_acbbn: 0,
+      name_acbbn: "",
       resu_jle: 0,
+      name_jle: "",
       resu_sgib: 0,
+      name_sgib: "",
 
 
 
@@ -229,23 +259,30 @@ export default {
   },
 
   methods: {
-    // get_stat_candidate() {
-    //   this.$axios
-    //     .get("/stats_home/get_porcent_by_candidate")
-    //     .then((response) => {
-    //       this.resu_cbon = response.data.candidate_2.data.toFixed(2);
-    //       this.resu_acbbn = response.data.candidate_1.data.toFixed(2);
-    //       this.resu_jle = response.data.candidate_3.data.toFixed(2);
-    //       this.resu_sgib = response.data.candidate_4.data.toFixed(2);
-    //       console.log("resss", response.data);
-    //       // Met à jour l'affichage des stats
-    //       this.updateStats();
+    get_stat_candidate() {
+      this.$axios
+        .get("/stats_home/get_porcent_by_candidate")
+        .then((response) => {
+          this.resu_cbon = response.data.candidate_2.data.toFixed(2);
+          this.name_cbon = response.data.candidate_2.name;
 
-    //     })
-    //     .catch((error) => {
-    //       console.error("Erreur lors de la récupération des données :", error);
-    //     });
-    // },
+          this.resu_acbbn = response.data.candidate_1.data.toFixed(2);
+          this.name_acbbn = response.data.candidate_1.name;
+
+          this.resu_jle = response.data.candidate_3.data.toFixed(2);
+          this.name_jle = response.data.candidate_3.name;
+
+          this.resu_sgib = response.data.candidate_4.data.toFixed(2);
+          this.name_sgib = response.data.candidate_4.name;
+          console.log("resss", response.data);
+          // Met à jour l'affichage des stats
+          this.updateStats();
+
+        })
+        .catch((error) => {
+          console.error("Erreur lors de la récupération des données :", error);
+        });
+    },
 
 
 
@@ -289,42 +326,42 @@ export default {
     //     });
     // },
 
-    get_stat_candidate() {
-      this.$axios
-        .get("/stats_home/get_porcent_by_candidate")
-        .then((response) => {
-          const candidate_1 = parseFloat(response.data.candidate_1.data.toFixed(2));
-          const candidate_2 = parseFloat(response.data.candidate_2.data.toFixed(2));
-          const candidate_3 = parseFloat(response.data.candidate_3.data.toFixed(2));
-          const candidate_4 = parseFloat(response.data.candidate_4.data.toFixed(2));
+    // get_stat_candidate() {
+    //   this.$axios
+    //     .get("/stats_home/get_porcent_by_candidate")
+    //     .then((response) => {
+    //       const candidate_1 = parseFloat(response.data.candidate_1.data.toFixed(2));
+    //       const candidate_2 = parseFloat(response.data.candidate_2.data.toFixed(2));
+    //       const candidate_3 = parseFloat(response.data.candidate_3.data.toFixed(2));
+    //       const candidate_4 = parseFloat(response.data.candidate_4.data.toFixed(2));
 
-          // Mise à jour des valeurs
-          this.resu_acbbn = candidate_1;
-          this.resu_cbon = candidate_2;
-          this.resu_jle = candidate_3;
-          this.resu_sgib = candidate_4;
+    //       // Mise à jour des valeurs
+    //       this.resu_acbbn = candidate_1;
+    //       this.resu_cbon = candidate_2;
+    //       this.resu_jle = candidate_3;
+    //       this.resu_sgib = candidate_4;
 
-          // Trouver la valeur maximale
-          const maxCandidate = Math.max(this.resu_acbbn, this.resu_jle, this.resu_sgib);
+    //       // Trouver la valeur maximale
+    //       const maxCandidate = Math.max(this.resu_acbbn, this.resu_jle, this.resu_sgib);
 
-          // Trouver les candidats qui ont cette valeur maximale
-          let topCandidates = [];
-          if (this.resu_acbbn === maxCandidate) topCandidates.push(candidat1);
-          if (this.resu_jle === maxCandidate) topCandidates.push(candidat3);
-          if (this.resu_sgib === maxCandidate) topCandidates.push(candidat4);
+    //       // Trouver les candidats qui ont cette valeur maximale
+    //       let topCandidates = [];
+    //       if (this.resu_acbbn === maxCandidate) topCandidates.push(candidat1);
+    //       if (this.resu_jle === maxCandidate) topCandidates.push(candidat3);
+    //       if (this.resu_sgib === maxCandidate) topCandidates.push(candidat4);
 
-          // Mettre à jour les images dynamiquement
-          this.candidate1Images = topCandidates;
+    //       // Mettre à jour les images dynamiquement
+    //       this.candidate1Images = topCandidates;
 
-          console.log("Candidats affichés :", this.candidate1Images);
+    //       console.log("Candidats affichés :", this.candidate1Images);
 
-          // Met à jour les statistiques si nécessaire
-          this.updateStats();
-        })
-        .catch((error) => {
-          console.error("Erreur lors de la récupération des données :", error);
-        });
-    },
+    //       // Met à jour les statistiques si nécessaire
+    //       this.updateStats();
+    //     })
+    //     .catch((error) => {
+    //       console.error("Erreur lors de la récupération des données :", error);
+    //     });
+    // },
 
 
 
@@ -713,8 +750,24 @@ body {
 }
 
 .box {
-  background-color: rgb(228, 228, 228);
+   width: 150px;
+  height: 150px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   text-align: center;
+  padding: 10px;
+}
+
+.box img {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
 #filters,
@@ -792,45 +845,42 @@ body {
   margin-top: 40%;
 }
 
+#progress-bar-container {
+  width: 100%;
+  margin-top: 10px;
+}
+
 .progress-bar {
-  display: flex;
-  height: 30px;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: #e0e0e0;
-  border: 1px solid #ccc;
+  width: 100%;
+  height: 18px;
+  background: #ddd;
+  border-radius: 5px;
   position: relative;
+  overflow: hidden;
 }
 
 .progress-segment {
   height: 100%;
-  transition: width 0.5s ease-in-out;
-  position: absolute;
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: flex-end;
+  padding-right: 5px;
+  font-weight: bold;
+  border-radius: 5px;
+  color: white;
+  position: relative;
 }
 
-.progress-segment.candidate1 {
-  background-color: #ff6347;
-  left: 0;
-}
 
-.progress-segment.candidate2 {
-  background-color: #32cd32;
-  right: 0;
-}
 
 .percentage-text {
-  color: white;
-  font-weight: bold;
-  font-size: 14px;
-}
-
-.progress-labels {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 10px;
+  font-size: 12px;
+  position: absolute;
+  right: -60px;
+  top: -5px;
+  color: black;
+  padding: 3px 6px;
+  border-radius: 4px;
 }
 
 .label {
