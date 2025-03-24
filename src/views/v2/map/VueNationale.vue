@@ -26,7 +26,7 @@
     <div id="map2" v-if="this.$route.name === 'map'">
       <div class="box candidat1">
 
-        <AvatarPrime image="/src/assets/candidat1.png" class="mr-2" size="xlarge" shape="circle" />
+        <AvatarPrime :image="candidat1" class="mr-2" size="xlarge" shape="circle" />
         <p>{{ name_acbbn }}</p>
         <div id="progress-bar-container">
           <div class="progress-bar">
@@ -38,7 +38,7 @@
       </div>
       <div class="box candidat2">
 
-        <AvatarPrime image="/src/assets/candidat2.png" class="mr-2" size="xlarge" shape="circle" />
+        <AvatarPrime :image="candidat2" class="mr-2" size="xlarge" shape="circle" />
         <p>{{ name_cbon }}</p>
         <div id="progress-bar-container">
           <div class="progress-bar">
@@ -50,7 +50,7 @@
       </div>
       <div class="box candidat3">
 
-        <AvatarPrime image="/src/assets/candidat3.png" class="mr-2" size="xlarge" shape="circle" />
+       <AvatarPrime :image="candidat3" class="mr-2" size="xlarge" shape="circle" />
         <p>{{ name_jle }}</p>
         <div id="progress-bar-container">
           <div class="progress-bar">
@@ -62,7 +62,7 @@
       </div>
       <div class="box candidat4">
 
-        <AvatarPrime image="/src/assets/candidat4.png" class="mr-2" size="xlarge" shape="circle" />
+        <AvatarPrime :image="candidat4" class="mr-2" size="xlarge" shape="circle" />
         <p>{{ name_sgib }}</p>
         <div id="progress-bar-container">
           <div class="progress-bar">
@@ -199,6 +199,10 @@ export default {
     return {
       candidate1Image: '', // Utilisation de l'importation statique
       candidate2Image: candidat2,
+           candidat1,
+      candidat2,
+      candidat3,
+      candidat4,
       showVotingCenters: true,
       showNationalView: true,
       votingData: [],
@@ -750,7 +754,7 @@ body {
 }
 
 .box {
-   width: 150px;
+  width: 150px;
   height: 150px;
   display: flex;
   flex-direction: column;
