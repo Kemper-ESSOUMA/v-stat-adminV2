@@ -72,6 +72,10 @@
       <DataTableColumn field="candidate_2.data" header="CBON"></DataTableColumn>
       <DataTableColumn field="candidate_3.data" header="JLE"></DataTableColumn>
       <DataTableColumn field="candidate_4.data" header="SGIB"></DataTableColumn>
+      <DataTableColumn field="candidate_5.data" header="CZG"></DataTableColumn>
+      <DataTableColumn field="candidate_6.data" header="ASII"></DataTableColumn>
+      <DataTableColumn field="candidate_7.data" header="TYMN"></DataTableColumn>
+      <DataTableColumn field="candidate_8.data" header="ASB"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
           <div class="d-flex">
@@ -417,9 +421,11 @@ export default {
         "#FF6384",
         "#32cd32",
         "#FFCE56",
-        "#4BC0C0",
+        "#0000FF",
         "#9966FF",
-        "#FF9F40",
+        "#FF940",
+        "#FF9530",
+        "#f333ff",
       ];
       return colors[index % colors.length]; // Répéter les couleurs si plus de 6 candidats
     },

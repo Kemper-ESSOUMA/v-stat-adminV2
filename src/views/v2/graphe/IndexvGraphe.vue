@@ -312,7 +312,9 @@ export default {
         "#FFCE56",
         "#0000FF",
         "#9966FF",
-        "#FF9F40",
+        "#FF940",
+        "#FF9530",
+        "#f333ff",
       ];
       return colors[index % colors.length]; // Répéter les couleurs si plus de 6 candidats
     },
