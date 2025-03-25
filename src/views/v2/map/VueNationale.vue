@@ -50,7 +50,7 @@
       </div>
       <div class="box candidat3">
 
-       <AvatarPrime :image="candidat3" class="mr-2" size="xlarge" shape="circle" />
+        <AvatarPrime :image="candidat3" class="mr-2" size="xlarge" shape="circle" />
         <p>{{ name_jle }}</p>
         <div id="progress-bar-container">
           <div class="progress-bar">
@@ -68,6 +68,58 @@
           <div class="progress-bar">
             <div class="progress-segment candidate4" :style="{ width: resu_sgib + '%' }">
               <span class="percentage-text">{{ resu_sgib }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box candidat5">
+
+        <AvatarPrime :image="candidat5" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_CZG }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate5" :style="{ width: resu_CZG + '%' }">
+              <span class="percentage-text">{{ resu_CZG }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box candidat6">
+
+        <AvatarPrime :image="candidat6" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_ASII }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate6" :style="{ width: resu_ASII + '%' }">
+              <span class="percentage-text">{{ resu_ASII }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box candidat7">
+
+        <AvatarPrime :image="candidat7" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_TYMN }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate7" :style="{ width: resu_TYMN + '%' }">
+              <span class="percentage-text">{{ resu_TYMN }}%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="box candidat8">
+
+        <AvatarPrime :image="candidat8" class="mr-2" size="xlarge" shape="circle" />
+        <p>{{ name_ASB }}</p>
+        <div id="progress-bar-container">
+          <div class="progress-bar">
+            <div class="progress-segment candidate8" :style="{ width: resu_ASB + '%' }">
+              <span class="percentage-text">{{ resu_ASB }}%</span>
             </div>
           </div>
         </div>
@@ -111,13 +163,33 @@
           {{ this.total_candidate_1.name }}:
           <b>{{ this.total_candidate_1.data }}</b> votes
         </li>
+        <li>
+          <span class="icon candidate5"></span>
+          {{ this.total_candidate_5.name }}:
+          <b>{{ this.total_candidate_5.data }}</b> votes
+        </li>
+        <li>
+          <span class="icon candidate6"></span>
+          {{ this.total_candidate_6.name }}:
+          <b>{{ this.total_candidate_6.data }}</b> votes
+        </li>
+        <li>
+          <span class="icon candidate7"></span>
+          {{ this.total_candidate_7.name }}:
+          <b>{{ this.total_candidate_7.data }}</b> votes
+        </li>
+        <li>
+          <span class="icon candidate8"></span>
+          {{ this.total_candidate_8.name }}:
+          <b>{{ this.total_candidate_8.data }}</b> votes
+        </li>
         <li><span class="icon center"></span> Centre de vote</li>
         <li><span class="icon station"></span> Résultats à zéro</li>
       </ul>
     </div>
 
     <!-- Espace candidats -->
-    <div id="candidates">
+    <!-- <div id="candidates">
       <h3>Candidats</h3>
       <ul>
         <li v-for="(candidate, index) in candidates" :key="index">
@@ -138,12 +210,29 @@
             {{ candidate.candidate_4?.name || "Candidat 4" }} :
             {{ candidate.candidate_4?.data ?? "N/A" }}
           </p>
+          <p>
+            {{ candidate.candidate_5?.name || "Candidat 5" }} :
+            {{ candidate.candidate_5?.data ?? "N/A" }}
+          </p>
+          <p>
+            {{ candidate.candidate_6?.name || "Candidat 6" }} :
+            {{ candidate.candidate_6?.data ?? "N/A" }}
+          </p>
+          <p>
+            {{ candidate.candidate_7?.name || "Candidat 7" }} :
+            {{ candidate.candidate_7?.data ?? "N/A" }}
+          </p>
+          <p>
+            {{ candidate.candidate_8?.name || "Candidat 8" }} :
+            {{ candidate.candidate_8?.data ?? "N/A" }}
+          </p>
+
           <p>Total votes : {{ candidate.nb_scrutin ?? "N/A" }}</p>
         </li>
 
         <p v-if="candidates.length === 0">Aucune donnée disponible.</p>
       </ul>
-    </div>
+    </div> -->
 
     <!-- Barre de progression des votes -->
     <!-- <div id="progress-bar-container">
@@ -192,6 +281,10 @@ import candidat1 from '@/assets/candidat1.png';
 import candidat2 from '@/assets/candidat2.png';
 import candidat3 from '@/assets/candidat3.png';
 import candidat4 from '@/assets/candidat4.png';
+import candidat5 from '@/assets/candidat5.jpg';
+import candidat6 from '@/assets/candidat6.jpeg';
+import candidat7 from '@/assets/candidat7.jpg';
+import candidat8 from '@/assets/candidat8.jpg';
 
 export default {
   name: "App",
@@ -199,10 +292,14 @@ export default {
     return {
       candidate1Image: '', // Utilisation de l'importation statique
       candidate2Image: candidat2,
-           candidat1,
+      candidat1,
       candidat2,
       candidat3,
       candidat4,
+      candidat5,
+      candidat6,
+      candidat7,
+      candidat8,
       showVotingCenters: true,
       showNationalView: true,
       votingData: [],
@@ -212,14 +309,26 @@ export default {
       total_candidate_2: 0,
       total_candidate_3: 0,
       total_candidate_4: 0,
+      total_candidate_5: 0,
+      total_candidate_6: 0,
+      total_candidate_7: 0,
+      total_candidate_8: 0,
       resu_cbon: 0,
-      name_cbon: "",
       resu_acbbn: 0,
-      name_acbbn: "",
       resu_jle: 0,
-      name_jle: "",
       resu_sgib: 0,
+      resu_ASB: 0,
+      resu_CZG: 0,
+      resu_ASII: 0,
+      resu_TYMN: 0,
+      name_cbon: "",
+      name_jle: "",
+      name_acbbn: "",
       name_sgib: "",
+      name_ASB: "",
+      name_CZG: "",
+      name_ASII: "",
+      name_TYMN: "",
 
 
 
@@ -232,7 +341,12 @@ export default {
         this.total_candidate_1.data +
         this.total_candidate_2.data +
         this.total_candidate_3.data +
-        this.total_candidate_4.data
+        this.total_candidate_4.data +
+        this.total_candidate_5.data +
+        this.total_candidate_6.data +
+        this.total_candidate_7.data +
+        this.total_candidate_8.data
+
       );
     },
     candidate1Percentage() {
@@ -278,6 +392,19 @@ export default {
 
           this.resu_sgib = response.data.candidate_4.data.toFixed(2);
           this.name_sgib = response.data.candidate_4.name;
+
+          this.resu_CZG = response.data.candidate_5.data.toFixed(2);
+          this.name_CZG = response.data.candidate_5.name;
+
+          this.resu_ASII = response.data.candidate_6.data.toFixed(2);
+          this.name_ASII = response.data.candidate_6.name;
+
+          this.resu_TYMN = response.data.candidate_7.data.toFixed(2);
+          this.name_TYMN = response.data.candidate_7.name;
+
+          this.resu_ASB = response.data.candidate_8.data.toFixed(2);
+          this.name_ASB = response.data.candidate_8.name;
+
           console.log("resss", response.data);
           // Met à jour l'affichage des stats
           this.updateStats();
@@ -438,6 +565,11 @@ export default {
           this.total_candidate_3 = totalData.total_candidate_3 ?? { data: 0, name: "" };
           this.total_candidate_4 = totalData.total_candidate_4 ?? { data: 0, name: "" };
 
+          this.total_candidate_5 = totalData.total_candidate_5 ?? { data: 0, name: "" };
+          this.total_candidate_6 = totalData.total_candidate_6 ?? { data: 0, name: "" };
+          this.total_candidate_7 = totalData.total_candidate_7 ?? { data: 0, name: "" };
+          this.total_candidate_8 = totalData.total_candidate_8 ?? { data: 0, name: "" };
+
           this.updateMapWithResults(this.candidates);
         })
         .catch((error) => {
@@ -522,6 +654,11 @@ export default {
       <p><strong>${data.candidate_2.name} :</strong> ${data.candidate_2.data} votes</p>
       <p><strong>${data.candidate_3.name} :</strong> ${data.candidate_3.data} votes</p>
       <p><strong>${data.candidate_4.name} :</strong> ${data.candidate_4.data} votes</p>
+
+            <p><strong>${data.candidate_5.name} :</strong> ${data.candidate_5.data} votes</p>
+      <p><strong>${data.candidate_6.name} :</strong> ${data.candidate_6.data} votes</p>
+      <p><strong>${data.candidate_7.name} :</strong> ${data.candidate_7.data} votes</p>
+      <p><strong>${data.candidate_8.name} :</strong> ${data.candidate_8.data} votes</p>
       <p><strong>Total Scrutins :</strong> ${data.nb_scrutin} votants</p>
     `;
 
@@ -535,6 +672,11 @@ export default {
           { name: data.candidate_2.name, value: data.candidate_2.data, color: "#32CD32" }, // Vert
           { name: data.candidate_3.name, value: data.candidate_3.data, color: "#FFCE56" }, // Jaune
           { name: data.candidate_4.name, value: data.candidate_4.data, color: "#0000FF" }, // Bleu
+
+          { name: data.candidate_5.name, value: data.candidate_5.data, color: "#9966FF" }, // Rouge
+          { name: data.candidate_6.name, value: data.candidate_6.data, color: "#FF940" }, // Vert
+          { name: data.candidate_7.name, value: data.candidate_7.data, color: "#FF9530" }, // Jaune
+          { name: data.candidate_8.name, value: data.candidate_8.data, color: "#f333ff" },
         ];
 
         // Trouver le nombre maximum de votes
@@ -573,7 +715,11 @@ export default {
             centre.candidate_1.data,
             centre.candidate_2.data,
             centre.candidate_3.data,
-            centre.candidate_4.data
+            centre.candidate_4.data,
+            centre.candidate_5.data,
+            centre.candidate_6.data,
+            centre.candidate_7.data,
+            centre.candidate_8.data
           );
           let color = "#808080"; // Gris par défaut si tous les résultats sont 0
           if (maxVotes > 0) {
@@ -606,6 +752,14 @@ export default {
               <p><strong>${centre.candidate_3.name} :</strong> ${centre.candidate_3.data
               }</p>
               <p><strong>${centre.candidate_4.name} :</strong> ${centre.candidate_4.data
+              }</p>
+              <p><strong>${centre.candidate_5.name} :</strong> ${centre.candidate_5.data
+              }</p>
+              <p><strong>${centre.candidate_6.name} :</strong> ${centre.candidate_6.data
+              }</p>
+              <p><strong>${centre.candidate_7.name} :</strong> ${centre.candidate_7.data
+              }</p>
+              <p><strong>${centre.candidate_8.name} :</strong> ${centre.candidate_8.data
               }</p>
 
               <p><strong>Total des votants :</strong> ${centre.total_registered_bureau || "N/A"
@@ -674,6 +828,11 @@ export default {
         resu_acbbn: this.resu_acbbn,
         resu_jle: this.resu_jle,
         resu_sgib: this.resu_sgib,
+        resu_CZG: this.resu_CZG,
+        resu_ASII: this.resu_ASII,
+        resu_TYMN: this.resu_TYMN,
+        resu_ASB: this.resu_ASB,
+        
       });
     },
 
@@ -784,7 +943,7 @@ body {
   padding: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   width: 250px;
-  max-height: 300px;
+  /* max-height: 300px; */
   overflow-y: auto;
 }
 
@@ -833,6 +992,23 @@ body {
 .candidate4 {
   background-color: #0000ff;
 }
+
+.candidate5 {
+  background-color: #9966FF;
+}
+
+.candidate6 {
+  background-color: #646162;
+}
+
+.candidate7 {
+  background-color: #FF9530;
+}
+
+.candidate8 {
+  background-color: #f333ff;
+}
+
 
 .center {
   background-color: black;
