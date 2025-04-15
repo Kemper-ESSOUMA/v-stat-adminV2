@@ -105,8 +105,13 @@ export default {
             detail: 'Connexion avec succès !!',
             life: 3000,
           });
-
-          this.$router.push('/');
+          console.log('user  = ', user)
+          if(user.role === 'Assistant'){
+            this.$router.push('/adhesion');
+          }
+          else{
+            this.$router.push('/');
+          }
 
         } else {
           console.error('Structure inattendue de la réponse :', response);

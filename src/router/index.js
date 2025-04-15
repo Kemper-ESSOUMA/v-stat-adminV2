@@ -124,6 +124,12 @@ const routes = [{
         component: () =>
             import ("@/views/v2/accueil/SuiviView.vue"),
     },
+    {
+        path: "/adhesion",
+        name: "adhesion",
+        component: () =>
+            import ("@/views/v2/adhesion/IndexAdhesion.vue"),
+    },
 ];
 
 const router = createRouter({

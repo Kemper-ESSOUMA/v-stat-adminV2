@@ -48,6 +48,7 @@
             <option value="Administrateur">Administrateur</option>
             <option value="Coordonateur">Coordonateur</option>
             <option value="Superviseur">Superviseur</option>
+             <option value="Assistant">Assistant</option>
           </select>
         </div>
         <div class="form-group col-6">
@@ -656,10 +657,10 @@ export default defineComponent({
     },
 
     departements(data) {
-      
+
       this.departement = data;
     },
- 
+
     getProvinces() {
       this.$axios.get("/province/all").then((response) => {
         this.provinces = response.data;
