@@ -4,6 +4,7 @@
       <h4 class="text-app font-weight-bold">Remontées par bureaux de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
+       
       <div>
         <router-link class="btn" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
@@ -17,6 +18,13 @@
           <i class="pi pi-table" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
+      <!-- <div>
+         <router-link class="btn" :to="{ name: 'sieges' }"
+          :class="{ 'active': this.$route.name === 'sieges' }" data-bs-toggle="tooltip" data-bs-placement="right"
+          title="Sieges">
+          <i class="pi pi-table" style="color: #3242C5"></i>Sieges
+        </router-link>
+      </div> -->
     </div>
     <div class="px-1 d-flex mr-4">
       <!-- <button type="button" class="btn-app btn-active" @click="openCreateModal()">

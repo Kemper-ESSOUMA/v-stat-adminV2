@@ -56,6 +56,12 @@ const routes = [{
         component: () =>
             import ("@/views/v2/votes/IndexVote.vue"),
     },
+        {
+        path: "/sieges",
+        name: "sieges",
+        component: () =>
+            import ("@/views/v2/votes/IndexSieges.vue"),
+    },
     {
         path: "/users",
         name: "users",

@@ -1,28 +1,29 @@
 <template>
   <div class="header-contentys pt-3 d-flex align-items-center">
     <div class="mr-5">
-      <h4 class="text-app font-weight-bold">Remontées par centres de votes</h4>
+      <h4 class="text-app font-weight-bold">Remontées par bureaux de votes</h4>
     </div>
     <div class="btn-group page-nav " role="group">
+       
       <div>
-        <router-link class="btn btn-primary" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
+        <router-link class="btn" :to="{ name: 'votes' }" :class="{ 'active': this.$route.name === 'votes' }"
           data-bs-toggle="tooltip" data-bs-placement="right" title="Centre de votes">
           <i class="pi pi-building" style="color: #3242C5"></i> Centres de votes
         </router-link>
       </div>
       <div>
-        <router-link class="btn" :to="{ name: 'bureaux-vote' }"
-          :class="{ 'active': this.$route.name === 'bureaux-vote' }" data-bs-toggle="tooltip" data-bs-placement="right"
+        <router-link class="btn" :to="{ name: 'bureaux-vote' }" :class="{ 'active': this.$route.name === 'bureaux-vote' }"
+         data-bs-toggle="tooltip" data-bs-placement="right"
           title="Burreaux de votes">
           <i class="pi pi-table" style="color: #3242C5"></i> Bureaux de votes
         </router-link>
       </div>
-       <div>
-        <!-- <router-link class="btn" :to="{ name: 'sieges' }"
+      <div>
+         <router-link class="btn btn-primary" :to="{ name: 'sieges' }"
           :class="{ 'active': this.$route.name === 'sieges' }" data-bs-toggle="tooltip" data-bs-placement="right"
           title="Sieges">
           <i class="pi pi-table" style="color: #3242C5"></i>Sieges
-        </router-link> -->
+        </router-link>
       </div>
     </div>
     <div class="px-1 d-flex mr-4">
@@ -41,8 +42,7 @@
   <div class="card">
     <ProgressBar mode="indeterminate" style="height: 6px" v-if="this.loading === true"></ProgressBar>
     <DataTable :value="datas" tableStyle="min-width: 50rem" :paginator="true" :rows="5"
-      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters"
-      :globalFilterFields="['libelle', 'zone', 'total_registered', 'code','total_offices', 'nb_scrutin_valide', 'burreau_code', 'nb_bulletin_blanc', 'total_scrutin', 'nb_abstention']">
+      :rowsPerPageOptions="[5, 10, 20, 50]" :filters="filters" :globalFilterFields="['libelle', 'libelle_centre', 'code', 'total_registered', 'total_scrutin', 'nb_bulletin_blanc', 'nb_scrutin_valide', 'nb_abstention']">
       <template #header>
 
         <div class="flex justify-content-end">
@@ -59,48 +59,43 @@
 
       </template>
       <template #empty>
-        Aucune données trouvées
+        Aucune données trouvées.
       </template>
       <template #loading>
         Loading customers data. Please wait.
       </template>
 
-      <DataTableColumn field="code" header="Code"></DataTableColumn>
-      <DataTableColumn field="libelle" header="Libelle"></DataTableColumn>
-      <DataTableColumn field="zone" header="Zone"></DataTableColumn>
+      <DataTableColumn field="code" header="Code du burreau de vote"></DataTableColumn>
+      <DataTableColumn field="libelle_centre" header="Libelle centre"></DataTableColumn>
+      <DataTableColumn field="libelle" header="Libelle bureau"></DataTableColumn>
       <DataTableColumn field="total_registered" header="Total inscrit"></DataTableColumn>
-      <DataTableColumn field="total_offices" header="Nombre Bureau"></DataTableColumn>
-      <DataTableColumn field="nb_scrutin_valide" header="Suffrage exprimé"></DataTableColumn>
-      <!-- <DataTableColumn field="burreau_code" header="Code du bureau"></DataTableColumn> -->
+      <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
       <DataTableColumn field="nb_bulletin_blanc" header="Bulletin B/N"></DataTableColumn>
 
-      <DataTableColumn field="total_scrutin" header="Total votant"></DataTableColumn>
+      <DataTableColumn field="nb_scrutin_valide" header="Suffrage exprimé"></DataTableColumn>
       <DataTableColumn field="nb_abstention" header="Total abstention"></DataTableColumn>
       <DataTableColumn header="Actions">
         <template #body="slotProps">
 
           <div class="d-flex">
-            <button class="btn btn-sm btn-info m-1" @click="openModal(slotProps.data)">
+            <!-- <button class="btn btn-sm btn-info m-1" @click="openModal(slotProps.data)">
               <i class="fa-solid fa-pen"></i>
-            </button>
-            <!-- <button class="btn btn-sm btn-primary m-1" @click="openViewModal(slotProps.data)">
-              <i class="fa-solid fa-eye"></i>
             </button> -->
+            <button class="btn btn-sm btn-primary m-1" @click="openViewModal(slotProps.data)">
+              <i class="fa-solid fa-eye"></i>
+            </button>
           </div>
         </template>
       </DataTableColumn>
       <template #footer>
         Total {{ filteredData.length }} .
       </template>
-
     </DataTable>
   </div>
 </template>
 
 <script>
 import { FilterMatchMode } from 'primevue/api';
-// import CreateFicheClimatVue from './CreateFicheClimat.vue';
-import EditCentreVote from './EditCentreVote.vue';
 import ViewVote from './ViewVote.vue';
 import { utils, writeFile } from "xlsx";
 
@@ -115,40 +110,27 @@ export default {
     };
   },
   mounted() {
-    this.getvote();
+    this.getbureaux();
     this.connectWebSocket();
   },
-  computed: {
-filteredData() {  
-    if (!this.filters['global'] || !this.filters['global'].value) {  
-        return this.datas;  
-    }  
+    computed: {
+     filteredData() {
+      if (!this.filters['global'] || !this.filters['global'].value) {
+        return this.datas;
+      }
 
-    const searchTerm = this.filters['global'].value.toLowerCase();  
+      const searchTerm = this.filters['global'].value.toLowerCase();
 
-    return this.datas.filter(item =>  
-        Object.values(item).some(value =>  
-            typeof value === "string" && value.toLowerCase().startsWith(searchTerm)  
-        )  
-    );  
-}
-
-
+      return this.datas.filter(item =>
+        Object.values(item).some(value =>
+          typeof value === "string" && value.toLowerCase().includes(searchTerm)
+        )
+      );
+    }
   },
 
   methods: {
-    openModal(objetData) {
-      this.$dialog.open(EditCentreVote, {
-        props: {
-          header: "Modifier le centre " + objetData.zone,
-          style: {
-            width: '50vw'
-          },
-          modal: true
-        },
-        data: objetData,
-      });
-    },
+
     openViewModal(objetData) {
       this.$dialog.open(ViewVote, {
         props: {
@@ -172,12 +154,13 @@ filteredData() {
     //     },
     //   });
     // },
-    getvote() {
+    getbureaux() {
       this.$axios
-        .get('/voting_centre/by_zone')
+        .get('/siege/stat_by_zone')
         .then((response) => {
           this.loading = false
           this.datas = response.data;
+          console.log('Données récupérées avec succès:', this.datas);
         })
         .catch((error) => {
           console.error('Erreur de recuperation de donnees:', error);
@@ -189,8 +172,7 @@ filteredData() {
 
       // Gestion des événements WebSocket
       this.ws.onopen = () => {
-        
-  
+       
       };
 
       this.ws.onmessage = (event) => {
@@ -199,7 +181,7 @@ filteredData() {
         try {
           const message = event.data;  // Si c'est un JSON, il faut le parser
           
-          this.getvote();
+          this.getbureaux();
 
           if (message && message.updatedData) {
             // Mettre à jour les données (si ce message contient une clé `updatedData`)
@@ -213,9 +195,8 @@ filteredData() {
         console.error("Erreur WebSocket :", error);
       };
 
-   
       this.ws.onclose = () => {
-     
+      
         setTimeout(() => {
           this.connectWebSocket();
         }, 3000); // Reconnexion après 3 secondes
@@ -224,7 +205,7 @@ filteredData() {
     },
     refreshDatas() {
       this.loading = true
-      this.getvote()
+      this.getbureaux()
     },
     exportToExcel() {
       // Transforme les données en une feuille Excel

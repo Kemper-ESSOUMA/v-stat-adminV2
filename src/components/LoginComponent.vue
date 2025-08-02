@@ -3,7 +3,8 @@
     <div class="col-md-4 mx-auto">
       <div>
         <div class="text-center mx-10">
-          <img src="@/assets/LOGO V-STATS.png" height="300" alt="Logo" loading="lazy" />
+          <!-- <img src="@/assets/LOGO V-STATS.png" height="300" alt="Logo" loading="lazy" /> -->
+            <img src="@/assets/UDB.png" height="200" alt="Logo" loading="lazy" />
         </div>
 
         <div class="card login-box">
