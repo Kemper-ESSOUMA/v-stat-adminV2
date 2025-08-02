@@ -226,10 +226,10 @@ export default {
       });
     },
 
-    handleZoneAndSiege(code) {
-      this.updateZone(code); // Mets à jour le graphique Zone
-      this.updateSiege(code); // Mets à jour le graphique Siège
-      this.selectedZone = code; // Met à jour le bouton actif
+    handleZoneAndSiege(zoneCode) {
+      this.updateZone(zoneCode); // Mets à jour le graphique Zone
+      this.updateSiege(zoneCode); // Mets à jour le graphique Siège
+      this.selectedZone = zoneCode; // Met à jour le bouton actif
     },
 
     updateZone(zoneCode) {
@@ -330,135 +330,100 @@ export default {
       });
     },
 
-    renderget_stat_by_zone() {
-      // Vérifiez si un graphique existe déjà et détruisez-le
-      if (this.chartInstanceZone) {
-        this.chartInstanceZone.destroy();
-      }
+renderget_stat_by_zone() {
+  // Vérifiez si un graphique Zone existe déjà et détruisez-le
+  if (this.chartInstanceZone) {
+    this.chartInstanceZone.destroy();
+  }
 
-      // Vérifier que this.datas contient des données
-      if (!this.datas || this.datas.length === 0) {
-        console.error(
-          "Aucune donnée disponible pour les statistiques par zone."
-        );
-        return;
-      }
+  if (!this.datas || this.datas.length === 0) {
+    console.error("Aucune donnée disponible pour les statistiques par zone.");
+    return;
+  }
 
-      // Préparez les labels pour l'axe X (libellés des zones)
-      const labels = this.datas.map((zone) => zone.libelle);
+  const labels = this.datas.map((zone) => zone.libelle);
+  const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
+    key.startsWith("candidate_")
+  );
 
-      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
-      const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
-        key.startsWith("candidate_")
-      );
+  if (candidateKeys.length === 0) {
+    console.error("Aucun candidat trouvé dans les données.");
+    return;
+  }
 
-      // Vérifier que des candidats existent
-      if (candidateKeys.length === 0) {
-        console.error("Aucun candidat trouvé dans les données.");
-        return;
-      }
+  const candidateNames = candidateKeys.map(
+    (candidate) => this.datas[0][candidate]?.name || `${candidate}`
+  );
 
-      // Extraire les noms réels et les votes
-      const candidateNames = candidateKeys.map(
-        (candidate) => this.datas[0][candidate]?.name || `${candidate}`
-      );
-      const datasets = candidateKeys.map((candidate, index) => ({
-        label: candidateNames[index], // Utilisation des noms réels
-        data: this.datas.map((zone) => zone[candidate]?.data || 0), // Extraire les votes (0 si valeur manquante)
-        backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
-      }));
+  const datasets = candidateKeys.map((candidate, index) => ({
+    label: candidateNames[index],
+    data: this.datas.map((zone) => zone[candidate]?.data || 0),
+    backgroundColor: this.getColorForCandidate(index),
+  }));
 
-      // Récupérer le contexte du canvas
-      const ctx = document.getElementById("zone").getContext("2d");
+  const ctx = document.getElementById("zone").getContext("2d");
 
-      // Créez un graphique bar
-      this.chartInstanceZone = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: labels, // Zones sur l'axe X
-          datasets: datasets, // Données pour chaque candidat
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: { display: true, text: "Zones" },
-              stacked: false,
-            },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: "Votes" },
-              stacked: false,
-            },
-          },
-        },
-      });
+  // Créez un graphique bar pour Zone
+  this.chartInstanceZone = new Chart(ctx, {
+    type: "bar",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      scales: {
+        x: { title: { display: true, text: "Zones" } },
+        y: { beginAtZero: true, title: { display: true, text: "Votes" } },
+      },
     },
+  });
+},
 
-    renderget_stat_by_siege() {
-      // Vérifiez si un graphique existe déjà et détruisez-le
-      if (this.chartInstanceZone) {
-        this.chartInstanceZone.destroy();
-      }
+renderget_stat_by_siege() {
+  // Vérifiez si un graphique Siège existe déjà et détruisez-le
+  if (this.chartInstanceSiege) {
+    this.chartInstanceSiege.destroy();
+  }
 
-      // Vérifier que this.datas contient des données
-      if (!this.datas || this.datas.length === 0) {
-        console.error(
-          "Aucune donnée disponible pour les statistiques par siege."
-        );
-        return;
-      }
+  if (!this.datas || this.datas.length === 0) {
+    console.error("Aucune donnée disponible pour les statistiques par siège.");
+    return;
+  }
 
-      // Préparez les labels pour l'axe X (libellés des zones)
-      const labels = this.datas.map((zone) => zone.libelle);
+  const labels = this.datas.map((zone) => zone.libelle);
+  const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
+    key.startsWith("candidate_")
+  );
 
-      // Récupérer les clés des candidats (ex: candidate_1, candidate_2...)
-      const candidateKeys = Object.keys(this.datas[0]).filter((key) =>
-        key.startsWith("candidate_")
-      );
+  if (candidateKeys.length === 0) {
+    console.error("Aucun candidat trouvé dans les données.");
+    return;
+  }
 
-      // Vérifier que des candidats existent
-      if (candidateKeys.length === 0) {
-        console.error("Aucun candidat trouvé dans les données.");
-        return;
-      }
+  const candidateNames = candidateKeys.map(
+    (candidate) => this.datas[0][candidate]?.name || `${candidate}`
+  );
 
-      // Extraire les noms réels et les votes
-      const candidateNames = candidateKeys.map(
-        (candidate) => this.datas[0][candidate]?.name || `${candidate}`
-      );
-      const datasets = candidateKeys.map((candidate, index) => ({
-        label: candidateNames[index], // Utilisation des noms réels
-        data: this.datas.map((zone) => zone[candidate]?.data || 0), // Extraire les votes (0 si valeur manquante)
-        backgroundColor: this.getColorForCandidate(index), // Couleur unique pour chaque candidat
-      }));
+  const datasets = candidateKeys.map((candidate, index) => ({
+    label: candidateNames[index],
+    data: this.datas.map((zone) => zone[candidate]?.data || 0),
+    backgroundColor: this.getColorForCandidate(index),
+  }));
 
-      // Récupérer le contexte du canvas
-      const ctx = document.getElementById("siege").getContext("2d");
+  const ctx = document.getElementById("siege").getContext("2d");
 
-      // Créez un graphique bar
-      this.chartInstanceZone = new Chart(ctx, {
-        type: "bar",
-        data: {
-          labels: labels, // Zones sur l'axe X
-          datasets: datasets, // Données pour chaque candidat
-        },
-        options: {
-          responsive: true,
-          scales: {
-            x: {
-              title: { display: true, text: "Sieges" },
-              stacked: false,
-            },
-            y: {
-              beginAtZero: true,
-              title: { display: true, text: "Votes" },
-              stacked: false,
-            },
-          },
-        },
-      });
+  // Créez un graphique bar pour Siège
+  this.chartInstanceSiege = new Chart(ctx, {
+    type: "bar",
+    data: { labels, datasets },
+    options: {
+      responsive: true,
+      scales: {
+        x: { title: { display: true, text: "Sièges" } },
+        y: { beginAtZero: true, title: { display: true, text: "Votes" } },
+      },
     },
+  });
+},
+
 
     // Fonction pour attribuer des couleurs aux candidats
     getColorForCandidate(index) {
