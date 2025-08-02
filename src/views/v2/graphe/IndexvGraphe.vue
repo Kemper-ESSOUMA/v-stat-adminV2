@@ -62,7 +62,7 @@
     <!-- Boutons communs pour Zones et Sièges -->
     <!-- Boutons communs -->
     <div class="chart-container" style="width: 90%; margin-bottom: 20px">
-      <h5 class="chart-title text-center">Votes par Zone</h5>
+    
 
       <div
         class="button-container text-center"
@@ -76,8 +76,9 @@
         >
           {{ zone.name }}
         </button>
-      </div>
-
+        
+      </div><br>
+        <h5 class="chart-title text-center">Votes par Zone</h5>
       <!-- Graphique Zone -->
       <canvas id="zone" width="400" height="200"></canvas>
     </div>
